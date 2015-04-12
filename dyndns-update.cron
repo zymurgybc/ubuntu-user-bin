@@ -1,5 +1,17 @@
-# 3,8,13,18,23,28,33,38,43,48,53,58 * * * * /media/ssd1/local/bin/dyndns-update.cron
-source dyndns-update.config
+#!/bin/bash
+
+# find the real location of the current script
+_script=`readlink -f "${BASH_SOURCE[0]}"`
+#echo _script=${_script}
+
+## Delete last component from ${_script} ##
+_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
+#echo _dir=${_dir}
+
+_base="$(dirname $_dir)"
+#echo _base=${_base}
+
+source ${_base}/bin/dyndns-update.config
 
 sleep 10 ; (echo `date +"%Y-%m-%d %T"`; wget -N -q -O - http://freedns.afraid.org/dynamic/update.php?$FREEDNS_CLIENT) | tr '\n' ' '  | sed 's/ ERROR: A/ freedns replied a/g'>> $FREEDNS_LOG 2>&1 &
 
