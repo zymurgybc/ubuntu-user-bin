@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# find the real location of the current script
+_script=`readlink -f "${BASH_SOURCE[0]}"`
+#echo _script=${_script}
+ 
+## Delete last component from ${_script} ##
+_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd) 
+#echo _dir=${_dir}
+
+_base="$(dirname $_dir)" 
+#echo _base=${_base} 
+
+echo `date` `${_base}/bin/myip` >> ${_base}/var/log/myip.log

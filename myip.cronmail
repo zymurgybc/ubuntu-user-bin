@@ -1,0 +1,8 @@
+# import config to send mail
+source myip.cronmail.config
+# import config for dyndns-updates (gets the log)
+source dyndns-update.config
+
+(tail -n6 $MYIP_LOG; echo; tail -n12 $FREEDNS_LOG) | mail -s "`hostname` myip [cron]" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM
+
+

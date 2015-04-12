@@ -1,0 +1,5 @@
+# 3,8,13,18,23,28,33,38,43,48,53,58 * * * * /media/ssd1/local/bin/dyndns-update.cron
+source dyndns-update.config
+
+sleep 10 ; (echo `date +"%Y-%m-%d %T"`; wget -N -q -O - http://freedns.afraid.org/dynamic/update.php?$FREEDNS_CLIENT) | tr '\n' ' '  | sed 's/ ERROR: A/ freedns replied a/g'>> $FREEDNS_LOG 2>&1 &
+

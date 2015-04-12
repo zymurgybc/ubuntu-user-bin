@@ -1,0 +1,2 @@
+FREEDNS_CLIENT="<long string of stuff>"
+FREEDNS_LOG="/var/log/<freedns_domain_name>.`date +%Y%m%d`.log"

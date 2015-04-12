@@ -1,0 +1,2 @@
+source myip.cronmail.config
+(tail -n6 $MYIP_LOG; echo; tail -n12 $MYIP_DAILY) | mail -s "`hostname` myip [startup]" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM
