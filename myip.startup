@@ -1,2 +1,15 @@
-source myip.cronmail.config
+#!/bin/bash
+
+# find the real location of the current script
+#_script=`readlink -f "${BASH_SOURCE[0]}"`
+#echo _script=${_script}
+
+## Delete last component from ${_script} ##
+_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
+#echo _dir=${_dir}
+
+#_base="$(dirname $_dir)"
+#echo _base=${_base}
+
+source ${_dir}/myip.cronmail.config
 (tail -n6 $MYIP_LOG; echo; tail -n12 $MYIP_DAILY) | mail -s "`hostname` myip [startup]" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM
