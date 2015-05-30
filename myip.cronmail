@@ -6,7 +6,7 @@
 
 ## Delete last component from ${_script} ##
 _dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
-echo _dir=${_dir}
+#echo _dir=${_dir}
 
 #_base="$(dirname $_dir)"
 #echo _base=${_base}
