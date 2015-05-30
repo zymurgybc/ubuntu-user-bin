@@ -6,15 +6,15 @@
 
 ## Delete last component from ${_script} ##
 _dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
-#echo _dir=${_dir}
+echo _dir=${_dir}
 
 #_base="$(dirname $_dir)"
 #echo _base=${_base}
 
 # import config to send mail
-source ${_dir}/bin/myip.cronmail.config
+source ${_dir}/myip.cronmail.config
 # import config for dyndns-updates (gets the log)
-source ${_dir}/bin/dyndns-update.config
+source ${_dir}/dyndns-update.config
 
 (tail -n6 $MYIP_LOG; echo; tail -n12 $FREEDNS_LOG) | mail -s "`hostname` myip [cron]" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM
 
