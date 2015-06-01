@@ -16,6 +16,7 @@ source ${_dir}/myip.cronmail.config
 # import config for dyndns-updates (gets the log)
 source ${_dir}/dyndns-update.config
 
-(tail -n6 $MYIP_LOG; echo; tail -n12 $FREEDNS_LOG) | mail -s "`hostname` myip [cron]" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM
+#set
+(tail -n6 $MYIP_LOG; echo; echo; tail -n4 $FREEDNS_LOG; echo; echo; df -h) | mail -s "$MYIP_SUBJECT" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM
 
 

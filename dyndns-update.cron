@@ -13,5 +13,5 @@ _dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 
 source ${_dir}/dyndns-update.config
 
+echo >> $FREEDNS_LOG 
 sleep 10 ; (echo `date +"%Y-%m-%d %T"`; wget -N -q -O - http://freedns.afraid.org/dynamic/update.php?$FREEDNS_CLIENT) | tr '\n' ' '  | sed 's/ ERROR: A/ freedns replied a/g'>> $FREEDNS_LOG 2>&1 &
-

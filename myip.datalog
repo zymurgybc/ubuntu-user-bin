@@ -10,5 +10,7 @@ _dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 
 _base="$(dirname $_dir)" 
 #echo _base=${_base} 
+#set
+#echo `date` `${_base}/bin/myip` >> ${_base}/var/log/myip.log
+echo `date` `${_base}/bin/myip` >> /var/log/myip.log
 
-echo `date` `${_base}/bin/myip` >> ${_base}/var/log/myip.log
