@@ -9,8 +9,8 @@ _dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 #echo _dir=${_dir}
 
 _base="$(dirname $_dir)" 
-#echo _base=${_base} 
+source ${_dir}/dyndns-update.config
+
 #set
-#echo `date` `${_base}/bin/myip` >> ${_base}/var/log/myip.log
-echo `date` `${_base}/bin/myip` >> /var/log/myip.log
+echo `date` `${_base}/bin/myip` >> $FREEDNS_LOG
 
