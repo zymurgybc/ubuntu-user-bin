@@ -1,4 +1,4 @@
 MYIP_LOG=/var/log/myip.log
-MYIP_SUBJECT=`hostname` myip [cron]
+MYIP_SUBJECT="`hostname` myip [cron]"
 MYIP_ADDRESS_TO=some.user@mailbox.com
-MYIP_ADDRESS_FROM=`hostname`.cron@dynamic_ip_hostname
+MYIP_ADDRESS_FROM="`hostname`.cron@dynamic_ip_hostname"
