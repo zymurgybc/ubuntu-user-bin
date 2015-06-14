@@ -11,6 +11,6 @@ _dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 _base="$(dirname $_dir)" 
 source ${_dir}/dyndns-update.config
 
-set
+#set
 echo `date` `${_base}/bin/myip` >> $MYIP_LOG
 
