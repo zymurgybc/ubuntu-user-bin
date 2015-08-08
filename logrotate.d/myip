@@ -1,0 +1,9 @@
+/var/log/myip.log { 
+        weekly
+        missingok
+        rotate 6
+        compress
+        delaycompress
+        create 666 root adm
+}
+

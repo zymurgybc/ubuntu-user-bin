@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# find the real location of the current script
+#_script=`readlink -f "${BASH_SOURCE[0]}"`
+#echo _script=${_script}
+
+## Delete last component from ${_script} ##
+_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
+
+${_dir}/myip.datalog
+${_dir}/myip.cronmail
