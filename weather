@@ -1,0 +1,1 @@
+curl --basic -u "myFirstApp":"9417d0f0efd94a60b8c09d0ab4fc98e7" --header "x-temboo-domain: /"theather"/master" --header "Content-Type: application/json" --header "Accept: application/json" -X POST --data '{ "inputs": [ {"name":"Address", "value":"victoria, bc, Canada"}] }' "https://"theather".temboolive.com/temboo-api/1.0/choreos/Library/Yahoo/Weather/GetWeatherByAddress"
