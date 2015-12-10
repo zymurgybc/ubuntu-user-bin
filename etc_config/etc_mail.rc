@@ -1,0 +1,6 @@
+
+# http://serverfault.com/questions/421336/prevent-postmasterdomain-com-bounces-with-ssmtp
+
+alias postmaster postmaster<zymurgy.bc@gmail.com>
+alias abuse abuse<zymurgy.bc@gmail.com>
+
