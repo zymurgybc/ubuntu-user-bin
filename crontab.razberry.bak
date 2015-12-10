@@ -25,8 +25,7 @@
 20 5,17      * * * /home/pi/bin/myip.datalog
 15 7         * * 1 /home/pi/bin/myip.cronmail
 6,21,36,51 * * * * /home/pi/bin/My_Temperature_Log.py
-3,13,23,33,43,53 * * * * /home/pi/bin/check_network.sh
+1,16,31,46 * * * * /home/pi/bin/check_network.sh
 
-
-@reboot bash /home/pi/bin/myip.startup
+@reboot bash "/home/pi/bin/myip.datalog && /home/pi/bin/myip.startup"
 
