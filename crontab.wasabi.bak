@@ -24,6 +24,8 @@
 4,19,34,49 * * * * /home/theather/bin/dyndns-update.cron
 21 6,18      * * * /home/theather/bin/myip.datalog
 15 7         * * 1 /home/theather/bin/myip.cronmail
-20         * * * * redis-cli bgrewriteaof
+7,22,37,52 * * * * /home/theather/bin/check_network.sh
+
+20         * * * * redis-cli bgrewriteaof > nul
 
 @reboot  bash "sleep 2m && /home/theather/bin/myip.datalog && /home/theather/bin/myip.startup"
