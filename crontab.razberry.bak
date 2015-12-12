@@ -21,11 +21,12 @@
 # 
 # m h  dom mon dow   command
 
-5,20,35,50 * * * * /home/pi/bin/dyndns-update.cron
-20 5,17      * * * /home/pi/bin/myip.datalog
-15 7         * * 1 /home/pi/bin/myip.cronmail
-6,21,36,51 * * * * /home/pi/bin/My_Temperature_Log.py
-1,16,31,46 * * * * /home/pi/bin/check_network.sh
+5,20,35,50       * * * * /home/pi/bin/dyndns-update.cron
+20 5,17            * * * /home/pi/bin/myip.datalog
+15 7               * * 1 /home/pi/bin/myip.cronmail
+6,21,36,51       * * * * /home/pi/bin/My_Temperature_Log.py > /dev/nul
+3,13,23,33,43,53 * * * * /home/pi/bin/check_network.sh
 
-@reboot bash "/home/pi/bin/myip.datalog && /home/pi/bin/myip.startup"
+
+@reboot bash /home/pi/bin/myip.startup
 
