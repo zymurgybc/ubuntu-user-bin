@@ -23,7 +23,7 @@ do
   if [ ! -f ${OUTPUT} ]; then
      touch ${OUTPUT}
   fi
-  echo \"Seen `date +"%Y-%m-%d %T"`\" >> ${OUTPUT}
+  echo "Seen `date +"%Y-%m-%d %T"` >> ${OUTPUT}
 
 done
 
