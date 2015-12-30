@@ -25,7 +25,9 @@
 21 6,18      * * * /home/theather/bin/myip.datalog
 15 7         * * 1 /home/theather/bin/myip.cronmail
 7,22,37,52 * * * * /home/theather/bin/check_network.sh
-6,21,36,51 * * * * /home/theather/bin/check_hosts
+
+6,16,26,36,46,56 * * * * /home/theather/bin/check_hosts
+11 7,12,17         * * * /home/theather/bin/check_hosts -daily
 
 20         * * * * redis-cli bgrewriteaof > nul
 

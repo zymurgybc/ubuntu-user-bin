@@ -1,15 +1,23 @@
 #!/bin/bash
 
+# Delete last component from ${_script} ##
+_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
+# import config to send mail
+source ${_dir}/myip.cronmail.config
+
 NMAP_DIR=/var/log/nmap
 
 if [ ! -d "$NMAP_DIR" ]; then
     mkdir "$NMAP_DIR"
 fi
 
-NMAP_LOG="$NAMP_DIR/nmap.log"
+NMAP_LOG=${NMAP_DIR}/nmap.log
 
 if [ ! -f "$NMAP_LOG" ]; then
     touch "$NMAP_LOG"
+#    echo "Created ${NMAP_LOG}"
+else 
+    echo "Found ${NMAP_LOG}"
 fi
 
 sudo nmap -sP -oG - 192.168.1.* \
@@ -19,7 +27,7 @@ sudo nmap -sP -oG - 192.168.1.* \
 do
 
   OUTPUT=${NMAP_DIR}/nmap_${addr}_log
-  #echo Output=${OUTPUT}
+#  echo Output=${OUTPUT}
   if [ ! -f ${OUTPUT} ]; then
      touch ${OUTPUT}
   fi
@@ -28,3 +36,22 @@ do
 done
 
 
+# http://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
+while [[ $# > 1 ]]
+do
+key="$1"
+
+case $key in
+	-daily)
+	let AGE="60*24"
+	NMAP_TMP=/tmp/nmap_issues
+	find /var/log/nmap/ -mmin +$AGE -type f -name "nmap_*" > $NMAP_TMP
+	if [ -s file.tmp ]
+	then
+		 mail -s "NMAP Check Hosts -Daily" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM  < $NMAP_TMP
+	fi
+	rm $NMAP_TMP
+	;;
+esac
+shift # past argument or value
+done
