@@ -9,7 +9,8 @@ if [ ! -d "/home/pi/Source" ]; then
   mkdir /home/pi/Source
 fi
 
-
+git config --global user.email "zymurgy.bc@gmail.com"
+git config --global user.name "Ted H."
 
 
 if [ ! -d "/home/pi/Source/Adafruit_Python_DHT" ]; then
