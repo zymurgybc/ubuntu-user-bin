@@ -17,6 +17,15 @@ source ${_dir}/myip.cronmail.config
 source ${_dir}/dyndns-update.config
 
 #set
-(tail -n6 $MYIP_LOG; echo; echo; tail -n4 $FREEDNS_LOG; echo; echo; df -h; echo; echo; uptime) | mail -s "$MYIP_SUBJECT" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM
+(tail -n6 $MYIP_LOG; echo; echo; 
+ tail -n4 $FREEDNS_LOG; echo; echo;
+ if [ -f "/var/log/updatedhs" ]; then
+    tail -n6 /var/log/updatedhs;
+    echo;
+    echo;
+ fi
+
+ df -h; echo; echo;  \
+ uptime) | mail -s "$MYIP_SUBJECT" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM
 
 
