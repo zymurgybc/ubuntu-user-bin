@@ -9,20 +9,15 @@ import requests
 import paho.mqtt.client as mqtt # sudo pip install paho-mqtt
 import sys
 import socket
-
-import Adafruit_DHT
+#sys.path.append("/home/pi/Source/GrovePi/Software/Python/")
+from grovepi import grovepi
 import traceback
 
 from tendo import singleton
 me = singleton.SingleInstance() # will sys.exit(-1) if other instance is running
 
-# Type of sensor, can be Adafruit_DHT.DHT11, Adafruit_DHT.DHT22, or Adafruit_DHT.AM2302.
-DHT_TYPE = Adafruit_DHT.DHT11
-
 # Example of sensor connected to Raspberry Pi pin 23
-DHT_PIN  = 5
-# Example of sensor connected to Beaglebone Black pin P8_11
-#DHT_PIN  = 'P8_11'
+GROVE_SENSOR = 2
 
 # How long to wait (in seconds) between measurements.
 FREQUENCY_SECONDS      = 600
@@ -37,7 +32,7 @@ logger = logging.getLogger('My_Temperature_mqtt')
 
 def json_Payload():
 	# Attempt to get sensor reading.
-	humidity, temp = Adafruit_DHT.read(DHT_TYPE, DHT_PIN)
+	[temp,humidity] = grovepi.dht(GROVE_SENSOR,0)
 
 	# Skip to the next reading if a valid measurement couldn't be taken.
 	# This might happen if the CPU is under a lot of load and the sensor
