@@ -10,8 +10,8 @@ sleep 5m
 _dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 #echo _dir=${_dir}
 
-#_base="$(dirname $_dir)"
+_base="$(dirname $_dir)"
 #echo _base=${_base}
 
 source ${_dir}/myip.cronmail.config
-(tail -n6 $MYIP_LOG; echo; echo; tail -n12 $MYIP_DAILY; echo; echo; df; echo; echo; uptime) | mail -s "`hostname` myip [startup]" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM
+(tail -n6 $MYIP_LOG; echo; echo; echo Now == `date` `${_base}/bin/myip` >> $MYIP_LOG; tail -n12 $MYIP_DAILY; echo; echo; df; echo; echo; uptime) | mail -s "`hostname` myip [startup]" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM

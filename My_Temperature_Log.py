@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # Google Spreadsheet DHT Sensor Data-logging Example
 
@@ -40,17 +40,21 @@ import time
 import datetime
 import requests
 
-import Adafruit_DHT
-import gspread
-import traceback
+#sys.path.append("/home/pi/Source/GrovePi/Software/Python/")
+from grovepi import grovepi
 
+#import Adafruit_DHT 
+import gspread 
+import traceback
 from oauth2client.client import SignedJwtAssertionCredentials
 
 # Type of sensor, can be Adafruit_DHT.DHT11, Adafruit_DHT.DHT22, or Adafruit_DHT.AM2302.
-DHT_TYPE = Adafruit_DHT.DHT11
+# DHT_TYPE = Adafruit_DHT.DHT11
 
 # Example of sensor connected to Raspberry Pi pin 23
-DHT_PIN  = 5
+# DHT_PIN  = 5
+GROVE_SENSOR = 2
+
 # Example of sensor connected to Beaglebone Black pin P8_11
 #DHT_PIN  = 'P8_11'
 
@@ -84,6 +88,15 @@ GDOCS_SPREADSHEET_NAME = 'My_Temperature_Log'
 # How long to wait (in seconds) between measurements.
 FREQUENCY_SECONDS      = 600
 
+#import inspect
+#
+#def list_functions(mymodule):
+#	all_functions = inspect.getmembers(mymodule) #inspect.isfunction)
+#	for y in all_functions:
+#		print("found ", y) 
+#
+#
+#list_functions(grovepi)
 
 def login_open_sheet(oauth_key_file, spreadsheet):
 	"""Connect to Google Docs spreadsheet and return the first worksheet."""
@@ -96,8 +109,8 @@ def login_open_sheet(oauth_key_file, spreadsheet):
 		worksheet = gc.open(spreadsheet).sheet1
 		return worksheet
 	except Exception as exc:
-		print 'Unable to login and get spreadsheet.  Check OAuth credentials, spreadsheet name, and make sure spreadsheet is shared to the client_email address in the OAuth .json file!'
-		print 'Google sheet login failed with error:' + traceback.format_exc()
+		print('Unable to login and get spreadsheet.  Check OAuth credentials, spreadsheet name, and make sure spreadsheet is shared to the client_email address in the OAuth .json file!')
+		print('Google sheet login failed with error:' + traceback.format_exc())
 		sys.exit(1)
 
 def post_Thingspeak(temp, humidity):
@@ -113,8 +126,10 @@ worksheet = None
 if worksheet is None:
 	worksheet = login_open_sheet(GDOCS_OAUTH_JSON, GDOCS_SPREADSHEET_NAME)
 
-	# Attempt to get sensor reading.
-humidity, temp = Adafruit_DHT.read(DHT_TYPE, DHT_PIN)
+
+# Attempt to get sensor reading.
+# humidity, temp = Adafruit_DHT.read(DHT_TYPE, DHT_PIN)
+[temp,humidity] = grovepi.dht(GROVE_SENSOR,0)
 
 # Skip to the next reading if a valid measurement couldn't be taken.
 # This might happen if the CPU is under a lot of load and the sensor
@@ -124,8 +139,8 @@ if humidity is None or temp is None:
 	#continue
 	exit(1)
 
-print 'Temperature: {0:0.1f} C'.format(temp)
-print 'Humidity:    {0:0.1f} %'.format(humidity)
+print( 'Temperature: {0:0.1f} C'.format(temp))
+print( 'Humidity:    {0:0.1f} %'.format(humidity))
  
 # Append the data in the spreadsheet, including a timestamp
 try:
