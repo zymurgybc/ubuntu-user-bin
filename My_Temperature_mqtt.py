@@ -4,17 +4,14 @@ from tendo import singleton
 me = singleton.SingleInstance() # will sys.exit(-1) if other instance is running
 
 import os 
-#from ConfigParser import SafeConfigParser
-#config = SafeConfigParser()
-#config.read(os.path.dirname(os.path.realpath(__file__)) + '/mqtt_config.ini')
-
-config_json = os.path.dirname(os.path.realpath(__file__)) + '/mqtt_config.json'
+import sys
 
 import json 
+config_json = os.path.dirname(os.path.realpath(__file__)) + '/mqtt_config.json'
 with open(config_json, 'r') as f:
     config = json.load(f)
 
-import sys 
+
 import time 
 import datetime 
 import logging 
@@ -23,12 +20,25 @@ import requests
 import paho.mqtt.client as mqtt 
 import socket 
 import traceback
-
+import Queue
 import smbus 
 import RPi.GPIO as GPIO 
-#sys.path.append("/home/pi/Source/GrovePi/Software/Python/")
-from grovepi import grovepi 
 
+#import importlib.machinery   # python 3.3 & 3.4
+#grovepi = SourceFileLoader("grovepi.py", "/usr/local/src/GrovePi/Software/Python/")
+#BMP085  = SourceFileLoader("grove_i2c_barometic_sensor_BMP180.py","/usr/local/src/GrovePi/Software/Python/")
+
+#import importlib.util   # python 3.5+
+#spec1   = importlib.util.spec_from_file_location("grovepi.py", "/usr/local/src/GrovePi/Software/Python/")
+#grovepi = importlib.util.module_from_spec(spec1)
+#spec1.loader.exec_module(grovepi)
+#
+#spec2   = importlib.util.spec_from_file_location("grove_i2c_barometic_sensor_BMP180.py","/usr/local/src/GrovePi/Software/Python/")
+#BMP180  = importlib.util.module_from_spec(spec2)
+#spec2.loader.exec_module(BMP180)
+
+sys.path.append("/usr/local/src/GrovePi/Software/Python/")
+from grovepi import grovepi 
 from grove_i2c_barometic_sensor_BMP180 import BMP085
 
 # Initialise the BMP180 and use STANDARD mode (default value)
@@ -53,109 +63,107 @@ GROVE_DHT11_SENSOR = 2
 # How long to wait (in seconds) between measurements.
 FREQUENCY_SECONDS      = 600
 
+
+class MqttMessage:
+    def __init__(self, topic, value):
+        self.topic = topic
+        self.value = value
+
+message_queue = Queue.LifoQueue()
+
 def on_connected(client, userdata, rc):
-	#status_will = {"topic": "client/" + MQTT_CLIENTID, "payload": "offline", "qos":1, "retain":1}
-	#client.publish("client/" + MQTT_CLIENTID, "connected", qos = 1, retain = 1, will = status_will)
-	logger.info(os.path.basename(__file__) + " - mqtt connected %s" % client)
+    #status_will = {"topic": "client/" + MQTT_CLIENTID, "payload": "offline", "qos":1, "retain":1}
+    #client.publish("client/" + MQTT_CLIENTID, "connected", qos = 1, retain = 1, will = status_will)
+    logger.info(os.path.basename(__file__) + " - mqtt connected %s" % client)
 
 def on_message(mosq, obj, msg):
-	global message
-	logger.info(os.path.basename(__file__) + " - message: " + msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
-	message = msg.payload
+    global message
+    logger.info(os.path.basename(__file__) + " - message: " + msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+    message = msg.payload
 
 def on_publish(mosq, obj, mid):
-	logger.info(os.path.basename(__file__) + " - published mid: " + str(mid))
+    logger.info(os.path.basename(__file__) + " - published mid: " + str(mid))
+    if not message_queue.empty():
+        aMessage = message_queue.get()
+        mosq.publish(aMessage.topic, aMessage.value, qos = 1, retain = 1)
+         
 
 def on_subscribe(mosq, obj, mid, granted_qos):
-	logger.info(os.path.basename(__file__) + " - subscribed: " + str(mid) + " " + str(granted_qos))
+    logger.info(os.path.basename(__file__) + " - subscribed: " + str(mid) + " " + str(granted_qos))
 
 def on_log(mosq, obj, level, string):
-	logger.info(os.path.basename(__file__) + " - Log: " + string)
+    logger.info(os.path.basename(__file__) + " - Log: " + string)
 
-def publish_dht11(tempCli, humiCli):
-	try:
-		[temp,humidity] = grovepi.dht(GROVE_DHT11_SENSOR,0)
-	        # Skip to the next reading if a valid measurement couldn't be taken.
-        	# This might happen if the CPU is under a lot of load and the sensor
-	        # can't be reliably read (timing is critical to read the sensor).
-        	if humidity is None or temp is None:
-                	raise ValueError('Sensor reading failed')
+def publish_dht11():
+    try:
+        [temp,humidity] = grovepi.dht(GROVE_DHT11_SENSOR,0)
+	# Skip to the next reading if a valid measurement couldn't be taken.
+        #This might happen if the CPU is under a lot of load and the sensor
+        # can't be reliably read (timing is critical to read the sensor).
+        if humidity is None or temp is None:
+            raise ValueError('Sensor reading failed')
 
-	        tempCli.publish(MQTT_TOPIC_TEMP, temp, qos = 1, retain = 1)
-        	humiCli.publish(MQTT_TOPIC_HUMI, humidity, qos = 1, retain = 1)
+	message_queue.put(MqttMessage(MQTT_TOPIC_TEMP, float(temp)))
+        # occasional number are > 100 which is not viable
+        if humidity < 10:
+            message_queue.put(MqttMessage(MQTT_TOPIC_HUMI, humidity*10.0))
 
-	except ValueError as err:
-		# we just don't publish bad readings
-		#print(err.args)
-		logger.warning(os.path.basename(__file__) + " - %s " % err.args)
+    except ValueError as err:
+        # we just don't publish bad readings
+        #print(err.args)
+        logger.warning(os.path.basename(__file__) + " - publish_dht11: %s " % err.args)
 
-def publish_barometer(baroCli):
-        try:
-		#bmp.update()
-		pressure_long = bmp.readPressure()
-		pressure_float = float(pressure_long)/100
-		#logger.info(os.path.basename(__file__) + " - %s " % type(pressure_float))
-        	baroCli.publish(MQTT_TOPIC_BARO, pressure_float, qos = 1, retain = 1)
-		#logger.info(os.path.basename(__file__) + " - %s " % bmp)
-	except Exception as err:
-		# we just don't publish bad readings
-		#print(err.args)
-		logger.warning(os.path.basename(__file__) + " - %s " % err.args)
+def publish_barometer():
+    try:
+        pressure_long = bmp.readPressure()
+        pressure_float = float(pressure_long)/1000
+        message_queue.put(MqttMessage(MQTT_TOPIC_BARO, pressure_float))
+    except Exception as err:
+        # we just don't publish bad readings
+        #print(err.args)
+        logger.warning(os.path.basename(__file__) + " - publish_barometer: %s " % err.args)
+
+def mqtt_publish():
+    publish_dht11()
+    publish_barometer()
+    return 1
 
 
-MQTT_STATUS_CLIENTID = socket.gethostname() + '_CONN_pub'
-MQTT_TEMP_CLIENTID   = socket.gethostname() + '_TEMP_pub'
-MQTT_HUMI_CLIENTID   = socket.gethostname() + '_HUMI_pub'
-MQTT_BARO_CLIENTID   = socket.gethostname() + '_BARO_pub'
 
-MQTT_TOPIC_TEMP = 'home/sensor/temperature/' + socket.gethostname()
-MQTT_TOPIC_HUMI = 'home/sensor/humidity/'    + socket.gethostname()
-MQTT_TOPIC_BARO = 'home/sensor/barometer/'   + socket.gethostname()
+MQTT_CLIENTID = socket.gethostname() + "_DHT11_pub"
+
+MQTT_TOPIC_TEMP = "home/sensor/temperature/" + socket.gethostname()
+MQTT_TOPIC_HUMI = "home/sensor/humidity/"    + socket.gethostname()
+MQTT_TOPIC_BARO = "home/sensor/barometer/"   + socket.gethostname()
 FORMAT = '%(asctime)-15s %(message)s'
 LOG_FILENAME = '/var/log/mqtt_client.log'
 
 logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG)
 logger = logging.getLogger('My_Temperature_mqtt')
 
-client_status = mqtt.Client(MQTT_STATUS_CLIENTID)
-client_status.username_pw_set(config["mqtt_client"], password=config["mqtt_password"])
-#client_status.on_connect = on_connected
-#client_status.on_message = on_message
-#client_status.on_publish = on_publish
-#client_status.on_subscribe = on_subscribe
-client_status.on_log = on_log
+client = mqtt.Client(MQTT_CLIENTID, clean_session=False)
 
-client_temp = mqtt.Client(MQTT_TEMP_CLIENTID)
-client_temp.username_pw_set(config["mqtt_client"], password=config["mqtt_password"])
-client_temp.on_log = on_log
+client.username_pw_set(config["mqtt_client"], password=config["mqtt_password"])
+client.on_connect = on_connected
+client.on_message = on_message
+client.on_publish = on_publish
+client.on_subscribe = on_subscribe
+client.on_log = on_log
 
-client_humi = mqtt.Client(MQTT_HUMI_CLIENTID)
-client_humi.username_pw_set(config["mqtt_client"], password=config["mqtt_password"])
-client_humi.on_log = on_log
+client.will_set( topic = "home/client/" + MQTT_CLIENTID, payload = "disconnected", qos=2, retain=1)
 
-client_baro = mqtt.Client(MQTT_BARO_CLIENTID)
-client_baro.username_pw_set(config["mqtt_client"], password=config["mqtt_password"])
-client_baro.on_log = on_log
+while True:
+    logger.info(os.path.basename(__file__) + " - connecting")
+    client.connect('wasabi', 1883)
+    client.loop_start()	
 
-client_status.connect('wasabi', 1883)
-client_temp.connect('wasabi', 1883)
-client_humi.connect('wasabi', 1883)
-client_baro.connect('wasabi', 1883)
-
-client_status.loop_start()	
-client_status.publish( topic = "client/" + MQTT_STATUS_CLIENTID, payload = "connected", qos = 1, retain = 1)
-client_status.will_set(topic = "client/" + MQTT_STATUS_CLIENTID, payload = "offline", qos = 1, retain = 1)
-
-_continue = 1
-while _continue:
-	publish_dht11(client_temp, client_humi)
-	publish_barometer(client_baro)
-
-	time.sleep(5)
-	status_loop = client_status.loop()
-	temp_loop = client_temp.loop()
-	humi_loop = client_humi.loop()
-	baro_loop = client_baro.loop()
-	logger.info(os.path.basename(__file__) + " - status %i, temp %i, humi %i, baro %i", status_loop, temp_loop, humi_loop, baro_loop)
-
-	_continue = (status_loop == 0) and (temp_loop == 0) and (humi_loop == 0)  and (baro_loop == 0)
+    _continue = 1
+    while _continue:
+        _continue = mqtt_publish()
+        message_queue.put(MqttMessage("client/" + MQTT_CLIENTID, "connected"))
+        # This will prime the loop
+        if not message_queue.empty():
+           aMessage = message_queue.get()
+           client.publish(aMessage.topic, aMessage.value, qos = 1, retain = 1)
+        # this waits while the current messages are sent
+        time.sleep(30)
