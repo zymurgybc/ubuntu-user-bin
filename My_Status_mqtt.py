@@ -76,7 +76,7 @@ while True:
             logger.warning(os.path.basename(__file__) + " - [2] %s " % err.args)
             time.sleep(5)
 
-    logger.info(os.path.basename(__file__) + " - exiting with %s" % string(client_loop))
+    logger.info(os.path.basename(__file__) + " - exiting with %s" % str(client_loop))
 
 #except Exception as err2:
 #    logger.warning(os.path.basename(__file__) + " - [1] %s " % err.args)
