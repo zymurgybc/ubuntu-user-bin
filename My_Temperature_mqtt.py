@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 from tendo import singleton
 me = singleton.SingleInstance() # will sys.exit(-1) if other instance is running
 
@@ -136,7 +137,7 @@ MQTT_TOPIC_TEMP = "home/sensor/temperature/" + socket.gethostname()
 MQTT_TOPIC_HUMI = "home/sensor/humidity/"    + socket.gethostname()
 MQTT_TOPIC_BARO = "home/sensor/barometer/"   + socket.gethostname()
 FORMAT = '%(asctime)-15s %(message)s'
-LOG_FILENAME = '/var/log/mqtt_client.log'
+LOG_FILENAME = config["mqtt_client_log"])
 
 logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG)
 logger = logging.getLogger('My_Temperature_mqtt')
@@ -154,7 +155,7 @@ client.will_set( topic = "home/client/" + MQTT_CLIENTID, payload = "disconnected
 
 while True:
     logger.info(os.path.basename(__file__) + " - connecting")
-    client.connect('wasabi', 1883)
+    client.connect(config["mqtt_host"], str(config["mqtt_port"]))
     client.loop_start()	
 
     _continue = 1
