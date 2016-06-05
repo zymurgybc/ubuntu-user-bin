@@ -8,6 +8,7 @@ cd ~/bin
 
 git config --global user.email "zymurgy.bc@gmail.com"
 git config --global user.name "Ted H."
+git config --global push.default simple
 git pull
 
 sudo apt-get install curl mailutils ssmtp mosquitto-clients
