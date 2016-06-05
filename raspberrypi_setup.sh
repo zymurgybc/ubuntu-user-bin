@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -d "~/.ssh" ]; then
+if [ ! -d "/home/pi/.ssh/" ]; then
     ssh-keygen -t ecdsa
 fi
 
@@ -15,21 +15,21 @@ sudo apt-get install curl mailutils ssmtp mosquitto-clients
 
 sudo cp ~/bin/etc_config/etc_mail.rc /etc/mail.rc
 
-if [ ! -f "~/dead.letter" ]; then
-    touch ~/dead.letter
+if [ ! -f "/home/pi/dead.letter" ]; then
+    touch /home/pi/dead.letter
 fi
 
-if [ ! -f "~/.ssh/config" ]; then
+if [ ! -f "/home/pi/.ssh/config" ]; then
     echo Getting a copy of ~/.ssh/config
-    scp theather@wasabi:~/ssh/config ~/.ssh/
+    scp theather@wasabi:~/ssh/config home/pi/.ssh/
 fi
 
-if [ ! -f "~/bin/dyndns-update.config" ]; then
+if [ ! -f "/home/bin/dyndns-update.config" ]; then
     echo Getting a copy of ~/bin/dyndns-update.config
-    scp theather@wasabi:~/bin/dyndns-update.config ~/bin/
+    scp theather@wasabi:~/bin/dyndns-update.config /home/pi/bin/
 fi
 
-if [ ! -f "~/bin/myip.cronmail.config" ]; then
+if [ ! -f "/home/pi/bin/myip.cronmail.config" ]; then
     echo Getting a copy of ~/bin/myip.cronmail.config
     scp theather@wasabi:~/bin/myip.cronmail.config ~/bin/
 fi
@@ -38,6 +38,6 @@ if [ ! -f "/var/log/myip.log" ]; then
     sudo touch /var/log/myip.log
 fi
 
-if [ -f "~/bin/crontab.`hostname`.bak" ]; then
+if [ -f "/home/pi/bin/crontab.`hostname`.bak" ]; then
     sudo crontab /home/pi/bin/crontab.`hostname`.bak
 fi
