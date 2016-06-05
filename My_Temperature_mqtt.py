@@ -22,6 +22,7 @@ import paho.mqtt.client as mqtt
 import socket 
 import traceback
 import Queue
+# sudo pip install smbus-cffi
 import smbus 
 import RPi.GPIO as GPIO 
 
@@ -38,7 +39,10 @@ import RPi.GPIO as GPIO
 #BMP180  = importlib.util.module_from_spec(spec2)
 #spec2.loader.exec_module(BMP180)
 
-sys.path.append("/usr/local/src/GrovePi/Software/Python/")
+grove_path = "/usr/local/src/GrovePi/Software/Python/grove_barometer_sensors/"
+if not grove_path in sys.path:
+    sys.path.insert(1, grove_path)
+
 from grovepi import grovepi 
 from grove_i2c_barometic_sensor_BMP180 import BMP085
 
@@ -137,7 +141,7 @@ MQTT_TOPIC_TEMP = "home/sensor/temperature/" + socket.gethostname()
 MQTT_TOPIC_HUMI = "home/sensor/humidity/"    + socket.gethostname()
 MQTT_TOPIC_BARO = "home/sensor/barometer/"   + socket.gethostname()
 FORMAT = '%(asctime)-15s %(message)s'
-LOG_FILENAME = config["mqtt_client_log"])
+LOG_FILENAME = config["mqtt_client_log"]
 
 logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG)
 logger = logging.getLogger('My_Temperature_mqtt')
