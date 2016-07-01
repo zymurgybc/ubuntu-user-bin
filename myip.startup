@@ -18,9 +18,12 @@ _base="$(dirname $_dir)"
 #echo _base=${_base}
 
 source ${_dir}/myip.cronmail.config
-make sure the log exists (ie. first of the month)
+#make sure the logs exists (ie. first of the month)
 if [ ! -f "$MYIP_LOG" ]; then
     echo "startup... " >> $MYIP_LOG
+fi
+if [ ! -f "$MYIP_DAILY" ]; then
+    echo "startup... " >> $MYIP_DAILY
 fi
 
 (tail -n6 $MYIP_LOG; echo; echo; echo Now == `date` `${_base}/bin/myip` >> $MYIP_LOG; tail -n12 $MYIP_DAILY; echo; echo; df; echo; echo; uptime) | mail -s "`hostname` myip [startup]" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM
