@@ -98,5 +98,7 @@ fi
 cd /usr/local/src/GrovePi
 git pull
 
+sudo ln /home/pi/bin/zway-mqtt.js /opt/z-way-server/automation/zway-mqtt.js
+sudo ln /home/pi/bin/mqtt_config.json /opt/z-way-server/automation/mqtt_config.json
 
 # wget -q -O - razberry.z-wave.me/install | sudo bash
