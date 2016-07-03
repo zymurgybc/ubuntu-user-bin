@@ -12,8 +12,14 @@ git config --global push.default simple
 git pull
 
 sudo apt-get install curl mailutils ssmtp mosquitto-clients
+sudo apt-get install nfs-kernel-server nfs-common portmap
+sudo update-rc.d rpcbind enable
+sudo service rpcbind start
+
 
 sudo cp ~/bin/etc_config/etc_mail.rc /etc/mail.rc
+
+sudo modprobe ipv6
 
 if [ ! -f "/home/pi/dead.letter" ]; then
     touch /home/pi/dead.letter
@@ -41,3 +47,5 @@ fi
 if [ -f "/home/pi/bin/crontab.`hostname`.bak" ]; then
     sudo crontab /home/pi/bin/crontab.`hostname`.bak
 fi
+
+
