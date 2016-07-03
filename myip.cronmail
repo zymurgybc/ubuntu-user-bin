@@ -16,9 +16,6 @@ source ${_dir}/myip.cronmail.config
 # import config for dyndns-updates (gets the log)
 source ${_dir}/dyndns-update.config
 
-BOUNDARY="`hostname`_`date +\"%Y+%m+%d+%H+%M\"`/heatherington.ca"
-
-#set
 (echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
  echo "<html><head><title>$MYIP_SUBJECT</title>"; 
  echo "<style type=\"text/css\">pre { font-size:10pt; }</style></head><body><pre>";
