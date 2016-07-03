@@ -1,9 +1,5 @@
 #!/bin/bash
 
-if [ ! -d "/home/pi/.ssh/" ]; then
-    ssh-keygen -t ecdsa
-fi
-
 cd ~/bin
 
 git config --global user.email "zymurgy.bc@gmail.com"
@@ -12,7 +8,7 @@ git config --global push.default simple
 git pull
 
 sudo apt-get install curl mailutils ssmtp mosquitto-clients jq
-sudo apt-get install nfs-kernel-server nfs-common portmap
+sudo apt-get install nfs-kernel-server nfs-common portmap dos2unix
 sudo update-rc.d rpcbind enable
 sudo service rpcbind start
 
