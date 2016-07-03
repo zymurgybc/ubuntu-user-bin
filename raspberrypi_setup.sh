@@ -11,15 +11,10 @@ git config --global user.name "Ted H."
 git config --global push.default simple
 git pull
 
-<<<<<<< HEAD
 sudo apt-get install curl mailutils ssmtp mosquitto-clients jq
 sudo apt-get install nfs-kernel-server nfs-common portmap
 sudo update-rc.d rpcbind enable
 sudo service rpcbind start
-
-=======
-sudo apt-get install curl mailutils ssmtp mosquitto-clients jq
->>>>>>> 97f2ffc3bac7ba039dc10ddc8fd45f62ccef0c81
 
 sudo cp ~/bin/etc_config/etc_mail.rc /etc/mail.rc
 
@@ -27,6 +22,19 @@ sudo modprobe ipv6
 
 if [ ! -f "/home/pi/dead.letter" ]; then
     touch /home/pi/dead.letter
+fi
+## ----------- Configure SSH
+if [ ! -d "$HOME/.ssh" ]; then
+    mkdir "$HOME/.ssh"
+fi
+chmod -R 700 "$HOME/.ssh"
+
+if [ ! -f "$HOME/.ssh/id_ecdsa" ]; then
+    ssh-keygen -t ecdsa
+fi
+
+if [ ! -f "$HOME/.ssh/id_rsa" ]; then
+    ssh-keygen -t rsa
 fi
 
 if [ ! -f "/home/pi/.ssh/config" ]; then
@@ -57,7 +65,3 @@ if [ -f "/home/pi/bin/crontab.`hostname`.bak" ]; then
     sudo crontab /home/pi/bin/crontab.`hostname`.bak
 fi
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 97f2ffc3bac7ba039dc10ddc8fd45f62ccef0c81
