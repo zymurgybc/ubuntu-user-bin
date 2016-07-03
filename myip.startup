@@ -22,9 +22,23 @@ source ${_dir}/myip.cronmail.config
 if [ ! -f "$MYIP_LOG" ]; then
     echo "startup... " >> $MYIP_LOG
 fi
+source ${_dir}/myip.datalog
+
 if [ ! -f "$MYIP_DAILY" ]; then
     echo "startup... " >> $MYIP_DAILY
 fi
+source ${_dir}/dyndns-update.cron
 
-(tail -n6 $MYIP_LOG; echo; echo; echo Now == `date` `${_base}/bin/myip` >> $MYIP_LOG; tail -n12 $MYIP_DAILY; echo; echo; df; echo; echo; uptime) | mail -s "`hostname` myip [startup]" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM
+(echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
+ echo "<html><head><title>$MYIP_SUBJECT</title>";
+ echo "<style type=\"text/css\">pre { font-size:10pt; }</style></head><body><pre>";
+ tail -n6 $MYIP_LOG; echo; echo;
+ echo Now == `date` `${_base}/bin/myip` >> $MYIP_LOG;
+ tail -n12 $MYIP_DAILY; echo; echo; df; echo; echo;
+ uptime;
+ echo "</pre></body></html>"
+) | mail -s "`hostname` myip [startup]" $MYIP_ADDRESS_TO \
+         -aFrom:$MYIP_ADDRESS_FROM \
+         -a "MIME-Version: 1.0" \
+         -a "Content-Type: text/html;"
 
