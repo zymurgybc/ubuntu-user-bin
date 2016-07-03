@@ -16,8 +16,13 @@ source ${_dir}/myip.cronmail.config
 # import config for dyndns-updates (gets the log)
 source ${_dir}/dyndns-update.config
 
+BOUNDARY="`hostname`_`date +\"%Y+%m+%d+%H+%M\"`/heatherington.ca"
+
 #set
-(tail -n6 $MYIP_LOG; echo; echo; 
+(echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
+ echo "<html><head><title>$MYIP_SUBJECT</title>"; 
+ echo "<style type=\"text/css\">pre { font-size:10pt; }</style></head><body><pre>";
+ tail -n6 $MYIP_LOG; echo; echo;
  tail -n4 $FREEDNS_LOG; echo; echo;
  if [ -f "/var/log/updatedhs" ]; then
     tail -n6 /var/log/updatedhs;
@@ -26,6 +31,10 @@ source ${_dir}/dyndns-update.config
  fi
 
  df -h; echo; echo;  \
- uptime) | mail -s "$MYIP_SUBJECT" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM
-
-
+ uptime;
+ echo "</pre></body></html>"
+) | mail \
+    -s "$MYIP_SUBJECT" $MYIP_ADDRESS_TO \
+    -a "From:$MYIP_ADDRESS_FROM" \
+    -a "MIME-Version: 1.0" \
+    -a "Content-Type: text/html;" 
