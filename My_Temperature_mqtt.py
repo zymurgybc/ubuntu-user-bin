@@ -63,10 +63,10 @@ else:
     bus = smbus.SMBus(0)
 
 # Example of sensor connected to Raspberry Pi pin 23
-GROVE_DHT11_SENSOR = 2
+GROVE_DHT11_SENSOR = 4
 
 # How long to wait (in seconds) between measurements.
-FREQUENCY_SECONDS      = 600
+FREQUENCY_SECONDS  = 600
 
 
 class MqttMessage:
@@ -111,7 +111,8 @@ def publish_dht11():
 	message_queue.put(MqttMessage(MQTT_TOPIC_TEMP, float(temp)))
         # occasional number are > 100 which is not viable
         if humidity < 10:
-            message_queue.put(MqttMessage(MQTT_TOPIC_HUMI, humidity*10.0))
+            message_queue.put(MqttMessage(MQTT_TOPIC_HUMI, float(humidity)*10.0))
+        logger.info(os.path.basename(__file__) + " --- temp " + str(temp) + " - humi " + str(humidity * 10))
 
     except ValueError as err:
         # we just don't publish bad readings
@@ -123,6 +124,7 @@ def publish_barometer():
         pressure_long = bmp.readPressure()
         pressure_float = float(pressure_long)/1000
         message_queue.put(MqttMessage(MQTT_TOPIC_BARO, pressure_float))
+        logger.info(os.path.basename(__file__) + " --- barometer " + str(pressure_float))
     except Exception as err:
         # we just don't publish bad readings
         #print(err.args)

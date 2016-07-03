@@ -3,6 +3,7 @@ change the /etc/hosts file so the hostname resolves
 copy the ssmtp configuration; be sure to edit the hostname listed in .conf
 copy mqtt_config.json  -- edit the client id
 
+configure stuff in /etc/logrotate.d/*
 
 ~/.profile
 ---------------------------------
