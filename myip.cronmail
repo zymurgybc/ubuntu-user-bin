@@ -21,10 +21,13 @@ source ${_dir}/dyndns-update.config
  echo "<style type=\"text/css\">pre { font-size:10pt; }</style></head><body><pre>";
  tail -n6 $MYIP_LOG; echo; echo;
  tail -n4 $FREEDNS_LOG; echo; echo;
+ if [ -f "/var/log/mqtt_client.log" ]; then
+    echo "<b>mqtt_client</b>"; echo;
+    tail -n6 /var/log/mqtt_client.log; echo; echo;
+ fi
  if [ -f "/var/log/updatedhs" ]; then
-    tail -n6 /var/log/updatedhs;
-    echo;
-    echo;
+    echo "<b>Updatedhs</b>"; echo;
+    tail -n6 /var/log/updatedhs; echo; echo;
  fi
 
  df -h; echo; echo;  \

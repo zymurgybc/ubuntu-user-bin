@@ -35,6 +35,15 @@ source ${_dir}/dyndns-update.cron
  tail -n6 $MYIP_LOG; echo; echo;
  echo Now == `date` `${_base}/bin/myip` >> $MYIP_LOG;
  tail -n12 $MYIP_DAILY; echo; echo; df; echo; echo;
+ if [ -f "/var/log/mqtt_client.log" ]; then
+    echo "<b>mqtt_client</b>"; echo;
+    tail -n6 /var/log/mqtt_client.log; echo; echo;
+ fi
+ if [ -f "/var/log/updatedhs" ]; then
+    echo "<b>Updatedhs</b>"; echo;
+    tail -n6 /var/log/updatedhs; echo; echo;
+ fi
+
  uptime;
  echo "</pre></body></html>"
 ) | mail -s "`hostname` myip [startup]" $MYIP_ADDRESS_TO \
