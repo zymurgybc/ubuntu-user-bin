@@ -61,3 +61,4 @@ if [ -f "/home/pi/bin/crontab.`hostname`.bak" ]; then
     sudo crontab /home/pi/bin/crontab.`hostname`.bak
 fi
 
+sudo -H pip install --upgrade pika

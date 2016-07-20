@@ -9,4 +9,9 @@ else
 fi
 
 pkill -f mqspeak
-nohup mqspeak &
+#if [ ! -f "${HOME}/bin/mqspeak.out" ]; then
+    touch ${HOME}/bin/mqspeak.out
+    chown theather.theather ${HOME}/bin/mqspeak.out
+    chmod 666 ${HOME}/bin/mqspeak.out
+#fi
+nohup /usr/bin/python3 /usr/local/bin/mqspeak 2>&1 >> ${HOME}/bin/mqspeak.out &
