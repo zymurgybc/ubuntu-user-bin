@@ -31,11 +31,12 @@ do
   #echo Output=${OUTPUT}
   if [ ! -f ${OUTPUT} ]; then
      echo `date +"%Y-%m-%d %T"` = new device ${addr} >> ${NMAP_TMP}
-     touch ${OUTPUT}
+     echo `date +"%Y-%m-%d %T"` = new device ${addr} >> ${OUTPUT}
   fi
   echo Seen `date +"%Y-%m-%d %T"` >> ${OUTPUT}
 
 done
+
 
 
 # http://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
@@ -49,14 +50,21 @@ do
 		-daily)
 		#let AGE="60*24"
         	let AGE="60*4"
-		find ${NMAP_DIR} -mmin +$AGE -type f -name "nmap_*_log" >> ${NMAP_TMP}
-		if [ -s "${NMAP_TMP}" ]
-		then
+		find ${NMAP_DIR} -type f -name "nmap_*_log" -mmin +$AGE >> ${NMAP_TMP}
+                find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7  > ${NMAP_TMP}_stale
+		if [ -s "${NMAP_TMP}" ]; then
 			#cat $NMAP_TMP
 			# Information for the output is unique hosts previously found
-			echo --------- >> $NMAP_TMP
-			sort /var/log/nmap/nmap.log | grep Host: | uniq >> $NMAP_TMP
-			mail -s "NMAP Check Hosts -Daily" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM  < $NMAP_TMP
+			echo --------- >> ${NMAP_TMP}
+			sort /var/log/nmap/nmap.log | grep Host: | uniq >> ${NMAP_TMP}
+
+			if [ -s "${NMAP_TMP}_stale" ]; then 
+				echo "--------- > Stale hosts (will delete)" >> ${NMAP_TMP}
+				cat ${NMAP_TMP}_stale >> ${NMAP_TMP}
+		                find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7 -delete
+			fi
+
+			mail -s "NMAP Check Hosts -Daily from `hostname`" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM  < ${NMAP_TMP}
 			#rm $NMAP_TMP
         	        mv ${NMAP_TMP} ${NMAP_DIR}/nmap-`date +"%Y-%m-%d_%H%M"`.txt
 		fi
@@ -64,3 +72,4 @@ do
 	esac
 	shift # past argument or value
 done
+
