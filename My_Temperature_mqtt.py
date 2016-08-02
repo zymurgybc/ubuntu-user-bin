@@ -63,10 +63,19 @@ else:
     bus = smbus.SMBus(0)
 
 # Example of sensor connected to Raspberry Pi pin 23
-GROVE_DHT11_SENSOR = 4
+GROVE_DHT_SENSOR_PORT = 4
+GROVE_DHT_SENSOR_TYPE = 0
 
 # How long to wait (in seconds) between measurements.
 FREQUENCY_SECONDS  = 600
+
+MQTT_CLIENTID = socket.gethostname() + "_DHT11_pub"
+
+MQTT_TOPIC_TEMP = "home/sensor/temperature/" + socket.gethostname()
+MQTT_TOPIC_HUMI = "home/sensor/humidity/"    + socket.gethostname()
+MQTT_TOPIC_BARO = "home/sensor/barometer/"   + socket.gethostname()
+FORMAT = '%(asctime)-15s %(message)s'
+LOG_FILENAME = config["mqtt_client_log"]
 
 
 class MqttMessage:
@@ -101,18 +110,22 @@ def on_log(mosq, obj, level, string):
 
 def publish_dht11():
     try:
-        [temp,humidity] = grovepi.dht(GROVE_DHT11_SENSOR,0)
+        [temp,humidity] = grovepi.dht(GROVE_DHT_SENSOR_PORT, GROVE_DHT_SENSOR_TYPE)
+        #logger.info(os.path.basename(__file__) + " --- temp " + str(temp) + " - humi " + str(float(humidity) * 10))
+        logger.info(os.path.basename(__file__) + " --- temp " + str(temp) + " - humi " + str(float(humidity)))
+
 	# Skip to the next reading if a valid measurement couldn't be taken.
         #This might happen if the CPU is under a lot of load and the sensor
         # can't be reliably read (timing is critical to read the sensor).
         if humidity is None or temp is None:
             raise ValueError('Sensor reading failed')
 
-	message_queue.put(MqttMessage(MQTT_TOPIC_TEMP, float(temp)))
         # occasional number are > 100 which is not viable
-        if humidity < 10:
-            message_queue.put(MqttMessage(MQTT_TOPIC_HUMI, float(humidity)*10.0))
-        logger.info(os.path.basename(__file__) + " --- temp " + str(temp) + " - humi " + str(humidity * 10))
+        #if humidity < 20: # and humidity > 0:
+        #    message_queue.put(MqttMessage(MQTT_TOPIC_HUMI, float(humidity)*10.0))
+        message_queue.put(MqttMessage(MQTT_TOPIC_HUMI, float(humidity)))
+
+	message_queue.put(MqttMessage(MQTT_TOPIC_TEMP, float(temp)))
 
     except ValueError as err:
         # we just don't publish bad readings
@@ -131,19 +144,13 @@ def publish_barometer():
         logger.warning(os.path.basename(__file__) + " - publish_barometer: %s " % err.args)
 
 def mqtt_publish():
-    publish_dht11()
-    publish_barometer()
-    return 1
+    try:
+        publish_barometer()
+        publish_dht11()
+    except Exception as err:
+        # handle filed sends with a note in the log
+        logger.warning(os.path.basname(__file__) + " - mqtt_publish call failed " + err.args)
 
-
-
-MQTT_CLIENTID = socket.gethostname() + "_DHT11_pub"
-
-MQTT_TOPIC_TEMP = "home/sensor/temperature/" + socket.gethostname()
-MQTT_TOPIC_HUMI = "home/sensor/humidity/"    + socket.gethostname()
-MQTT_TOPIC_BARO = "home/sensor/barometer/"   + socket.gethostname()
-FORMAT = '%(asctime)-15s %(message)s'
-LOG_FILENAME = config["mqtt_client_log"]
 
 logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG)
 logger = logging.getLogger('My_Temperature_mqtt')
