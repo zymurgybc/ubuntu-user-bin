@@ -1,4 +1,4 @@
-
+*.pyc
 *.config
 go
 mqtt_config.json
