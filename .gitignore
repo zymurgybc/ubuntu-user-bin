@@ -2,4 +2,4 @@
 *.config
 go
 mqtt_config.json
-
+nohup.out
