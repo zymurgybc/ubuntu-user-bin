@@ -61,5 +61,5 @@ if [ -f "/home/pi/bin/crontab.`hostname`.bak" ]; then
     sudo crontab /home/pi/bin/crontab.`hostname`.bak
 fi
 
-sudo -H /usr/bin/pip install --upgrade ephem pytz pika python-dateutil 
+sudo -H pip install --upgrade ephem pytz pika python-dateutil 
 
