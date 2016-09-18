@@ -9,11 +9,11 @@ echo ping result = `ping -c1 $ROUTER_IP` >> $TEST_LOG
 echo --------------------                >> $TEST_LOG
 lsusb                                    >> $TEST_LOG
 
-( ! ping -c1 $ROUTER_IP >/dev/null 2>&1 ) && service network restart >/dev/null 2>&1
+( ! ping -c1 $ROUTER_IP >/dev/null 2>&1 ) && service networking restart >/dev/null 2>&1
 
 sleep 15
 
 if [ -z "`ping -c1 $ROUTER_IP >/dev/null 2>&1`" ]; then
     logger Network Restart Type 2
-    service network restart >/dev/null 2>&1
+    service networking restart >/dev/null 2>&1
 fi
