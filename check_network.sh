@@ -30,5 +30,5 @@ ping -c4 $ROUTER_IP 2>&1 > /dev/null
 if [ $? != 0 ]; then
   echo -------------------- RESTART  >> $TEST_LOG
   #sudo /sbin/shutdown -r now
-  service networking restart 2>&1    >> $TEST_LOG
+  /usr/sbin/service networking restart 2>&1    >> $TEST_LOG
 fi
