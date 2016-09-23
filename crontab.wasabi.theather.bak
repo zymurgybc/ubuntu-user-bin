@@ -21,17 +21,6 @@
 # 
 # m h  dom mon dow   command
 
-4,19,34,49       * * * * /home/theather/bin/dyndns-update.cron
-21 6,18            * * * /home/theather/bin/myip.datalog
-15 7               * * 1 /home/theather/bin/myip.cronmail
-7,22,37,52       * * * * /home/theather/bin/check_network.sh
-5 4                * * * /home/theather/bin/letsencrypt-renew-nginx.sh
-2,17,32,47       * * * * /home/theather/bin/My_Status_mqtt.py 2>/dev/null >> /var/log/mqtt_client.log
+*/10 * * * * /home/theather/anaconda3/bin/mqspeak.start
 
-6,16,26,36,46,56 * * * * /home/theather/bin/check_hosts
-11 7,12,17         * * * /home/theather/bin/check_hosts -daily
-
-20               * * * * redis-cli bgrewriteaof > nul
-30               * * * * /home/theather/bin/dhsupdate.pl
-
-@reboot  bash "sleep 2m && /home/theather/bin/myip.datalog && /home/theather/bin/myip.startup"
+#@reboot "sleep 3 && nohup mqspeak &"
