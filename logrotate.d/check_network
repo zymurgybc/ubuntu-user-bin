@@ -1,9 +1,9 @@
 /var/log/check_network.log {
-  rotate 12
-  monthly
-  compress
-  missingok
-  notifempty
+        weekly
+        size=5M
+        rotate 4
+        compress
+        nodelaycompress
+        missingok
+        notifempty
 }
-
-
