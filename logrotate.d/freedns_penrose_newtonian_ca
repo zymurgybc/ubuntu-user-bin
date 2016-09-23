@@ -1,0 +1,9 @@
+/var/log/freedns_penrose_newtonian_ca.*.log {
+        monthly
+        size=10M
+        rotate 4
+        compress
+        nodelaycompress
+        missingok
+        notifempty
+}

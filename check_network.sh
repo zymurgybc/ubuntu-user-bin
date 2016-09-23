@@ -13,7 +13,7 @@ lsusb                                    >> $TEST_LOG
 
 sleep 15
 
-if [ -z "`ping -c1 $ROUTER_IP >/dev/null 2>&1`" ]; then
-    logger Network Restart Type 2
+if [ -z `ping -c1 $ROUTER_IP >/dev/null 2>&1` ]; then
+    logger Network Restart Type 2.1
     service network restart >/dev/null 2>&1
 fi
