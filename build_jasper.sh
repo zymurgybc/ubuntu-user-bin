@@ -1,14 +1,19 @@
-#!/usr/bin/bash
+#!/bin/bash
 # http://jasperproject.github.io/documentation/installation/
 
-sudo apt-get update
-sudo apt-get upgrade --yes
+LOGFILE=$HOME/bulid_jasper.log
+
+sudo apt-get update        2>&1 | tee    $LOGFILE
+sudo apt-get upgrade --yes 2>&1 | tee -a $LOGFILE
 # sudo apt-get install nano git-core python-dev python-pip subversion autoconf libtool automake gfortran g++ --yes
-sudo apt-get install bison libasound2-dev libportaudio-dev python-pyaudio --yes
+echo "sudo apt-get install bison libasound2-dev libportaudio-dev python-pyaudio --yes" 2>&1 | tee -a $LOGFILE
+sudo apt-get install bison libasound2-dev libportaudio-dev python-pyaudio --yes 2>&1 | tee -a $LOGFILE
 
 # Google  and Ivona Text-to-speech
-sudo apt-get install python-pymad --yes
-sudo pip install --upgrade gTTS pyvona
+echo "sudo apt-get install --upgrade python-pymad --yes"     2>&1 | tee -a $LOGFILE
+sudo apt-get install --upgrade python-pymad --yes            2>&1 | tee -a $LOGFILE
+echo "sudo pip3    install --upgrade gTTS gtts-token pyvona" 2>&1 | tee -a $LOGFILE
+sudo pip3    install --upgrade gTTS gtts-token pyvona        2>&1 | tee -a $LOGFILE
 
 # sudo nano /etc/modprobe.d/alsa-base.conf
 # - Change the following line:
@@ -29,53 +34,69 @@ sudo pip install --upgrade gTTS pyvona
 # export PATH
 
 
-cd && cd Source/gitgub.com
+echo "cd && cd source/github.com" 2>&1 | tee -a $LOGFILE
+cd && cd source/github.com
 if [ !-d "jasperproject" ]; then
+  echo "mkdir jasperproject" 2>&1 | tess -a $LOGFILE
   mkdir jasperproject
 fi
 
 cd jasperproject
 
 if [ !-d "jasper" ]; then
-  git clone https://github.com/jasperproject/jasper-client.git jasper
+  echo "git clone https://github.com/jasperproject/jasper-client.git jasper"  2>&1 | tee -a $LOGFILE
+  git clone https://github.com/jasperproject/jasper-client.git jasper  2>&1 | tee -a $LOGFILE
 fi
 
+echo "cd jasper" 2>&1 | tee -a $LOGFILE
 cd jasper
-git pull
+echo "in Jasper ... git pull"  2>&1 | tee -a $LOGFILE
+git pull  2>&1 | tee -a $LOGFILE
+
+echo 2>&1 | tee -a $LOGFILE
+echo "# if you get error installing Jasper, try this..." 2>&1 | tee -a $LOGFILE
+echo "# http://stackoverflow.com/questions/27341064/how-do-i-fix-importerror-cannot-import-name-incompleteread" 2>&1 | tee -a $LOGFILE
+echo "#sudo apt-get remove python-pip python3-pip" 2>&1 | tee -a $LOGFILE
+echo "#sudo python  -measy_install pip"  2>&1 | tee -a $LOGFILE
+echo "#sudo python3 -measy_install pip"  2>&1 | tee -a $LOGFILE
+echo 2>&1 | tee -a $LOGFILE
 
 # Jasper requires various Python libraries that we can install in one line with:
-sudo pip install --upgrade setuptools
-sudo pip install -r client/requirements.txt
+echo "sudo pip3 install --upgrade setuptools"       2>&1 | tee -a $LOGFILE
+sudo pip3 install --upgrade setuptools              2>&1 | tee -a $LOGFILE
+echo "sudo pip3 install -r client/requirements.txt" 2>&1 | tee -a $LOGFILE
+sudo pip3 install -r client/requirements.txt        2>&1 | tee -a $LOGFILE
 
 # Sometimes it might be neccessary to make jasper.py executable:
-chmod +x jasper.py
+echo "chmod +x jasper.py" 2>&1 | tee -a $LOGFILE
+chmod +x jasper.py        2>&1 | tee -a $LOGFILE
 
 # To be able to understand what you say, Jasper still needs a Speech-to-Text (STT) engine. 
 # Jasper also needs a Text-to-Speech (TTS) engine to answer to your commands.
 
-sudo apt-get install pocketsphinx
+echo "sudo apt-get install --upgrade pocketsphinx --yes" 2>&1 | tee -a $LOGFILE
+sudo apt-get install --upgrade pocketsphinx --yes        2>&1 | tee -a $LOGFILE
 
-cd ~/Source
+cd ~/source
 
 if [ !-d "code.sf.net" ]; then
-  mkdir code.sf.net
+  mkdir code.sf.net 2>&1 | tee -a $LOGFILE
 fi
 
 cd code.sf.net
 
 if [ !-d "cmusphinx" ]; then
-  mkdir cmusphinx
+  mkdir cmusphinx 2>&1 | tee -a $LOGFILE
 fi
 
 cd cmusphinx
 
-
 if [ !-d "cmuclmtk" ]; then
-  svn co https://svn.code.sf.net/p/cmusphinx/code/trunk/cmuclmtk/
+  svn co https://svn.code.sf.net/p/cmusphinx/code/trunk/cmuclmtk/ 2>&1 | tee -a $LOGFILE
 fi
 
 cd cmuclmtk/
-./autogen.sh && make && sudo make install
+./autogen.sh && make && sudo make install 2>&1 | tee -a $LOGFILE
 cd ..
 
 # On Raspian, you can install these from the experimental repository:
