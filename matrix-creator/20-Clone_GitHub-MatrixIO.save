@@ -1,0 +1,153 @@
+#!/bin/bash
+
+MATRIX_IO=~/source/github.com/matrix.io
+
+if [ !-d "$MATRIX_IO" ]; then
+    mkdir -p "$MATRIX_IO"
+fi
+
+cd "$MATRIX_IO"
+
+if [ !-d "face-analytics" ]; then 
+   git clone https://github.com/matrix.io/face-analytics.git
+fi
+
+if [ !-d "malos-eye" ]; then 
+   git clone https://github.com/matrix.io/malos-eye
+fi
+
+if [ !-d "matrix-app=config-helper" ]; then 
+   git clone https://github.com/matrix.io/matrix-app-config-helper
+fi
+
+if [ !-d "matrix-cli" ]; then 
+   git clone https://github.com/matrix.io/matrix-cli
+fi
+
+if [ !-d "face-continuity" ]; then 
+   git clone https://github.com/matrix.io/matrix-continuity
+fi
+
+if [ !-d "matrix-creator-alexa-voice-demo" ]; then 
+   git clone https://github.com/matrix.io/matrix-creator-alexa-voice-demo
+fi
+
+if [ !-d "matrix-creator-alexa-voice-services" ]; then 
+   git clone https://github.com/matrix.io/matrix-creator-alexa-voice-services
+fi
+
+if [ !-d "matrix-creator-documentation" ]; then 
+   git clone https://github.com/matrix.io/matrix-creator-documentation
+fi
+
+if [ !-d "matrix-creator-fpga" ]; then 
+   git clone https://github.com/matrix.io/matrix-creator-fpga
+fi
+
+if [ !-d "matrix-creator-hal" ]; then 
+   git clone https://github.com/matrix.io/matrix-creator-hal
+fi
+
+if [ !-d "matrix-creator-init" ]; then 
+   git clone https://github.com/matrix.io/matrix-creator-init
+fi
+
+if [ !-d "matrix-creator-malos" ]; then 
+   git clone https://github.com/matrix.io/matrix-creator-malos
+fi
+
+if [ !-d "matrix-creator-mcu" ]; then 
+   git clone https://github.com/matrix.io/matrix-creator-mcu
+fi
+
+if [ !-d "matrix-creator-nfx-unstable-preview" ]; then 
+   git clone https://github.com/matrix.io/matrix-creator-nfc-unstable-preview
+fi
+
+if [ !-d "matrix-creator-openocd" ]; then 
+   git clone https://github.com/matrix.io/matrix-creator-openocd
+fi
+
+if [ !-d "matrix-creator-quickstart" ]; then 
+   git clone https://github.com/matrix.io/matrix-creator-quickstart
+fi
+
+if [ !-d "matrix-creator-uvdemo" ]; then 
+   git clone https://github.com/matrix.io/matrix-creator-uv-demo
+fi
+
+if [ !-d "matrix-cv" ]; then 
+   git clone https://github.com/matrix.io/matrix-cv
+fi
+
+if [ !-d "matrix-documentation" ]; then 
+   git clone https://github.com/matrix.io/matrix-documentation
+fi
+
+if [ !-d "matrix-eventfilter" ]; then 
+   git clone https://github.com/matrix.io/matrix-eventfilter
+fi
+
+if [ !-d "matrix-firebase" ]; then 
+   git clone https://github.com/matrix.io/matrix-firebase
+fi
+
+if [ !-d "matrix-gesture-cpp-sdk" ]; then 
+   git clone https://github.com/matrix.io/matrix-gesture-cpp-sdk
+fi
+
+if [ !-d "matrix-gesture-node-sdk" ]; then 
+   git clone https://github.com/matrix.io/matrix-gesture-node-sdk
+fi
+
+if [ !-d "matrix-gesture-python-sdk" ]; then 
+   git clone https://github.com/matrix.io/matrix-gesture-python-sdk
+fi
+
+if [ !-d "matrix-ml" ]; then 
+   git clone https://github.com/matrix.io/matrix-ml
+fi
+
+if [ !-d "matrix-node-sdk" ]; then 
+   git clone https://github.com/matrix.io/matrix-node-sdk
+fi
+
+if [ !-d "matrix-os" ]; then 
+   git clone https://github.com/matrix.io/matrix-os
+fi
+
+if [ !-d "matrix-sdk" ]; then 
+   git clone https://github.com/matrix.io/matrix-sdk
+fi
+
+if [ !-d "matrix-sensor-template" ]; then 
+   git clone https://github.com/matrix.io/matrix-sensor-template
+fi
+
+if [ !-d "matrix-test-altitude=sensor" ]; then 
+   git clone https://github.com/matrix.io/matrix-test-altitude-sensor
+fi
+
+if [ !-d "matrix-test-monitor-sensor" ]; then 
+   git clone https://github.com/matrix.io/matrix-test-monitor-sensor
+fi
+
+if [ !-d "matrix-test-t" ]; then 
+   git clone https://github.com/matrix.io/matrix-test-temperature-sensor
+fi
+
+if [ !-d "matrix-creator-alexa-voice-services" ]; then 
+   git clone https://github.com/matrix.io/nedb
+fi
+
+if [ !-d "matrix-creator-alexa-voice-services" ]; then 
+   git clone https://github.com/matrix.io/node-yaml-localize
+fi
+
+if [ !-d "matrix-creator-alexa-voice-services" ]; then 
+   git clone https://github.com/matrix.io/protocol-buffers
+fi
+
+if [ !-d "matrix-creator-alexa-voice-services" ]; then 
+   git clone https://github.com/matrix.io/xc3sprog
+fi

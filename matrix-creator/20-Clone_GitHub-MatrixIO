@@ -1,0 +1,155 @@
+#!/bin/bash
+
+MATRIX_IO_DIR=~/source/github.com/matrix-io
+MATRIX_IO_REPO=https://github.com/matrix-io
+
+if [ ! -d "$MATRIX_IO_DIR" ]; then
+   mkdir -p "$MATRIX_IO_DIR"
+fi
+
+cd "$MATRIX_IO_DIR"
+
+if [ ! -d "face-analytics" ]; then
+   git clone $MATRIX_IO_REPO/face-analytics.git
+fi
+
+if [ ! -d "malos-eye" ]; then
+   git clone $MATRIX_IO_REPO/malos-eye
+fi
+
+if [ ! -d "matrix-app-config-helper" ]; then
+   git clone $MATRIX_IO_REPO/matrix-app-config-helper
+fi
+
+if [ ! -d "matrix-cli" ]; then
+   git clone $MATRIX_IO_REPO/matrix-cli
+fi
+
+if [ ! -d "matrix-continuity" ]; then
+   git clone $MATRIX_IO_REPO/matrix-continuity
+fi
+
+if [ ! -d "matrix-creator-alexa-voice-demo" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-alexa-voice-demo
+fi
+
+if [ ! -d "matrix-creator-alexa-voice-services" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-alexa-voice-services
+fi
+
+if [ ! -d "matrix-creator-documentation" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-documentation
+fi
+
+if [ ! -d "matrix-creator-fpga" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-fpga
+fi
+
+if [ ! -d "matrix-creator-hal" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-hal
+fi
+
+if [ ! -d "matrix-creator-init" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-init
+fi
+
+if [ ! -d "matrix-creator-malos" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-malos
+fi
+
+if [ ! -d "matrix-creator-mcu" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-mcu
+fi
+
+if [ ! -d "matrix-creator-nfc-unstable-preview" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-nfc-unstable-preview
+fi
+
+if [ ! -d "matrix-creator-openocd" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-openocd
+fi
+
+if [ ! -d "matrix-creator-quickstart" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-quickstart
+fi
+
+if [ ! -d "matrix-creator-uv-demo" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-uv-demo
+fi
+
+if [ ! -d "matrix-cv" ]; then
+   git clone $MATRIX_IO_REPO/matrix-cv
+fi
+
+if [ ! -d "matrix-documentation" ]; then
+   git clone $MATRIX_IO_REPO/matrix-documentation
+fi
+
+if [ ! -d "matrix-eventfilter" ]; then
+   git clone $MATRIX_IO_REPO/matrix-eventfilter
+fi
+
+if [ ! -d "matrix-firebase" ]; then
+   git clone $MATRIX_IO_REPO/matrix-firebase
+fi
+
+if [ ! -d "matrix-gesture-cpp-sdk" ]; then
+   git clone $MATRIX_IO_REPO/matrix-gesture-cpp-sdk
+fi
+
+if [ ! -d "matrix-gesture-node-sdk" ]; then
+   git clone $MATRIX_IO_REPO/matrix-gesture-node-sdk
+fi
+
+if [ ! -d "matrix-gesture-python-sdk" ]; then
+   git clone $MATRIX_IO_REPO/matrix-gesture-python-sdk
+fi
+
+if [ ! -d "matrix-ml" ]; then
+   git clone $MATRIX_IO_REPO/matrix-ml
+fi
+
+if [ ! -d "matrix-node-sdk" ]; then
+   git clone $MATRIX_IO_REPO/matrix-node-sdk
+fi
+
+if [ ! -d "matrix-os" ]; then
+   git clone $MATRIX_IO_REPO/matrix-os
+fi
+
+if [ ! -d "matrix-sdk" ]; then
+   git clone $MATRIX_IO_REPO/matrix-sdk
+fi
+
+if [ ! -d "matrix-sensor-template" ]; then
+   git clone $MATRIX_IO_REPO/matrix-sensor-template
+fi
+
+if [ ! -d "matrix-test-altitude-sensor" ]; then
+   git clone $MATRIX_IO_REPO/matrix-test-altitude-sensor
+fi
+
+if [ ! -d "matrix-test-monitor-sensor" ]; then
+   git clone $MATRIX_IO_REPO/matrix-test-monitor-sensor
+fi
+
+if [ ! -d "matrix-test-temperature-sensor" ]; then
+   git clone $MATRIX_IO_REPO/matrix-test-temperature-sensor
+fi
+
+if [ ! -d "nedb" ]; then
+   git clone $MATRIX_IO_REPO/nedb
+fi
+
+if [ ! -d "node-yaml-localize" ]; then
+   git clone $MATRIX_IO_REPO/node-yaml-localize
+fi
+
+if [ ! -d "protocol-buffers" ]; then
+   git clone $MATRIX_IO_REPO/protocol-buffers
+fi
+
+if [ ! -d "xc3sprog" ]; then
+   git clone $MATRIX_IO_REPO/xc3sprog
+fi
+
