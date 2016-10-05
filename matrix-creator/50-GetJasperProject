@@ -31,7 +31,9 @@ sudo apt-get install --upgrade pocketsphinx --yes        2>&1 | tee -a $LOGFILE
 cd ~/source
 
 echo "========================= sphinxbase-0.8 " | tee -a $LOGFILE
-wget http://downloads.sourceforge.net/project/cmusphinx/sphinxbase/0.8/sphinxbase-0.8.tar.gz
+if [ ! -f "sphinxbase-0.8.tar.gz" ]; then
+    wget http://downloads.sourceforge.net/project/cmusphinx/sphinxbase/0.8/sphinxbase-0.8.tar.gz
+fi
 
 tar xf sphinxbase-0.8.tar.gz  | tee -a $LOGFILE
 cd ~/source/sphinxbase-0.8
@@ -40,7 +42,10 @@ cd ~/source/sphinxbase-0.8
 cd ~/source
 
 echo "========================= pocketsphinx-0.8 " | tee -a $LOGFILE
-wget http://downloads.sourceforge.net/project/cmusphinx/pocketsphinx/0.8/pocketsphinx-0.8.tar.gz
+if [ ! -f "pocketsphinx-0.8.tar.gz" ]; then
+    wget http://downloads.sourceforge.net/project/cmusphinx/pocketsphinx/0.8/pocketsphinx-0.8.tar.gz
+fi
+
 tar xf pocketsphinx-0.8.tar.gz | tee -a $LOGFILE
 cd ~/source/pocketsphinx-0.8/
 ./configure && make && sudo make install
@@ -48,7 +53,10 @@ cd ~/source/pocketsphinx-0.8/
 cd ~/source
 
 echo "========================= openfst-1.3.4 " | tee -a $LOGFILE
-wget http://distfiles.macports.org/openfst/openfst-1.3.4.tar.gz
+if [ ! -f "openfst-1.3.4.tar.gz" ]; then
+    wget http://distfiles.macports.org/openfst/openfst-1.3.4.tar.gz
+fi
+
 tar xf openfst-1.3.4.tar.gz | tee -a $LOGFILE
 cd openfst-1.3.4/
 sudo ./configure --enable-compact-fsts --enable-const-fsts --enable-far --enable-lookahead-fsts --enable-pdt
@@ -57,7 +65,10 @@ sudo make install
 cd ~/source
 
 echo "========================= is2013 " | tee -a $LOGFILE
-wget https://phonetisaurus.googlecode.com/files/is2013-conversion.tgz
+if [ ! -f "is2013-conversion.tgz" ]; then
+    wget https://phonetisaurus.googlecode.com/files/is2013-conversion.tgz
+fi
+
 tar xf is2013-conversion.tgz | tee -a $LOGFILE
 cd is2013-conversion/phonetisaurus/src/
 make  | tee -a $LOGFILE
@@ -65,7 +76,10 @@ make  | tee -a $LOGFILE
 cd ~/source
 
 echo "========================= m2m-aligner-1.2 " | tee -a $LOGFILE
-#wget https://m2m-aligner.googlecode.com/files/m2m-aligner-1.2.tar.gz
+#if [ ! -f "m2m-aligner-1.2.tar.gz" ]; then
+#    wget https://m2m-aligner.googlecode.com/files/m2m-aligner-1.2.tar.gz
+#fi
+#
 #tar xf m2m-aligner-1.2.tar.gz | tee -a $LOGFILE
 #
 #cd m2m-aligner-1.2
@@ -106,7 +120,10 @@ fi
 
 cd mitlm
 
-#wget https://mitlm.googlecode.com/files/mitlm-0.4.1.tar.gz
+#if [ ! -f "mitlm-0.4.1.tar.gz" ]; then
+#    wget https://mitlm.googlecode.com/files/mitlm-0.4.1.tar.gz
+#fi
+#
 #tar xf mitlm-0.4.1.tar.gz | tee -a $LOGFILE
 #
 #cd mitlm-0.4.1
@@ -116,7 +133,10 @@ cd mitlm
 cd ~/source
 
 echo "========================= go14b2b " | tee -a $LOGFILE
-wget https://www.dropbox.com/s/kfht75czdwucni1/g014b2b.tgz
+if [ ! -f "g014b2b.tgz" ]; then
+    wget https://www.dropbox.com/s/kfht75czdwucni1/g014b2b.tgz
+fi
+
 tar xf g014b2b.tgz | tee -a $LOGFILE
 cd g014b2b
 ./compile-fst.sh | tee -a $LOGFILE
@@ -162,8 +182,6 @@ if ! grep -q "$DEB_EXPERIMENT_REPO" /etc/apt/sources.list.d/experimental.list ; 
 
    sudo apt-get update
 fi
-
-#sudo apt-get -t experimental install phonetisaurus m2m-aligner mitlm libfst-tools 2>&1 | tee -a $LOGFILE
 
 echo "cd && cd \"$HOME/source/github.com\"" 2>&1 | tee -a $LOGFILE
 cd && cd "$HOME/source/github.com"
