@@ -1,286 +1,0 @@
-Reading package lists...
-Building dependency tree...
-Reading state information...
-Package 'nodered' is not installed, so not removed
-The following packages were automatically installed and are no longer required:
-  gyp libc-ares-dev libjs-node-uuid libjs-underscore libssl-dev libssl-doc
-  libv8-3.14-dev libv8-3.14.5
-Use 'apt-get autoremove' to remove them.
-0 upgraded, 0 newly installed, 0 to remove and 4 not upgraded.
-Reading package lists...
-Building dependency tree...
-Reading state information...
-Package 'nodejs-legacy' is not installed, so not removed
-The following packages were automatically installed and are no longer required:
-  gyp libc-ares-dev libjs-node-uuid libjs-underscore libssl-dev libssl-doc
-  libv8-3.14-dev libv8-3.14.5 rlwrap
-Use 'apt-get autoremove' to remove them.
-The following packages will be REMOVED:
-  nodejs
-0 upgraded, 0 newly installed, 1 to remove and 4 not upgraded.
-After this operation, 38.6 MB disk space will be freed.
-Do you want to continue? [Y/n] (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 124181 files and directories currently installed.)
-Removing nodejs (5.12.0-1nodesource1~jessie1) ...
-Processing triggers for man-db (2.7.0.2-5) ...
-Reading package lists...
-Building dependency tree...
-Reading state information...
-Package 'npm' is not installed, so not removed
-The following packages were automatically installed and are no longer required:
-  gyp libc-ares-dev libjs-node-uuid libjs-underscore libssl-dev libssl-doc
-  libv8-3.14-dev libv8-3.14.5 rlwrap
-Use 'apt-get autoremove' to remove them.
-0 upgraded, 0 newly installed, 0 to remove and 4 not upgraded.
-
-## Installing the NodeSource Node.js v4.x LTS Argon repo...
-
-
-## Populating apt-get cache...
-
-+ apt-get update
-Ign http://packages.matrix.one ./ InRelease
-Hit https://deb.nodesource.com jessie InRelease
-Ign http://packages.matrix.one ./ Release.gpg
-Get:1 http://ftp.debian.org experimental InRelease [107 kB]
-Hit http://archive.raspberrypi.org jessie InRelease
-Hit http://mirrordirector.raspbian.org jessie InRelease
-Ign http://packages.matrix.one ./ Release
-Hit https://deb.nodesource.com jessie/main Sources
-Hit http://archive.raspbian.org jessie InRelease
-Hit https://deb.nodesource.com jessie/main armhf Packages
-Get:2 https://deb.nodesource.com jessie/main Translation-en_CA [162 B]
-Get:3 https://deb.nodesource.com jessie/main Translation-en [162 B]
-Get:4 https://deb.nodesource.com jessie/main Translation-en_CA [162 B]
-Hit http://archive.raspberrypi.org jessie/main armhf Packages
-Get:5 https://deb.nodesource.com jessie/main Translation-en [162 B]
-Get:6 https://deb.nodesource.com jessie/main Translation-en_CA [162 B]
-Get:7 https://deb.nodesource.com jessie/main Translation-en [162 B]
-Get:8 https://deb.nodesource.com jessie/main Translation-en_CA [162 B]
-Get:9 https://deb.nodesource.com jessie/main Translation-en [162 B]
-Hit http://archive.raspberrypi.org jessie/ui armhf Packages
-Hit http://mirrordirector.raspbian.org jessie/main armhf Packages
-Get:10 https://deb.nodesource.com jessie/main Translation-en_CA [162 B]
-Ign https://deb.nodesource.com jessie/main Translation-en_CA
-Get:11 https://deb.nodesource.com jessie/main Translation-en [162 B]
-Ign https://deb.nodesource.com jessie/main Translation-en
-Hit http://archive.raspbian.org jessie/main Sources
-Ign http://ftp.debian.org experimental InRelease
-Hit http://mirrordirector.raspbian.org jessie/contrib armhf Packages
-Hit http://mirrordirector.raspbian.org jessie/non-free armhf Packages
-Hit http://archive.raspbian.org jessie/contrib Sources
-Hit http://mirrordirector.raspbian.org jessie/rpi armhf Packages
-Hit http://archive.raspbian.org jessie/non-free Sources
-Hit http://archive.raspbian.org jessie/rpi Sources
-Hit http://packages.matrix.one ./ Packages
-Hit http://ftp.debian.org experimental/contrib Translation-en
-Hit http://ftp.debian.org experimental/main Translation-en
-Ign http://packages.matrix.one ./ Translation-en_CA
-Ign http://packages.matrix.one ./ Translation-en
-Hit http://ftp.debian.org experimental/non-free Translation-en
-Hit http://ftp.debian.org experimental/main armhf Packages
-Hit http://ftp.debian.org experimental/contrib armhf Packages
-Hit http://ftp.debian.org experimental/non-free armhf Packages
-Ign http://archive.raspberrypi.org jessie/main Translation-en_CA
-Ign http://archive.raspberrypi.org jessie/main Translation-en
-Ign http://archive.raspberrypi.org jessie/ui Translation-en_CA
-Ign http://archive.raspberrypi.org jessie/ui Translation-en
-Ign http://ftp.debian.org experimental/contrib Translation-en_CA
-Ign http://ftp.debian.org experimental/main Translation-en_CA
-Ign http://ftp.debian.org experimental/non-free Translation-en_CA
-Ign http://mirrordirector.raspbian.org jessie/contrib Translation-en_CA
-Ign http://mirrordirector.raspbian.org jessie/contrib Translation-en
-Ign http://mirrordirector.raspbian.org jessie/main Translation-en_CA
-Ign http://mirrordirector.raspbian.org jessie/main Translation-en
-Ign http://mirrordirector.raspbian.org jessie/non-free Translation-en_CA
-Ign http://mirrordirector.raspbian.org jessie/non-free Translation-en
-Ign http://mirrordirector.raspbian.org jessie/rpi Translation-en_CA
-Ign http://mirrordirector.raspbian.org jessie/rpi Translation-en
-Fetched 107 kB in 27s (3,959 B/s)
-Reading package lists...
-W: GPG error: http://ftp.debian.org experimental InRelease: The following signatures couldn't be verified because the public key is not available: NO_PUBKEY 8B48AD6246925553 NO_PUBKEY 7638D0442B90D010
-
-## Confirming "jessie" is supported...
-
-+ curl -sLf -o /dev/null 'https://deb.nodesource.com/node_4.x/dists/jessie/Release'
-
-## Adding the NodeSource signing key to your keyring...
-
-+ curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
-OK
-
-## Creating apt sources list file for the NodeSource Node.js v4.x LTS Argon repo...
-
-+ echo 'deb https://deb.nodesource.com/node_4.x jessie main' > /etc/apt/sources.list.d/nodesource.list
-+ echo 'deb-src https://deb.nodesource.com/node_4.x jessie main' >> /etc/apt/sources.list.d/nodesource.list
-
-## Running `apt-get update` for you...
-
-+ apt-get update
-Ign http://packages.matrix.one ./ InRelease
-Get:1 https://deb.nodesource.com jessie InRelease [3,914 B]
-Hit http://mirrordirector.raspbian.org jessie InRelease
-Hit http://archive.raspbian.org jessie InRelease
-Ign http://packages.matrix.one ./ Release.gpg
-Get:2 http://ftp.debian.org experimental InRelease [107 kB]
-Hit http://archive.raspberrypi.org jessie InRelease
-Ign http://packages.matrix.one ./ Release
-Get:3 https://deb.nodesource.com jessie/main Sources [763 B]
-Get:4 https://deb.nodesource.com jessie/main armhf Packages [967 B]
-Get:5 https://deb.nodesource.com jessie/main Translation-en_CA [162 B]
-Get:6 https://deb.nodesource.com jessie/main Translation-en [162 B]
-Get:7 https://deb.nodesource.com jessie/main Translation-en_CA [162 B]
-Hit http://mirrordirector.raspbian.org jessie/main armhf Packages
-Hit http://archive.raspbian.org jessie/main Sources
-Hit http://mirrordirector.raspbian.org jessie/contrib armhf Packages
-Hit http://archive.raspberrypi.org jessie/main armhf Packages
-Hit http://archive.raspbian.org jessie/contrib Sources
-Hit http://archive.raspberrypi.org jessie/ui armhf Packages
-Ign http://ftp.debian.org experimental InRelease
-Hit http://mirrordirector.raspbian.org jessie/non-free armhf Packages
-Hit http://archive.raspbian.org jessie/non-free Sources
-Get:8 https://deb.nodesource.com jessie/main Translation-en [162 B]
-Get:9 https://deb.nodesource.com jessie/main Translation-en_CA [162 B]
-Get:10 https://deb.nodesource.com jessie/main Translation-en [162 B]
-Get:11 https://deb.nodesource.com jessie/main Translation-en_CA [162 B]
-Get:12 https://deb.nodesource.com jessie/main Translation-en [162 B]
-Hit http://archive.raspbian.org jessie/rpi Sources
-Hit http://mirrordirector.raspbian.org jessie/rpi armhf Packages
-Get:13 https://deb.nodesource.com jessie/main Translation-en_CA [162 B]
-Ign https://deb.nodesource.com jessie/main Translation-en_CA
-Get:14 https://deb.nodesource.com jessie/main Translation-en [162 B]
-Ign https://deb.nodesource.com jessie/main Translation-en
-Hit http://packages.matrix.one ./ Packages
-Hit http://ftp.debian.org experimental/contrib Translation-en
-Ign http://packages.matrix.one ./ Translation-en_CA
-Ign http://packages.matrix.one ./ Translation-en
-Hit http://ftp.debian.org experimental/main Translation-en
-Hit http://ftp.debian.org experimental/non-free Translation-en
-Hit http://ftp.debian.org experimental/main armhf Packages
-Hit http://ftp.debian.org experimental/contrib armhf Packages
-Hit http://ftp.debian.org experimental/non-free armhf Packages
-Ign http://archive.raspberrypi.org jessie/main Translation-en_CA
-Ign http://archive.raspberrypi.org jessie/main Translation-en
-Ign http://archive.raspberrypi.org jessie/ui Translation-en_CA
-Ign http://archive.raspberrypi.org jessie/ui Translation-en
-Ign http://ftp.debian.org experimental/contrib Translation-en_CA
-Ign http://ftp.debian.org experimental/main Translation-en_CA
-Ign http://ftp.debian.org experimental/non-free Translation-en_CA
-Ign http://mirrordirector.raspbian.org jessie/contrib Translation-en_CA
-Ign http://mirrordirector.raspbian.org jessie/contrib Translation-en
-Ign http://mirrordirector.raspbian.org jessie/main Translation-en_CA
-Ign http://mirrordirector.raspbian.org jessie/main Translation-en
-Ign http://mirrordirector.raspbian.org jessie/non-free Translation-en_CA
-Ign http://mirrordirector.raspbian.org jessie/non-free Translation-en
-Ign http://mirrordirector.raspbian.org jessie/rpi Translation-en_CA
-Ign http://mirrordirector.raspbian.org jessie/rpi Translation-en
-Fetched 113 kB in 24s (4,607 B/s)
-Reading package lists...
-W: GPG error: http://ftp.debian.org experimental InRelease: The following signatures couldn't be verified because the public key is not available: NO_PUBKEY 8B48AD6246925553 NO_PUBKEY 7638D0442B90D010
-
-## Run `apt-get install nodejs` (as root) to install Node.js v4.x LTS Argon and npm
-
-Reading package lists...
-Building dependency tree...
-Reading state information...
-build-essential is already the newest version.
-python-rpi.gpio is already the newest version.
-The following packages were automatically installed and are no longer required:
-  gyp libc-ares-dev libjs-node-uuid libjs-underscore libssl-dev libssl-doc
-  libv8-3.14-dev libv8-3.14.5
-Use 'apt-get autoremove' to remove them.
-The following NEW packages will be installed:
-  nodejs
-0 upgraded, 1 newly installed, 0 to remove and 4 not upgraded.
-Need to get 7,898 kB of archives.
-After this operation, 38.1 MB of additional disk space will be used.
-Get:1 https://deb.nodesource.com/node_4.x/ jessie/main nodejs armhf 4.6.0-1nodesource1~jessie1 [7,898 kB]
-Fetched 7,898 kB in 6s (1,298 kB/s)
-Selecting previously unselected package nodejs.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 120778 files and directories currently installed.)
-Preparing to unpack .../nodejs_4.6.0-1nodesource1~jessie1_armhf.deb ...
-Detected old npm client, removing...
-Unpacking nodejs (4.6.0-1nodesource1~jessie1) ...
-Processing triggers for man-db (2.7.0.2-5) ...
-Setting up nodejs (4.6.0-1nodesource1~jessie1) ...
-npm WARN deprecated lodash.assign@4.0.1: This package is deprecated. Use Object.assign.
-npm WARN deprecated tough-cookie@2.2.2: ReDoS vulnerability parsing Set-Cookie https://nodesecurity.io/advisories/130
-
-> bcrypt@0.8.7 install /usr/lib/node_modules/node-red/node_modules/bcrypt
-> node-gyp rebuild
-
-make: Entering directory '/usr/lib/node_modules/node-red/node_modules/bcrypt/build'
-  CXX(target) Release/obj.target/bcrypt_lib/src/blowfish.o
-  CXX(target) Release/obj.target/bcrypt_lib/src/bcrypt.o
-  CXX(target) Release/obj.target/bcrypt_lib/src/bcrypt_node.o
-  SOLINK_MODULE(target) Release/obj.target/bcrypt_lib.node
-  COPY Release/bcrypt_lib.node
-make: Leaving directory '/usr/lib/node_modules/node-red/node_modules/bcrypt/build'
-npm WARN deprecated i18next-client@1.10.3: you can use npm install i18next from version 2.0.0
-
-> utf-8-validate@1.2.1 install /usr/lib/node_modules/node-red/node_modules/ws/node_modules/utf-8-validate
-> node-gyp rebuild
-
-make: Entering directory '/usr/lib/node_modules/node-red/node_modules/ws/node_modules/utf-8-validate/build'
-  CXX(target) Release/obj.target/validation/src/validation.o
-  SOLINK_MODULE(target) Release/obj.target/validation.node
-  COPY Release/validation.node
-make: Leaving directory '/usr/lib/node_modules/node-red/node_modules/ws/node_modules/utf-8-validate/build'
-
-> bufferutil@1.2.1 install /usr/lib/node_modules/node-red/node_modules/ws/node_modules/bufferutil
-> node-gyp rebuild
-
-make: Entering directory '/usr/lib/node_modules/node-red/node_modules/ws/node_modules/bufferutil/build'
-  CXX(target) Release/obj.target/bufferutil/src/bufferutil.o
-  SOLINK_MODULE(target) Release/obj.target/bufferutil.node
-  COPY Release/bufferutil.node
-make: Leaving directory '/usr/lib/node_modules/node-red/node_modules/ws/node_modules/bufferutil/build'
-
-> serialport@2.1.2 install /usr/lib/node_modules/node-red/node_modules/node-red-node-serialport/node_modules/serialport
-> node-pre-gyp install --fallback-to-build
-
-make: Entering directory '/usr/lib/node_modules/node-red/node_modules/node-red-node-serialport/node_modules/serialport/build'
-  CXX(target) Release/obj.target/serialport/src/serialport.o
-  CXX(target) Release/obj.target/serialport/src/serialport_unix.o
-  CXX(target) Release/obj.target/serialport/src/serialport_poller.o
-  SOLINK_MODULE(target) Release/obj.target/serialport.node
-  COPY Release/serialport.node
-make: Leaving directory '/usr/lib/node_modules/node-red/node_modules/node-red-node-serialport/node_modules/serialport/build'
-/usr/bin/node-red -> /usr/lib/node_modules/node-red/red.js
-/usr/bin/node-red-pi -> /usr/lib/node_modules/node-red/bin/node-red-pi
-node-red@0.14.6 /usr/lib/node_modules/node-red
-├── is-utf8@0.2.1
-├── on-headers@1.0.1
-├── media-typer@0.3.0
-├── basic-auth@1.0.4
-├── semver@5.3.0
-├── node-red-node-rbe@0.1.5
-├── clone@1.0.2
-├── mustache@2.2.1
-├── passport-http-bearer@1.0.1 (passport-strategy@1.0.0)
-├── cookie-parser@1.4.3 (cookie-signature@1.0.6, cookie@0.3.1)
-├── passport-oauth2-client-password@0.1.2 (passport-strategy@1.0.0)
-├── passport@0.3.2 (passport-strategy@1.0.0, pause@0.0.1)
-├── nopt@3.0.6 (abbrev@1.0.9)
-├── bcryptjs@2.3.0
-├── fs.notify@0.0.4 (async@0.1.22, retry@0.6.1)
-├── cors@2.7.1 (vary@1.1.0)
-├── raw-body@2.1.7 (unpipe@1.0.0, bytes@2.4.0, iconv-lite@0.4.13)
-├── follow-redirects@0.2.0 (stream-consume@0.1.0, debug@2.2.0)
-├── sentiment@1.0.6 (lodash.assign@4.0.1)
-├── oauth2orize@1.4.0 (uid2@0.0.3, utils-merge@1.0.0, debug@2.2.0)
-├── when@3.7.7
-├── express@4.14.0 (cookie-signature@1.0.6, content-type@1.0.2, cookie@0.3.1, escape-html@1.0.3, array-flatten@1.1.1, utils-merge@1.0.0, methods@1.1.2, merge-descriptors@1.0.1, encodeurl@1.0.1, vary@1.1.0, fresh@0.3.0, content-disposition@0.5.1, etag@1.7.0, range-parser@1.2.0, parseurl@1.3.1, path-to-regexp@0.1.7, serve-static@1.11.1, depd@1.1.0, qs@6.2.0, on-finished@2.3.0, finalhandler@0.5.0, debug@2.2.0, proxy-addr@1.1.2, send@0.14.1, type-is@1.6.13, accepts@1.3.3)
-├── body-parser@1.15.2 (bytes@2.4.0, content-type@1.0.2, depd@1.1.0, qs@6.2.0, on-finished@2.3.0, debug@2.2.0, http-errors@1.5.0, iconv-lite@0.4.13, type-is@1.6.13)
-├── bcrypt@0.8.7 (bindings@1.2.1, nan@2.3.5)
-├── fs-extra@0.30.0 (path-is-absolute@1.0.1, klaw@1.3.0, jsonfile@2.4.0, graceful-fs@4.1.9, rimraf@2.5.4)
-├── uglify-js@2.7.0 (async@0.2.10, uglify-to-browserify@1.0.2, source-map@0.5.6, yargs@3.10.0)
-├── node-red-node-email@0.1.11 (mailparser@0.6.1, imap@0.8.18, poplib@0.1.7, nodemailer@1.11.0)
-├── mqtt@1.13.0 (inherits@2.0.3, reinterval@1.1.0, xtend@4.0.1, help-me@0.1.0, minimist@1.2.0, commist@1.0.0, readable-stream@1.0.34, pump@1.0.1, mqtt-connection@2.1.1, end-of-stream@1.1.0, mqtt-packet@3.4.7, concat-stream@1.5.2, split2@2.1.0, websocket-stream@3.3.0)
-├── node-red-node-twitter@0.1.7 (twitter-ng@0.6.2, oauth@0.9.14, request@2.75.0)
-├── i18next@1.10.6 (cookies@0.6.1, json5@0.2.0, i18next-client@1.10.3)
-├── ws@0.8.1 (options@0.0.6, ultron@1.0.2, utf-8-validate@1.2.1, bufferutil@1.2.1)
-├── cron@1.1.0 (moment-timezone@0.3.1)
-├── cheerio@0.19.0 (entities@1.1.1, dom-serializer@0.1.0, css-select@1.0.0, htmlparser2@3.8.3, lodash@3.10.1)
-├── xml2js@0.4.17 (sax@1.2.1, xmlbuilder@4.2.1)
-├── node-red-node-feedparser@0.1.5 (feedparser@1.1.3, request@2.65.0)
-└── node-red-node-serialport@0.2.1 (serialport@2.1.2)

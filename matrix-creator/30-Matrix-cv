@@ -1,0 +1,21 @@
+#!/bin/bash
+
+MATRIX_IO_DIR=~/source/github.com/matrix-io
+MATRIX_IO_REPO=https://github.com/matrix-io
+
+cd $MATRIX_IO_DIR
+if [ ! -d "matrix-cv" ]; then
+   git clonne $MATRIX_IO_REPO/matrix-cv
+fi
+cd matrix-cv
+
+git pull
+
+if [ ! -d build ]; then
+  mkdir build
+fi
+
+cd build
+cmake ../
+sudo make install
+

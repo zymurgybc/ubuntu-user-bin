@@ -1,0 +1,13 @@
+#!/bin/bash
+
+MATRIX_IO_DIR=~/source/github.com/matrix-io
+MATRIX_IO_REPO=https://github.com/matrix-io
+
+cd $MATRIX_IO_DIR
+if [ ! -d "matrix-app-config-helper" ]; then
+   git clonne $MATRIX_IO_REPO/matrix-app-config-helper
+fi
+cd matrix-app-config-helper
+
+git pull
+npm install

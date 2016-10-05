@@ -1,0 +1,21 @@
+#!/bin/bash
+
+MATRIX_IO_DIR=~/source/github.com/matrix-io
+MATRIX_IO_REPO=https://github.com/matrix-io
+
+if [ ! -x "/usr/bin/arm-none-eabi-gcc" ]; then
+   sudo ln -s "/usr/bin/arm-linux-gnueabihf-gcc" "/usr/bin/arm-none-eabi-gcc"
+fi
+
+cd $MATRIX_IO_DIR
+if [ ! -d "matrix-creator-mcu" ]; then
+   git clonne $MATRIX_IO_REPO/matrix-creator-mcu
+fi
+cd matrix-creator-mcu
+
+git pull
+
+cd creator
+make
+#sudo make install
+
