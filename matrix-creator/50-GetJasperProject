@@ -211,6 +211,6 @@ echo "#sudo python3 -measy_install pip"  2>&1 | tee -a $LOGFILE
 echo 2>&1 | tee -a $LOGFILE
 
 sudo pip install --upgrade setuptools
-sudo pip install -r client/requirements.txt
+sudo pip install --upgrade -r client/requirements.txt
 chmod +x jasper.py
 
