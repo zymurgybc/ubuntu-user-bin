@@ -1,0 +1,13 @@
+#!/bin/bash
+
+MATRIX_IO_DIR=~/source/github.com/matrix-io
+MATRIX_IO_REPO=https://github.com/matrix-io
+
+cd $MATRIX_IO_DIR
+if [ ! -d "matrix-continuity" ]; then
+   git clonne $MATRIX_IO_REPO/matrix-continuity
+fi
+cd matrix-continuity
+
+git pull
+#npm install

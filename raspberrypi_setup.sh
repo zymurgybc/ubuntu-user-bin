@@ -8,8 +8,9 @@ git config --global push.default simple
 git config --global core.editor "nano"
 git pull
 
-sudo apt-get install curl mailutils ssmtp mosquitto-clients jq python-pip python3-pip
-sudo apt-get install nfs-kernel-server nfs-common portmap dos2unix
+sudo apt-get update
+sudo apt-get install curl mailutils cmake ssmtp mosquitto-clients jq python-dev python-pip python3-pip
+sudo apt-get install nfs-kernel-server nfs-common portmap dos2unix libssl-dev
 sudo update-rc.d rpcbind enable
 sudo service rpcbind start
 
@@ -62,5 +63,6 @@ if [ -f "/home/pi/bin/crontab.`hostname`.bak" ]; then
     sudo crontab /home/pi/bin/crontab.`hostname`.bak
 fi
 
+sudo perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit'
 sudo -H pip install --upgrade ephem pytz pika python-dateutil 
 

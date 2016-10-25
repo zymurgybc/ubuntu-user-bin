@@ -1,0 +1,23 @@
+#!/bin/bash
+
+LOGFILE=$HOME/bin/matrix-creator/10-Add-Pacakges-Repos.log
+
+MATRIX_REPO=http://packages.matrix.one/matrix-creator/
+
+if ! grep -q $MATRIX_REPO /etc/apt/sources.list ; then
+   echo "deb $MATRIX_REPO ./" | sudo tee --append /etc/apt/sources.list
+fi
+
+
+sudo apt-get update        2>&1 | tee    $LOGFILE
+sudo apt-get upgrade --yes 2>&1 | tee -a $LOGFILE
+sudo apt-get install nano git-core python-dev python-pip subversion autoconf libtool automake gfortran g++ --yes
+echo "sudo apt-get install bison libasound2-dev libportaudio-dev python-pyaudio --yes" 2>&1 | tee -a $LOGFILE
+sudo apt-get install bison libasound2-dev libportaudio-dev python-pyaudio --yes 2>&1 | tee -a $LOGFILE
+
+# Google  and Ivona Text-to-speech
+echo "sudo apt-get install --upgrade python-pymad --yes"     2>&1 | tee -a $LOGFILE
+sudo apt-get install --upgrade python-pymad --yes            2>&1 | tee -a $LOGFILE
+echo "sudo pip2    install --upgrade gTTS gtts-token pyvona" 2>&1 | tee -a $LOGFILE
+sudo pip2    install --upgrade gTTS gtts-token pyvona        2>&1 | tee -a $LOGFILE
+
