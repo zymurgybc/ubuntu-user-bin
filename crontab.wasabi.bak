@@ -34,4 +34,6 @@
 20         * * * * redis-cli bgrewriteaof > nul
 30         * * * * /home/theather/bin/dhsupdate.pl
 
-@reboot  bash "sleep 2m && /home/theather/bin/myip.datalog && /home/theather/bin/myip.startup"
+#@reboot  /bin/bash "/bin/sleep 2m && /home/theather/bin/myip.datalog && /home/theather/bin/myip.startup"
+@reboot /home/theather/bin/handler.reboot
+

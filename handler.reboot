@@ -1,5 +1,7 @@
 #!/bin/bash
 
+/bin/sleep 2m
+
 # find the real location of the current script
 #_script=`readlink -f "${BASH_SOURCE[0]}"`
 #echo _script=${_script}
