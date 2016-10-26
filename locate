@@ -1,1 +1,1 @@
-find / * 2>/dev/null | grep $1
+find / * 2>/dev/null | grep --color $1
