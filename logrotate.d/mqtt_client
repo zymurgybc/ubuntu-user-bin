@@ -1,0 +1,9 @@
+/var/log/mqtt_client.log {
+        weekly
+        size=10M
+        rotate 4
+        compress
+        nodelaycompress
+        missingok
+        notifempty
+}

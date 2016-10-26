@@ -1,0 +1,7 @@
+{
+    "mqtt_host"       : "** ADDRESS         **",
+    "mqtt_port"       : "** PORT            **",
+    "mqtt_client"     : "** HOSTNAME/USERID **",
+    "mqtt_password"   : "** PASSWORD        **",
+    "mqtt_client_log" : "/var/log/mqtt_client.log"
+}

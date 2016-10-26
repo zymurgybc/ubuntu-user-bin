@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+from tendo import singleton
+me = singleton.SingleInstance() # will sys.exit(-1) if other instance is running
+
 import os
 from subprocess import check_output
-#import json
 import time
 import datetime
 import logging
@@ -12,12 +15,13 @@ import sys
 import socket
 import traceback
 
-from tendo import singleton
-me = singleton.SingleInstance() # will sys.exit(-1) if other instance is running
-
+import json
+config_json = os.path.dirname(os.path.realpath(__file__)) + '/mqtt_config.json'
+with open(config_json, 'r') as f:
+    config = json.load(f)
 
 FORMAT = '%(asctime)-15s %(message)s'
-LOG_FILENAME = '/var/log/mqtt_client.log'
+LOG_FILENAME = config["mqtt_client_log"]
 logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG)
 logger = logging.getLogger('My_Status_mqtt')
 
@@ -52,7 +56,8 @@ MQTT_CLIENTID = socket.gethostname() + '_temp_pub'
 MQTT_TOPIC = 'home/client/' + socket.gethostname() + '/status'
 
 mqttc = mqtt.Client(MQTT_CLIENTID)
-mqttc.username_pw_set(socket.gethostname(), password='itsasecret')
+#mqttc.username_pw_set(socket.gethostname(), password='itsasecret')
+mqttc.username_pw_set(config["mqtt_client"], password=config["mqtt_password"])
 mqttc.will_set(MQTT_TOPIC, payload='disconnected', qos=0, retain=True)
 
 mqttc.on_connect = on_connected
@@ -63,20 +68,21 @@ mqttc.on_log = on_log
 
 while True:
     logger.info(os.path.basename(__file__) + " - Attempting connection")
-    mqttc.connect('wasabi', 1883)
+    # cast the port from 'unicode' to plain 'string'
+    mqttc.connect(config["mqtt_host"], str(config["mqtt_port"]))
     mqttc.loop_start()
-    client_loop = mqttc.loop()
+    client_loop = mqttc.loop(120)
     while client_loop == 0:
         try:
             publish_status(mqttc)
-            time.sleep(10)   # sleep for 30 seconds before next call
+            time.sleep(60)   # sleep for 30 seconds before next call
             client_loop = mqttc.loop()
         except ValueError as err1:
             # we just don't publish bad readings
             logger.warning(os.path.basename(__file__) + " - [2] %s " % err.args)
             time.sleep(5)
 
-    logger.info(os.path.basename(__file__) + " - exiting with %s" % string(client_loop))
+    logger.info(os.path.basename(__file__) + " - exiting with %s" % str(client_loop))
 
 #except Exception as err2:
 #    logger.warning(os.path.basename(__file__) + " - [1] %s " % err.args)
