@@ -1,0 +1,28 @@
+#!/bin/bash
+
+GOOGLE_GIT_DIR=~/source/github.com/google
+GOOGLE_GIT_REPO=https://github.com/google
+
+if [ ! -d "$GOOGLE_GIT_DIR" ]; then
+   mkdir -p "$GOOGLE_GIT_DIR"
+fi
+
+cd "$GOOGLE_GIT_DIR"
+
+if [ ! -d "protobuf" ]; then
+   git clone "$GOOGLE_GIT_REPO/protobuf"
+fi
+
+cd protobuf
+git pull
+
+if [ ! -d "build" ]; then
+   mkdir build
+fi
+
+./autogen.sh
+./configure
+make
+make check
+sudo make install
+sudo ldconfig # refresh shared library cache.

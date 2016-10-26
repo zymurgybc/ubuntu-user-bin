@@ -9,11 +9,26 @@ echo ping result = `ping -c1 $ROUTER_IP` >> $TEST_LOG
 echo --------------------                >> $TEST_LOG
 lsusb                                    >> $TEST_LOG
 
-( ! ping -c1 $ROUTER_IP >/dev/null 2>&1 ) && service network restart >/dev/null 2>&1
+#( ! ping -c1 $ROUTER_IP >/dev/null 2>&1 ) && service networking restart >/dev/null 2>&1
+#
+#sleep 15
+#
+#SECOND=`ping -c1 $ROUTER_IP >/dev/null 2>&1`
+#if [ -z "${SECOND}" ]; then
+#    logger Network Restart Type 2.1
+#    echo logger Network Restart Type 2.1 >> $TEST_LOG
+#    echo Second ping: \<${SECOND}\>    >> $TEST_LOG
+#    echo -------------------- RESTART  >> $TEST_LOG
+#    service networking restart 2>&1    >> $TEST_LOG
+#fi
 
-sleep 15
 
-if [ -z "`ping -c1 $ROUTER_IP >/dev/null 2>&1`" ]; then
-    logger Network Restart Type 2
-    service network restart >/dev/null 2>&1
+
+# http://weworkweplay.com/play/rebooting-the-raspberry-pi-when-it-loses-wireless-connection-wifi/
+ping -c4 $ROUTER_IP 2>&1 > /dev/null
+
+if [ $? != 0 ]; then
+  echo -------------------- RESTART  >> $TEST_LOG
+  #sudo /sbin/shutdown -r now
+  /usr/sbin/service networking restart 2>&1    >> $TEST_LOG
 fi

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+MATRIX_IO_DIR=~/source/github.com/matrix-io
+MATRIX_IO_REPO=https://github.com/matrix-io
+
+cd $MATRIX_IO_DIR
+if [ ! -d "matrix-creator-fpga" ]; then
+   git clonne $MATRIX_IO_REPO/matrix-creator-fpgs
+fi
+cd matrix-fpga
+
+git pull
+npm install

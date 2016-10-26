@@ -1,0 +1,44 @@
+#!/bin/bash
+
+LOGFILE=$HOME/bin/matrix-creator/10-NodeRed-UpgradeInstallation.log
+
+# Manual upgrade
+# ===================
+#
+# To do this you must uninstall the built-in versions and re-install. To uninstall:
+
+sudo apt-get remove nodered               2>&1 | tee -a $LOGFILE
+sudo apt-get remove nodejs nodejs-legacy  2>&1 | tee -a $LOGFILE
+sudo apt-get remove npm                   2>&1 | tee -a $LOGFILE # if you installed npm
+
+# Re-install Node.js
+
+curl -sL https://deb.nodesource.com/setup_4.x | sudo bash -    2>&1 | tee -a $LOGFILE
+sudo apt-get install -y build-essential python-rpi.gpio nodejs 2>&1 | tee -a $LOGFILE
+
+# Install Node-RED
+# Install the latest stable version of Node-RED using node’s package manager, npm:
+
+sudo npm cache clean                             2>&1 | tee -a $LOGFILE
+sudo npm install -g --unsafe-perm  node-red      2>&1 | tee -a $LOGFILE
+
+# If you want to run as a user other than pi (or root), you will need either to 
+# add that user to the sudoers list - or maybe just access to python - 
+# for example by adding the following to sudoers using visudo.
+#
+# sudo adduser nodered
+# sudo adduser nodered nodered
+# nodered ALL=(ALL) NOPASSWD: /usr/bin/python
+#
+
+if [ !-f "/lib/systemd/system/nodered.service" ]; then
+    # If you want to use the nodered user, you need to edit this file to change the user and group
+    sudo wget https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/nodered.service -O /lib/systemd/system/nodered.service
+    sudo systemctl daemon-reload
+fi
+
+sudo wget https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/node-red-start -O /usr/bin/node-red-start
+sudo wget https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/node-red-stop -O /usr/bin/node-red-stop
+
+sudo chmod +x /usr/bin/node-red-st*
+
