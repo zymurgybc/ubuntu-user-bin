@@ -1,0 +1,12 @@
+[Unit]
+Description=MQTT to ThingSpeak bridge
+After=network-online.target, rabbitmq-server.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/mqspeak
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
