@@ -30,6 +30,6 @@
 2,17,32,47       * * * * /home/pi/bin/My_Status_mqtt.py 2>/dev/null >> /var/log/mqtt_client.log
 
 
-#@reboot bash /home/pi/bin/myip.startup
-@reboot  bash "sleep 2m && /home/pi/bin/myip.datalog && /home/pi/bin/myip.startup"
+@reboot bash /home/pi/bin/myip.startup
+#@reboot  bash "sleep 2m && /home/pi/bin/myip.datalog && /home/pi/bin/myip.startup"
 
