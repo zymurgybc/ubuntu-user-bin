@@ -56,7 +56,6 @@ MQTT_CLIENTID = socket.gethostname() + '_temp_pub'
 MQTT_TOPIC = 'home/client/' + socket.gethostname() + '/status'
 
 mqttc = mqtt.Client(MQTT_CLIENTID)
-#mqttc.username_pw_set(socket.gethostname(), password='itsasecret')
 mqttc.username_pw_set(config["mqtt_client"], password=config["mqtt_password"])
 mqttc.will_set(MQTT_TOPIC, payload='disconnected', qos=0, retain=True)
 
