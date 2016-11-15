@@ -3,3 +3,5 @@
 go
 mqtt_config.json
 nohup.out
+matrix-creator/*.log
+
