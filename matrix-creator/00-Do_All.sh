@@ -58,6 +58,8 @@ source 30-Matrix-creator-init
 cd $_dir
 source 30-Matrix-creator-malos
 cd $_dir
+source 30-Matrix-creator-uv-demo
+cd $_dir
 source 30-Matrix-OS
 
 cd $_dir
