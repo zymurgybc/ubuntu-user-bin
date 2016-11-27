@@ -4,10 +4,10 @@ MATRIX_IO_DIR=~/source/github.com/matrix-io
 MATRIX_IO_REPO=https://github.com/matrix-io
 
 cd $MATRIX_IO_DIR
-if [ ! -d "matrix-cli" ]; then
-   git clone $MATRIX_IO_REPO/matrix-cli
+if [ ! -d "matrix-app-clickgames" ]; then
+   git clone $MATRIX_IO_REPO/matrix-app-clickgames
 fi
-cd matrix-cli
+cd matrix-app-clickgames
 
 git pull
-npm install
+#npm install
