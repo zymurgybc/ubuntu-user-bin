@@ -4,6 +4,6 @@
 
 
 for py in `ls /usr/bin/python?.?`; do
-  sudo $py -m pip install --upgrade freeze pip
-  $py -m pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | sudo xargs $py -m pip install --upgrade
+  sudo -H $py -m pip install --upgrade freeze pip
+  $py -m pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | sudo -H xargs $py -m pip install --upgrade
 done
