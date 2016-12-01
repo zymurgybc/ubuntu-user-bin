@@ -10,7 +10,7 @@ fi
 
 ZWAY_USER=admin
 ZWAY_PASSWD=not2bright
-ZWAY_ACTION=Set\(99\)
+ZWAY_ACTION=99
 LED_ACTION1="c 1 b 9"
 LED_ACTION2="c 1 c white"
 command=$1
@@ -20,22 +20,22 @@ command=$1
       echo "Found off parameter"
       LED_ACTION1="c 1 b 0"
       LED_ACTION2="c 1 c blue"
-      ZWAY_ACTION=Set\(0\);;
+      ZWAY_ACTION=0;;
    "evening"|"EVENING")
       echo "Found evening parameter"
       LED_ACTION1="c 1 b 9"
       LED_ACTION2="c 1 c yellow"
-      ZWAY_ACTION=Set\(40\);;
+      ZWAY_ACTION=40;;
    *)
       echo "Using on parameter"
       #LED_ACTION1=c 1 b 9
       #LED_ACTION2=c 1 c white
-      #ZWAY_ACTION=Set\\\(99\\\);;
+      #ZWAY_ACTION=99
    esac
 
-   URL_SET=http://razberry-2:8083/ZWaveAPI/Run/devices[13].instances[0].Basic.${ZWAY_ACTION}
 
-   wget --auth-no-challenge --user ${ZWAY_USER} --password ${ZWAY_PASSWD} -P ~/tmp/ ${URL_SET}
+   wget --auth-no-challenge --user ${ZWAY_USER} --password ${ZWAY_PASSWD} -P ~/tmp/ \
+        http://razberry-2:8083/ZWaveAPI/Run/devices[13].instances[0].Basic.Set\(${ZWAY_ACTION}\) 2>/dev/null
 
    sleep 5
    #echo "/home/pi/bin/led.sh ${LED_ACTION1}"
