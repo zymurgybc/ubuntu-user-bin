@@ -8,8 +8,10 @@ git config --global push.default simple
 git pull
 
 sudo apt-get update
-sudo apt-get install curl mailutils cmake ssmtp mosquitto-clients jq python-dev python-pip python3-pip
-sudo apt-get install nfs-kernel-server nfs-common portmap dos2unix libssl-dev
+sudo apt-get install aptitude curl mailutils cmake ssmtp mosquitto-clients jq python-dev python-pip python3-pip
+sudo aptitude install nfs-kernel-server nfs-common portmap dos2unix libssl-dev libtiff4-dev \
+                     zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
+
 sudo update-rc.d rpcbind enable
 sudo service rpcbind start
 
