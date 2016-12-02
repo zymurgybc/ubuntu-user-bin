@@ -1,6 +1,7 @@
 /****** zway-mqtt bridge **************************************************************/
 // adapted from  http://wetwa.re/?p=136
 // imported into  /opt/z-way-server/automation/main.js on razberry
+// See also http://blog.hekkers.net/tag/z-way-javascript-api/
 
 var mqtt_config = fs.loadJSON("mqtt_config.json") || [];
 var mqtt_topic_prefix = 'home/zwave/'; 

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+MATRIX_IO_DIR=~/source/github.com/matrix-io
+MATRIX_IO_REPO=https://github.com/matrix-io
+
+cd $MATRIX_IO_DIR
+if [ ! -d "MATRIX-Creator-Case" ]; then
+   git clone $MATRIX_IO_REPO/MATRIX-Creator-Case
+fi
+cd MATRIX-Creator-Case
+
+git pull
+#npm install
+
+
+cd $MATRIX_IO_DIR
+if [ ! -d "MatrixCase" ]; then
+   git clone $MATRIX_IO_REPO/MatrixCase
+fi
+cd MatrixCase
+
+git pull
+#npm install

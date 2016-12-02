@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from tendo import singleton
 me = singleton.SingleInstance() # will sys.exit(-1) if other instance is running
 
@@ -22,7 +21,6 @@ import paho.mqtt.client as mqtt
 import socket 
 import traceback
 import Queue
-# sudo pip install smbus-cffi
 import smbus 
 import RPi.GPIO as GPIO 
 
@@ -39,10 +37,7 @@ import RPi.GPIO as GPIO
 #BMP180  = importlib.util.module_from_spec(spec2)
 #spec2.loader.exec_module(BMP180)
 
-grove_path = "/usr/local/src/GrovePi/Software/Python/grove_barometer_sensors/"
-if not grove_path in sys.path:
-    sys.path.insert(1, grove_path)
-
+sys.path.append("/usr/local/src/GrovePi/Software/Python/")
 from grovepi import grovepi 
 from grove_i2c_barometic_sensor_BMP180 import BMP085
 
@@ -67,7 +62,7 @@ GROVE_DHT_SENSOR_PORT = 4
 GROVE_DHT_SENSOR_TYPE = 0
 
 # How long to wait (in seconds) between measurements.
-FREQUENCY_SECONDS  = 600
+FREQUENCY_SECONDS      = 600
 
 MQTT_CLIENTID = socket.gethostname() + "_DHT11_pub"
 
@@ -137,7 +132,7 @@ def publish_barometer():
         pressure_long = bmp.readPressure()
         pressure_float = float(pressure_long)/1000
         message_queue.put(MqttMessage(MQTT_TOPIC_BARO, pressure_float))
-        logger.info(os.path.basename(__file__) + " --- barometer " + str(pressure_float))
+        message_queue.put(MqttMessage(MQTT_TOPIC_BARO + "/units", "Kpa"))
     except Exception as err:
         # we just don't publish bad readings
         #print(err.args)
@@ -149,7 +144,7 @@ def mqtt_publish():
         publish_dht11()
     except Exception as err:
         # handle filed sends with a note in the log
-        logger.warning(os.path.basname(__file__) + " - mqtt_publish call failed " + err.args)
+        logger.warning(os.path.basename(__file__) + " - mqtt_publish call failed. {0} " % err.args)
 
 
 logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG)
@@ -157,6 +152,7 @@ logger = logging.getLogger('My_Temperature_mqtt')
 
 client = mqtt.Client(MQTT_CLIENTID, clean_session=False)
 
+# Use the JSON config to store the server reference
 client.username_pw_set(config["mqtt_client"], password=config["mqtt_password"])
 client.on_connect = on_connected
 client.on_message = on_message
@@ -167,17 +163,24 @@ client.on_log = on_log
 client.will_set( topic = "home/client/" + MQTT_CLIENTID, payload = "disconnected", qos=2, retain=1)
 
 while True:
-    logger.info(os.path.basename(__file__) + " - connecting")
-    client.connect(config["mqtt_host"], str(config["mqtt_port"]))
-    client.loop_start()	
+    try:
+        logger.info(os.path.basename(__file__) + " - connecting" + " to mqtt://" + config["mqtt_host"] + ":" + config["mqtt_port"])
 
-    _continue = 1
-    while _continue:
-        _continue = mqtt_publish()
-        message_queue.put(MqttMessage("client/" + MQTT_CLIENTID, "connected"))
-        # This will prime the loop
-        if not message_queue.empty():
-           aMessage = message_queue.get()
-           client.publish(aMessage.topic, aMessage.value, qos = 1, retain = 1)
-        # this waits while the current messages are sent
-        time.sleep(30)
+        # Use the JSON config to store the server reference
+        client.connect(config["mqtt_host"], int(config["mqtt_port"]))
+        client.loop_start()	
+
+        _continue = 1
+        while _continue:
+            _continue = mqtt_publish()
+            message_queue.put(MqttMessage("home/client/" + MQTT_CLIENTID, "connected"))
+            # This will prime the loop
+            if not message_queue.empty():
+               aMessage = message_queue.get()
+               client.publish(aMessage.topic, aMessage.value, qos = 1, retain = 1)
+            # this waits while the current messages are sent
+            time.sleep(30)
+    except Exception as err:
+        # handle filed sends with a note in the log
+        logger.warning(os.path.basename(__file__) + " - mqtt loop failed.  Exception message: %s" % err.args)
+        sys.exit(os.path.basename(__file__) + " - mqtt loop failed.  Exception message: %s" % err.args)
