@@ -2,6 +2,7 @@
 # http://www.linuxquestions.org/questions/linux-networking-3/script-to-check-connection-and-restart-network-if-down-262281/
 ROUTER_IP=192.168.1.1
 TEST_LOG=/var/log/check_network.log
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo ====================                >> $TEST_LOG
 echo `date +"%Y-%m-%d %T"`               >> $TEST_LOG
@@ -34,5 +35,5 @@ if [ $? != 0 ]; then
   /bin/systemctl restart networking  2>&1  >> $TEST_LOG
   echo `date +"%Y-%m-%d %T"`                      >> $TEST_LOG
   echo second ping result = `ping -c1 $ROUTER_IP` >> $TEST_LOG
-  /home/pi/bin/myip.up
+  ${DIR}/myip.up
 fi
