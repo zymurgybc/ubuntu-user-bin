@@ -27,5 +27,5 @@
 3,13,23,33,43,53 * * * * /home/pi/bin/check_network.sh
 1,16,31,46       * * * * /home/pi/bin/My_Status_mqtt.py 2>/dev/null
 
-@reboot bash "/home/pi/bin/myip.up"
+@reboot bash "/home/pi/bin/myip.startup"
 
