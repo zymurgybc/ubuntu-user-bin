@@ -30,5 +30,5 @@
 3,13,23,33,43,53 * * * *  /home/pi/bin/check_network.sh
 15 6       * * 1,2,3,4,5  ZWAY_USER=admin ZWAY_PASSWD=not2bright /home/pi/bin/livingroomlights.sh on 2>&1        >> /tmp/livingroomlights-on.log > /dev/null
 
-@reboot bash /home/pi/bin/myip.startup
+@reboot bash /home/pi/bin/myip.up
 
