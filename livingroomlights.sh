@@ -13,6 +13,7 @@ ZWAY_PASSWD=not2bright
 ZWAY_ACTION=99
 LED_ACTION1="c 1 b 9"
 LED_ACTION2="c 1 c white"
+CMD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 command=$1
 
    case $command in
@@ -38,9 +39,9 @@ command=$1
         http://razberry-2:8083/ZWaveAPI/Run/devices[13].instances[0].Basic.Set\(${ZWAY_ACTION}\) 2>/dev/null
 
    sleep 5
-   #echo "/home/pi/bin/led.sh ${LED_ACTION1}"
-   /home/pi/bin/led.sh ${LED_ACTION1}
-   #echo "/home/pi/bin/led.sh ${LED_ACTION2}"
-   /home/pi/bin/led.sh ${LED_ACTION2}
+   #echo "${CMD_DIR}/led.sh ${LED_ACTION1}"
+   ${CMD_DIR}/led.sh ${LED_ACTION1}
+   #echo "${CMD_DIR}/led.sh ${LED_ACTION2}"
+   ${CMD_DIR}/led.sh ${LED_ACTION2}
 
 
