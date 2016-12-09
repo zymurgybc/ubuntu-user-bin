@@ -1,0 +1,9 @@
+if [ ! -d "matrix-creator-uv-demo" ]; then
+    git clone https://github.com/matrix-io/matrix-creator-uv-demo 
+fi
+
+cd matrix-creator-uv-demo
+git pull
+
+npm install
+

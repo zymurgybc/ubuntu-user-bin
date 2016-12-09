@@ -1,7 +1,7 @@
 #!/bin/bash
 # http://jasperproject.github.io/documentation/installation/
 
-LOGFILE=$HOME/bin/matrix-creator/20-GetJasperProject.log
+LOGFILE=$HOME/bin/matrix-creator/50-GetJasperProject.log
 
 sudo apt-get update | tee -a $LOGFILE
 sudo apt-get install -y vim git-core python-dev python-pip bison \
@@ -213,4 +213,48 @@ echo 2>&1 | tee -a $LOGFILE
 sudo pip install --upgrade setuptools
 sudo pip install --upgrade -r client/requirements.txt
 chmod +x jasper.py
+
+
+
+# ====================================
+# Steps to Install Google Calendar
+# https://github.com/marclave/Jasper-Google-Calendar
+
+cd ~/source/github.com/
+if [ ! -d "marclave" ]; then
+   mkdir marclave
+fi
+
+cd marclave
+sudo pip install httplib2
+sudo pip install --upgrade google-api-python-client
+sudo easy_install --upgrade python-gflags
+
+#git clone https://github.com/marclave/Jasper-Google-Calendar.git
+#cp Jasper-Google-Calendar/Calendar.py <path to ..client/jasper.modules>
+
+#-- Login to Google developer Console and complete the following
+#-- The Client ID in Google needs to be for a native application.
+#-- Select a project.
+#--   In the sidebar on the left, select APIs & auth. In the list of APIs, 
+#--   make sure the status is ON for the Google Calendar API.
+#--   In the sidebar on the left, select Credentials.
+#--   Get Client ID and Client Secret (Save for later)
+#--   Open Calendar.py and add Client ID and Client secret to appropriate variables
+#-- 
+#-- Kill Jasper the following will return all processes of jasper that are running:
+#--   ps ax | grep jasper 
+#-- Then run(Where is the PID of each process from the previous command):
+#--   sudo kill <pid>
+#-- Restart Jasper from Terminal on the Pi (i.e. don't SSH in)
+#--   ./jasper.py
+#-- 
+#--   This should then open a web browser asking you to accept the authentication request. Accept it.
+#--   Once accepted, Jasper will start up as normal.
+#--   Add the following to the __init.py file in the ~/jasper/client directory
+#--      from modules import Calendar
+#--   Restart the Pi:
+#--      sudo reboot
+
+
 

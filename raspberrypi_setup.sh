@@ -5,11 +5,14 @@ cd ~/bin
 git config --global user.email "zymurgy.bc@gmail.com"
 git config --global user.name "Ted H."
 git config --global push.default simple
+git config --global core.editor "nano"
 git pull
 
 sudo apt-get update
-sudo apt-get install curl mailutils cmake ssmtp mosquitto-clients jq python-dev python-pip python3-pip
-sudo apt-get install nfs-kernel-server nfs-common portmap dos2unix libssl-dev
+sudo apt-get install aptitude curl mailutils cmake ssmtp mosquitto-clients jq python-dev python-pip python3-pip
+sudo aptitude install nfs-kernel-server nfs-common portmap dos2unix libssl-dev libtiff4-dev \
+                     zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
+
 sudo update-rc.d rpcbind enable
 sudo service rpcbind start
 
@@ -64,4 +67,5 @@ fi
 
 sudo perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit'
 sudo -H pip install --upgrade ephem pytz pika python-dateutil 
-
+sudo python2.7 -m pip install tendo paho-mqtt
+sudo python3.4 -m pip install tendo paho-mqtt

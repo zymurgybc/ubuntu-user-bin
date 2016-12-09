@@ -21,17 +21,14 @@
 # 
 # m h  dom mon dow   command
 
-4,19,34,49       * * * * /home/theather/bin/dyndns-update.cron
-21 6,18            * * * /home/theather/bin/myip.datalog
-15 7               * * 1 /home/theather/bin/myip.cronmail
-7,22,37,52       * * * * /home/theather/bin/check_network.sh
-5 4                * * * /home/theather/bin/letsencrypt-renew-nginx.sh
-2,17,32,47       * * * * /home/theather/bin/My_Status_mqtt.py 2>/dev/null >> /var/log/mqtt_client.log
+5,20,35,50       * * * *  /home/pi/bin/dyndns-update.cron
+20 5,17            * * *  /home/pi/bin/myip.datalog
+15 7               * * 1  /home/pi/bin/myip.cronmail
+3,18,33,48       * * * *  /home/pi/bin/My_Status_mqtt.py  2>/dev/null
+#6,21,36,51      * * * *  /home/pi/bin/My_Temperature_Log.py > /dev/nul
+*/3              * * * *  /home/pi/bin/My_Temperature_mqtt.py 2>/dev/null >> /tmp/My_Temprature_mqtt.py.log
+3,13,23,33,43,53 * * * *  /home/pi/bin/check_network.sh
+15 6       * * 1,2,3,4,5  ZWAY_USER=admin ZWAY_PASSWD=not2bright /home/pi/bin/livingroomlights.sh on 2>&1        >> /tmp/livingroomlights-on.log > /dev/null
 
-6,16,26,36,46,56 * * * * /home/theather/bin/check_hosts
-11 7,12,17         * * * /home/theather/bin/check_hosts -daily
+@reboot bash /home/pi/bin/myip.startup
 
-20               * * * * redis-cli bgrewriteaof > nul
-30               * * * * /home/theather/bin/dhsupdate.pl
-
-@reboot  bash "sleep 2m && /home/theather/bin/myip.datalog && /home/theather/bin/myip.startup"
