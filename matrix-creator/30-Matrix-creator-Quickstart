@@ -1,0 +1,13 @@
+#!/bin/bash
+
+MATRIX_IO_DIR=~/source/github.com/matrix-io
+6MATRIX_IO_REPO=https://github.com/matrix-io
+
+cd $MATRIX_IO_DIR
+if [ ! -d "matrix-creator-quickstart" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-quickstart
+fi
+cd matrix-creator-quickstart
+
+git pull
+#npm install

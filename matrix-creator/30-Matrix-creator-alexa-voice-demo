@@ -5,7 +5,7 @@ MATRIX_IO_REPO=https://github.com/matrix-io
 
 cd $MATRIX_IO_DIR
 if [ ! -d "matrix-creator-alexa-voice-demo" ]; then
-   git clonne $MATRIX_IO_REPO/matrix-creator-alexa-voice-demo
+   git clone $MATRIX_IO_REPO/matrix-creator-alexa-voice-demo
 fi
 cd matrix-creator-alexa-voice-demo
 

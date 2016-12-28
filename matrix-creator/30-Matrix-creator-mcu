@@ -9,7 +9,7 @@ fi
 
 cd $MATRIX_IO_DIR
 if [ ! -d "matrix-creator-mcu" ]; then
-   git clonne $MATRIX_IO_REPO/matrix-creator-mcu
+   git clone $MATRIX_IO_REPO/matrix-creator-mcu
 fi
 cd matrix-creator-mcu
 

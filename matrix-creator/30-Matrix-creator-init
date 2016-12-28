@@ -5,7 +5,7 @@ MATRIX_IO_REPO=https://github.com/matrix-io
 
 cd $MATRIX_IO_DIR
 if [ ! -d "matrix-creator-init" ]; then
-   git clonne $MATRIX_IO_REPO/matrix-creator-init
+   git clone $MATRIX_IO_REPO/matrix-creator-init
 fi
 cd matrix-creator-init
 

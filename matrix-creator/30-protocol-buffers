@@ -5,7 +5,7 @@ MATRIX_IO_REPO=https://github.com/matrix-io
 
 cd $MATRIX_IO_DIR
 if [ ! -d "protocol-buffers" ]; then
-   git clonne $MATRIX_IO_REPO/protocol-buffers
+   git clone $MATRIX_IO_REPO/protocol-buffers
 fi
 cd protocol-buffers
 

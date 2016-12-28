@@ -5,9 +5,11 @@ MATRIX_IO_REPO=https://github.com/matrix-io
 
 cd $MATRIX_IO_DIR
 if [ ! -d "matrix-creator-malos" ]; then
-   git clonne $MATRIX_IO_REPO/matrix-creator-malos
+   git clone $MATRIX_IO_REPO/matrix-creator-malos
 fi
 cd matrix-creator-malos
+
+git submodule init && git submodule update
 
 git pull
 if [ ! -d build ]; then
