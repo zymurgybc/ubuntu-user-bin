@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # https://gist.github.com/mdrovdahl/0af14b84da43fb1801fe212ffc5ff30c
-import requests email = "joe@example.com" # Your neviweb 
-account login e-mail password = "password" # Your neviweb 
-account login password gatewayname = 'Home' # Name of your 
-neviweb network dataServer = "https://neviweb.com/"
+import requests 
+email = "joe@example.com" # Your neviweb account login e-mail 
+password = "password"     # Your neviweb account login password 
+gatewayname = 'Home'      # Name of your neviweb network data
+Server = "https://neviweb.com/"
+
 # TODO make this the login() function
 uri = dataServer path = 'api/login' payload = {'email': 
 email, 'password': password, 'stayConnected': '0'} r = 
