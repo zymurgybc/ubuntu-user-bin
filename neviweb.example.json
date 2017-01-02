@@ -1,6 +1,6 @@
 {
-    email = "joe@example.com" # Your neviweb 
-   ,password = "password" # Your neviweb 
-   ,gatewayname = 'Home' # Name of your neviweb network
-   ,Server = "https://neviweb.com/"
+    "email"      : "joe@example.com" # Your neviweb 
+   ,"password"   : "password"        # Your neviweb 
+   ,"gatewayname": "Home"            # Name of your neviweb network
+   ,"server"     : "https://neviweb.com/"
 }
