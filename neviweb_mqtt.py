@@ -29,8 +29,8 @@ with open(config_mqtt, 'r') as f:
     mqtt_config = json.load(f)
 
 MQTT_CLIENTID = socket.gethostname() + "_NeviWeb_pub"
-MQTT_TOPIC_TEMP     = "home/thermostat/%s/temperature"
-MQTT_TOPIC_SETPOINT = "home/thermostat/%s/setpoint"
+MQTT_TOPIC_TEMP     = "home/sensor/thermostat/%s/temperature"
+MQTT_TOPIC_SETPOINT = "home/sensor/thermostat/%s/setpoint"
 FORMAT = '%(asctime)-15s %(message)s'
 LOG_FILENAME = mqtt_config["mqtt_client_log"]
 
