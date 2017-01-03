@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # Adapted from https://gist.github.com/mdrovdahl/0af14b84da43fb1801fe212ffc5ff30c
 
-#from tendo import singleton
-#me = singleton.SingleInstance() # will sys.exit(-1) if other instance is running
+from tendo import singleton
+me = singleton.SingleInstance() # will sys.exit(-1) if other instance is running
 
 import sys
 import os
@@ -29,8 +29,8 @@ with open(config_mqtt, 'r') as f:
     mqtt_config = json.load(f)
 
 MQTT_CLIENTID = socket.gethostname() + "_NeviWeb_pub"
-MQTT_TOPIC_TEMP     = "home/thermostat/temperature/"
-MQTT_TOPIC_SETPOINT = "home/thermostat/setpoint/"
+MQTT_TOPIC_TEMP     = "home/thermostat/%s/temperature"
+MQTT_TOPIC_SETPOINT = "home/thermostat/%s/setpoint"
 FORMAT = '%(asctime)-15s %(message)s'
 LOG_FILENAME = mqtt_config["mqtt_client_log"]
 
@@ -82,8 +82,8 @@ def mosquittoPublish():
 			devices = neviwebDevices(neviSession["session"], gateway["id"])
 			for device in devices:
 				deviceData = neviwebData(neviSession["session"], device["id"])
-				message_queue.put(MqttMessage(MQTT_TOPIC_TEMP + device["name"], deviceData["temperature"]))
-				message_queue.put(MqttMessage(MQTT_TOPIC_SETPOINT + device["name"], deviceData["setpoint"]))
+				message_queue.put(MqttMessage(MQTT_TOPIC_TEMP % device["name"], deviceData["temperature"]))
+				message_queue.put(MqttMessage(MQTT_TOPIC_SETPOINT % device["name"], deviceData["setpoint"]))
 	except Exception as err:
 		# handle filed sends with a note in the log
 		logger.warning(os.path.basename(__file__) + " - mqtt_publish call failed. {0} " % err.args)
