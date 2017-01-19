@@ -5,7 +5,7 @@ MATRIX_IO_REPO=https://github.com/matrix-io
 
 cd $MATRIX_IO_DIR
 if [ ! -d "matrix-creator-malos-android" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-malos-android
+   git clone --recursive $MATRIX_IO_REPO/matrix-creator-malos-android
 fi
 cd matrix-creator-malos-android
 

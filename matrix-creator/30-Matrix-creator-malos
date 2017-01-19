@@ -18,3 +18,17 @@ fi
 cd build
 cmake ../
 sudo make install
+
+cd $MATRIX_IO_DIR/matrix-creator-malos/src/js_test
+npm install
+
+#node test_driver_info.js
+#node test_everloop.js
+#node test_humidity.js
+#node test_imu.js
+#node test_ir_remote.js
+#node test_pressure.js
+#node test_uv.js
+node test_zigbee_bulb.js
+node test_zigbee_bulb_color.js
+node test_zigbee_bulb_level.js

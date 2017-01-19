@@ -29,6 +29,10 @@ if [ ! -d "matrix-continuity" ]; then
    git clone $MATRIX_IO_REPO/matrix-continuity
 fi
 
+if [ ! -d "matrix-creator-android-things" ]; then
+   git clone $MATRIX_IO_REPO/matrix-creator-android-things
+fi
+
 if [ ! -d "matrix-creator-alexa-voice-demo" ]; then
    git clone $MATRIX_IO_REPO/matrix-creator-alexa-voice-demo
 fi
@@ -153,3 +157,9 @@ if [ ! -d "xc3sprog" ]; then
    git clone $MATRIX_IO_REPO/xc3sprog
 fi
 
+if [ ! -d "pi-wifi" ]; then
+   git clone $MATRIX_IO_REPO/pi-wifi
+fi
+
+#curl -s https://api.github.com/orgs/matrix-io/repos?per_page=200 | \
+#   ruby -rubygems -e 'require "json"; JSON.load(STDIN.read).each { |repo| %x[git clone #{repo["ssh_url"]} ]}'

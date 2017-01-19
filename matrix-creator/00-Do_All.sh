@@ -23,16 +23,16 @@ LOGFILE=$_dir/00-Do_All.log
 # export PATH
 
 cd $_dir
-source 10-Add-Package-Repos
+source 10-Add-Package-Repos > 10-Add-Package-Repos.log
 
 cd $_dir
-source 10-NodeRed-UpgradeInstallation
+source 10-NodeRed-UpgradeInstallation > 10-NodeRed-UpgradeInstallation.log
 
 cd $_dir
-source 20-Clone_GitHub-Google
+source 20-Clone_GitHub-Google > 20-Clone_Github-Google.log
 
 cd $_dir
-source 20-Clone_GitHub-MatrixIO
+source 20-Clone_GitHub-MatrixIO > 20-Clone_Github-MatrixIO.log
 
 cd $_dir
 source 30-Face-analytics
