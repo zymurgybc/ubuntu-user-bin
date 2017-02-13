@@ -71,7 +71,7 @@ function colour {
         sendCmd "${offarray[$zone]}$standby"
     }
     function sendBrightCmd {
-        brightarray=("\x02" "\x04" "\x08" "\x0A" "\x0B" "\xD0" "\x10" "\x13" "\x16" "\x19" "\x1B")                                      
+        brightarray=("\x02" "\x04" "\x08" "\x0A" "\x0B" "\xD0" "\x10" "\x13" "\x16" "\x19" "\x1B")
         selectZone
         bright="\x4E"
         cmd="${brightarray[$1]}"
@@ -195,9 +195,9 @@ function white {
         sendCmd "${offarray[$zone]}$standby"
     }
     function sendNightCommand {
-        nightarray=("\xB9\00" "\xBB\00" "\xB3\00" "\xBA\00" "\xB6\00")    
+        nightarray=("\xB9\00" "\xBB\00" "\xB3\00" "\xBA\00" "\xB6\00")
         selectZone
-        sendCmd "${nightarray[$zone]}"    
+        sendCmd "${nightarray[$zone]}"
     }
     function sendFullBrightCommand {
         fullbrightarray=("\xB5\00" "\xB8\00" "\xBD\00" "\xB7\00" "\xB2\00")
@@ -214,17 +214,17 @@ function white {
         selectZone
         sendCmd "$coolWarm\00"
     }
-    
+
     ##########
     # Input Handling Functions
     ##########
     function handleOn {
         echo "You just turned white bulbs in zone $zone on"
-        sendOnCommand    
+        sendOnCommand
     }
     function handleOff {
         echo "You just turned white bulbs in zone $zone off"
-        sendOffCommand    
+        sendOffCommand
     }
     function handleBrightness {
         case $param in
@@ -274,7 +274,7 @@ function white {
             esac
         done
     }
-    
+
     ##########
     # Input Parsing
     ##########

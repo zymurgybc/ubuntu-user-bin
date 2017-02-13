@@ -66,9 +66,9 @@ FREQUENCY_SECONDS      = 600
 
 MQTT_CLIENTID = socket.gethostname() + "_DHT11_pub"
 
-MQTT_TOPIC_TEMP = "home/sensor/temperature/" + socket.gethostname()
-MQTT_TOPIC_HUMI = "home/sensor/humidity/"    + socket.gethostname()
-MQTT_TOPIC_BARO = "home/sensor/barometer/"   + socket.gethostname()
+MQTT_TOPIC_TEMP = "home/sensor/DHT11/" + socket.gethostname() + "/temperature/"
+MQTT_TOPIC_HUMI = "home/sensor/DHT11/" + socket.gethostname() + "/humidity/"
+MQTT_TOPIC_BARO = "home/sensor/DHT11/" + socket.gethostname() + "/barometer/"
 FORMAT = '%(asctime)-15s %(message)s'
 LOG_FILENAME = config["mqtt_client_log"]
 

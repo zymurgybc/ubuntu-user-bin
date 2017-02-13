@@ -28,7 +28,8 @@
 #6,21,36,51      * * * *  /home/pi/bin/My_Temperature_Log.py > /dev/nul
 */3              * * * *  /home/pi/bin/My_Temperature_mqtt.py 2>/dev/null >> /tmp/My_Temprature_mqtt.py.log
 3,13,23,33,43,53 * * * *  /home/pi/bin/check_network.sh
-15 6       * * 1,2,3,4,5  ZWAY_USER=admin ZWAY_PASSWD=not2bright /home/pi/bin/livingroomlights.sh on 2>&1        >> /tmp/livingroomlights-on.log > /dev/null
+#15 6       * * 1,2,3,4,5  ZWAY_USER=admin ZWAY_PASSWD=not2bright /home/pi/bin/livingroomlights.sh on 2>&1        >> /tmp/livingroomlights-on.log > /dev/null
+10 6       * * 1,2,3,4,5  /home/pi/bin/led.sh c 1 b 9 && sleep 3s && /home/pi/bin/led.sh c 1 c white
 
 @reboot bash /home/pi/bin/myip.startup
 
