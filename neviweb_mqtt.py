@@ -146,7 +146,7 @@ while True:
 			_continue = mosquittoPublish()  # fill the queue
 			message_queue.put(MqttMessage("home/client/" + MQTT_CLIENTID, "connected"))
 			# This will prime the loop
-			if not message_queue.empty():
+			while not message_queue.empty():
 				aMessage = message_queue.get()
 				client.publish(aMessage.topic, aMessage.value, qos = 1, retain = 1)
 				# this waits while the current messages are sent

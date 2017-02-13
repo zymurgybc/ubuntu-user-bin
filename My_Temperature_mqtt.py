@@ -14,15 +14,15 @@ with open(config_json, 'r') as f:
 
 import time 
 import datetime 
-import logging 
+import logging
 import requests
 # sudo pip install paho-mqtt
-import paho.mqtt.client as mqtt 
-import socket 
+import paho.mqtt.client as mqtt
+import socket
 import traceback
 import Queue
-import smbus 
-import RPi.GPIO as GPIO 
+import smbus
+import RPi.GPIO as GPIO
 
 #import importlib.machinery   # python 3.3 & 3.4
 #grovepi = SourceFileLoader("grovepi.py", "/usr/local/src/GrovePi/Software/Python/")
@@ -66,9 +66,9 @@ FREQUENCY_SECONDS      = 600
 
 MQTT_CLIENTID = socket.gethostname() + "_DHT11_pub"
 
-MQTT_TOPIC_TEMP = "home/sensor/DHT11/" + socket.gethostname() + "/temperature/"
-MQTT_TOPIC_HUMI = "home/sensor/DHT11/" + socket.gethostname() + "/humidity/"
-MQTT_TOPIC_BARO = "home/sensor/DHT11/" + socket.gethostname() + "/barometer/"
+MQTT_TOPIC_TEMP = "home/sensor/DHT11/" + socket.gethostname() + "/temperature"
+MQTT_TOPIC_HUMI = "home/sensor/DHT11/" + socket.gethostname() + "/humidity"
+MQTT_TOPIC_BARO = "home/sensor/DHT11/" + socket.gethostname() + "/barometer"
 FORMAT = '%(asctime)-15s %(message)s'
 LOG_FILENAME = config["mqtt_client_log"]
 
