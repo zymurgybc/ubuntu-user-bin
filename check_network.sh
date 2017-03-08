@@ -32,7 +32,7 @@ if [ $? != 0 ]; then
   echo -------------------- RESTART               >> $TEST_LOG
   #sudo /sbin/shutdown -r now
   #/usr/sbin/service networking restart 2>&1      >> $TEST_LOG
-  /bin/sytemctl reload-daemon && /bin/systemctl restart networking  2>&1         >> $TEST_LOG
+  /bin/systemctl reload-daemon && /bin/systemctl restart networking  2>&1         >> $TEST_LOG
   echo `date +"%Y-%m-%d %T"`                      >> $TEST_LOG
   echo second ping result = `ping -c1 $ROUTER_IP` >> $TEST_LOG
   ${DIR}/myip.up
