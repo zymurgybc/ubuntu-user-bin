@@ -1,5 +1,9 @@
 change the hostname
 change the /etc/hosts file so the hostname resolves
+
+copy the /etc/wpa_supplicant/wpa_supplicant.config file from another pi
+  * add "auto wlan0" to /etc/network/interfaces
+
 copy the ssmtp configuration; be sure to edit the hostname listed in .conf
 copy mqtt_config.json  -- edit the client id
 
