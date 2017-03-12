@@ -9,7 +9,8 @@ git config --global core.editor "nano"
 git pull
 
 sudo apt-get update
-sudo apt-get install aptitude curl mailutils cmake ssmtp mosquitto-clients jq python-dev python-pip python3-pip
+sudo apt-get install aptitude curl mailutils cmake ssmtp mosquitto-clients jq python-dev \
+                     python-pip python3-pip matchbox-keyboard
 sudo aptitude install nfs-kernel-server nfs-common portmap dos2unix libssl-dev libtiff4-dev \
                      zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
 
@@ -67,5 +68,8 @@ fi
 
 sudo perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit'
 sudo -H pip install --upgrade ephem pytz pika python-dateutil 
-sudo python2.7 -m pip install tendo paho-mqtt
-sudo python3.4 -m pip install tendo paho-mqtt
+sudo python2.7 -m pip install --upgrade tendo paho-mqtt
+sudo python3.4 -m pip install --upgrade tendo paho-mqtt
+
+sudo apt-get clean && sudo apt-get autoremove
+
