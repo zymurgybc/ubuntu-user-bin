@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# fix for AlexaPi audio loosing the first little bit when using HDMI?
+# https://github.com/alexa-pi/AlexaPi/wiki/Devices#raspberry-pi
+# vcgencmd force_audio hdmi 1
+
 /bin/sleep 2m
 
 # find the real location of the current script
