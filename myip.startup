@@ -35,18 +35,20 @@ source ${_dir}/dyndns-update.cron
  echo "<b>IP Addresses for this host</b><pre>";
  tail -n6 $MYIP_LOG; echo; echo;
  echo Now == `date` `${_base}/bin/myip` >> $MYIP_LOG;
- tail -n12 $MYIP_DAILY; echo; echo; df; echo; echo;
+ tail -n12 $MYIP_DAILY; echo "</pre>"; echo; 
+ echo "<b>Storage State</b><pre>";
+ df; echo; echo;
  if [ -f "/var/log/mqtt_client.log" ]; then
-    echo "<b>mqtt_client</b>"; echo;
-    tail -n6 /var/log/mqtt_client.log; echo; echo;
+    echo "<b>mqtt_client</b>"; echo "<pre>";
+    tail -n6 /var/log/mqtt_client.log; echo "</pre>"; echo;
  fi
  if [ -f "/var/log/updatedhs" ]; then
-    echo "<b>Updatedhs</b>"; echo;
-    tail -n6 /var/log/updatedhs; echo; echo;
+    echo "<b>Updatedhs</b>"; echo "<pre>";
+    tail -n6 /var/log/updatedhs; echo "</pre>"; echo;
  fi
 
  uptime;
- echo "</pre></body></html>"
+ echo "</body></html>"
 ) | mail -s "`hostname` myip [startup]" $MYIP_ADDRESS_TO \
          -aFrom:$MYIP_ADDRESS_FROM \
          -a "MIME-Version: 1.0" \

@@ -31,21 +31,24 @@ source ${_dir}/dyndns-update.cron
 
 (echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
  echo "<html><head><title>$MYIP_SUBJECT</title>";
- echo "<style type=\"text/css\">pre { font-size:10pt; }</style></head><body><pre>";
- tail -n6 $MYIP_LOG; echo; echo;
+ echo "<style type=\"text/css\">pre { font-size:10pt; }</style></head><body>"
+ echo "<b>IP Addresses for this host</b><pre>";
+ tail -n6 $MYIP_LOG; echo "</pre>"; echo;
  echo Now == `date` `${_base}/bin/myip` >> $MYIP_LOG;
- tail -n12 $MYIP_DAILY; echo; echo; df; echo; echo;
+ tail -n12 $MYIP_DAILY; echo; echo; 
+ echo "<b>Storage State</b><pre>";
+ df; echo; echo;
  if [ -f "/var/log/mqtt_client.log" ]; then
-    echo "<b>mqtt_client</b>"; echo;
-    tail -n6 /var/log/mqtt_client.log; echo; echo;
+    echo "<b>mqtt_client</b>"; echo "<pre>";
+    tail -n6 /var/log/mqtt_client.log; echo "</pre>"; echo;
  fi
  if [ -f "/var/log/updatedhs" ]; then
-    echo "<b>Updatedhs</b>"; echo;
-    tail -n6 /var/log/updatedhs; echo; echo;
+    echo "<b>Updatedhs</b>"; echo "<pre>";
+    tail -n6 /var/log/updatedhs; echo "</pre>"; echo;
  fi
 
  uptime;
- echo "</pre></body></html>"
+ echo "</body></html>"
 ) | mail -s "`hostname` myip [up]" $MYIP_ADDRESS_TO \
          -aFrom:$MYIP_ADDRESS_FROM \
          -a "MIME-Version: 1.0" \
