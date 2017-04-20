@@ -29,6 +29,9 @@
 2,17,32,47 * * * * /home/pi/bin/check_network.sh
 #0 7          * * * /sbin/hwclock 
 7,22,37,52 * * * * /home/pi/bin/My_Status_mqtt.py &> /dev/null
+0 6          * * * /home/pi/bin/backlight on
+0 23         * * * /home/pi/bin/backlight off
+
 
 #@reboot bash "/home/pi/bin/myip.datalog && /home/pi/bin/myip.startup"
 @reboot /home/pi/bin/handler.reboot

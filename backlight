@@ -1,0 +1,30 @@
+#!/bin/bash
+
+
+if [ -z $1 ]; then
+  echo "You must enter a parameter:"
+  echo "\"on\"  - turn the backlight on"
+  echo "\"off\" - turn the backlight off"
+  exit -1
+fi
+
+command=$1
+
+case $command in
+   "off"|"OFF")
+      echo "Found off parameter"
+      # turn backlight off
+      sudo tee -a /sys/class/backlight/rpi_backlight/bl_power << EOF
+1
+EOF
+;;
+
+   "on"|"ON")
+      echo "Found off parameter"
+      # turn backlight off
+      sudo tee -a /sys/class/backlight/rpi_backlight/bl_power << EOF
+0
+EOF
+;;
+
+esac
