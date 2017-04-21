@@ -20,8 +20,8 @@ EOF
 ;;
 
    "on"|"ON")
-      echo "Found off parameter"
-      # turn backlight off
+      echo "Found on parameter"
+      # turn backlight on
       sudo tee -a /sys/class/backlight/rpi_backlight/bl_power << EOF
 0
 EOF
