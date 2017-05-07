@@ -75,4 +75,4 @@ do
 done
 
 # remove logs that are >120 days old
-find /var/log/nmap/namp* -mtime +120 -exec rm '{}' \;
+find /var/log/nmap/nmap* -mtime +120 -exec rm '{}' \;
