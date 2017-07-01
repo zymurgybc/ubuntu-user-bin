@@ -33,7 +33,12 @@ if [ $? != 0 ]; then
   #sudo /sbin/shutdown -r now
   #/usr/sbin/service networking restart 2>&1      >> $TEST_LOG
   /bin/systemctl daemon-reload && /bin/systemctl restart networking  2>&1         >> $TEST_LOG
+  sleep 5s 
   echo `date +"%Y-%m-%d %T"`                      >> $TEST_LOG
   echo second ping result = `ping -c1 $ROUTER_IP` >> $TEST_LOG
+  if [ $? != 0 ]; then
+    echo "Restarting wifi..."                     >> $TEST_LOG
+    nohup wpa_supplicant -Dnl80211 -iwlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | tee $TEST_LOG &
+  fi
   ${DIR}/myip.up
 fi
