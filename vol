@@ -1,7 +1,6 @@
 #!/bin/bash
 # https://www.dronkert.net/rpi/vol.html
 
-
 MIX=amixer
 declare -i OFF=0    # Volume off
 declare -i LO=15    # Minimum volume; try 10 to avoid complete silence
