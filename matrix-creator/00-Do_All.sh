@@ -23,23 +23,22 @@ LOGFILE=$_dir/00-Do_All.log
 # export PATH
 
 cd $_dir
-source 10-Add-Package-Repos > 10-Add-Package-Repos.log
+source 10-Add-Package-Repos | tee -a 10-Add-Package-Repos.log
 
 cd $_dir
-source 10-NodeRed-UpgradeInstallation > 10-NodeRed-UpgradeInstallation.log
+source 10-NodeRed-UpgradeInstallation | tee -a 10-NodeRed-UpgradeInstallation.log
 
 cd $_dir
-source 20-Clone_GitHub-Google > 20-Clone_Github-Google.log
+source 20-Clone_GitHub-Google | tee -a 20-Clone_Github-Google.log
 
 cd $_dir
-source 20-Clone_GitHub-MatrixIO > 20-Clone_Github-MatrixIO.log
+source 20-Clone_GitHub-MatrixIO | tee -a 20-Clone_Github-MatrixIO.log
 
 cd $_dir
-source 30-Face-analytics
+source 30-Face-analytics | tee -a  30-Face-analytics.log
 
 cd $_dir
-source 30-Matrix-app-config-helper
-
+source 30-Matrix-app-config-helper | tee -a 30-Matrix-app-config-helper.log
 cd $_dir
 source 30-Matrix-cli
 
