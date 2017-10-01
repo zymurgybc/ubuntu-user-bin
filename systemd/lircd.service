@@ -1,0 +1,23 @@
+[Unit]
+Description=LIRC Daemon
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/lirc/lircd.pid
+ExecStartPre=/bin/mkdir -p /var/run/lirc
+ExecStartPre=/bin/rm -f /dev/lircd
+ExecStartPre=/bin/rm -f /var/run/lirc/lircd
+ExecStartPre=/bin/ln -s /var/run/lirc/lircd /dev/lircd
+#ExecStartPre=/usr/bin/ir-keytable -p lirc
+ExecStart=/usr/sbin/lircd -d /dev/lirc0 -P /var/run/lirc/lircd.pid
+ExecStopPost=/bin/rm -f /dev/lircd
+ExecStopPost=/bin/rm -fR /var/run/lirc
+
+[Install]
+WantedBy=multi-user.target
+
+
+# https://bbs.archlinux.org/viewtopic.php?id=141300
+
+
