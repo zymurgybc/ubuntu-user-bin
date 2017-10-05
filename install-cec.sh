@@ -1,5 +1,7 @@
 #!/bin/bash
-sudo apt-get install build-essential autoconf liblockdev1-dev libudev-dev git libtool pkg-config
+sudo apt-get install build-essential autoconf cmake libudev-dev git libtool pkg-config
+#liblockdev1-dev 
+
 cd ~/source/github.com
 if [ ! -d "Pulse-Eight" ]; then
    mkdir Pulse-Eight
