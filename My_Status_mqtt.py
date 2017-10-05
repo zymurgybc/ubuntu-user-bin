@@ -75,7 +75,7 @@ while True:
         try:
             publish_status(mqttc)
             time.sleep(60)   # sleep for 30 seconds before next call
-            client_loop = mqttc.loop()
+            client_loop = mqttc.loop(.25) # blocks for 250ms
         except ValueError as err1:
             # we just don't publish bad readings
             logger.warning(os.path.basename(__file__) + " - [2] %s " % err.args)
