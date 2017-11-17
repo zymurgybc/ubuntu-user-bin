@@ -59,7 +59,7 @@ do
 			#cat $NMAP_TMP
 			# Information for the output is unique hosts previously found
 			echo "--------- > Active network hosts" >> ${NMAP_TMP}
-			sort ${NMAP_DIR}/nmap.log | grep Host: | uniq >> ${NMAP_TMP}
+			sort -V ${NMAP_DIR}/nmap.log | grep Host: | uniq >> ${NMAP_TMP}
 
 			if [ -s "${NMAP_TMP}_stale" ]; then 
 				echo "--------- > Stale hosts (will delete)" >> ${NMAP_TMP}
