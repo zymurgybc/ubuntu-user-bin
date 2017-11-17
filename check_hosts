@@ -67,6 +67,10 @@ do
 		                find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7 -delete
 			fi
 
+			# https://serverfault.com/questions/68684/how-can-i-get-diff-to-show-only-added-and-deleted-lines-if-diff-cant-do-it-wh
+			echo "--------- > Inactive network hosts (previously seen)" >> ${NMAP_TMP}
+                        comm -23 <(sort /var/log/nmap/nmap_hosts.log) <(sort /var/log/nmap/nmap.log) >> ${NMAP_TMP}
+
 			mail -s "NMAP Check Hosts - Daily from `hostname`" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM  < ${NMAP_TMP}
 			#rm $NMAP_TMP
         	        mv ${NMAP_TMP} ${NMAP_DIR}/nmap-`date +"%Y-%m-%d_%H%M"`.txt
