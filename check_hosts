@@ -14,12 +14,13 @@ fi
 
 NMAP_LOG=${NMAP_DIR}/nmap.log
 
-if [ ! -f "$NMAP_LOG" ]; then
-    touch "$NMAP_LOG"
-#    echo "Created ${NMAP_LOG}"
-#else 
-#    echo "Found ${NMAP_LOG}"
+# backup previous scan
+if [ -f "$NMAP_LOG" ]; then
+   cat "$NMAP_LOG" >> "${NMAP_LOG}_old"
+   rm  "$NMAP_LOG"
 fi
+# start a fresh scan
+touch "$NMAP_LOG"
 
 sudo nmap -snP -oG - 192.168.1.* \
 | tee -a "${NMAP_LOG}" \
@@ -50,9 +51,9 @@ do
 		-daily)
 		#let AGE="60*24"
         	let AGE="60*4"
-		echo "--------- > Stale log files (untouched >4hrs)" >> ${NMAP_TMP}
-		find ${NMAP_DIR} -type f -name "nmap_*_log" -mmin +$AGE >> ${NMAP_TMP}
-                find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7  > ${NMAP_TMP}_stale
+		echo "--------- > Stale log files (untouched >4hrs)"            >> ${NMAP_TMP}
+		find ${NMAP_DIR} -type f -name "nmap_*_log" -mmin +$AGE         >> ${NMAP_TMP}
+                find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7  >  ${NMAP_TMP}_stale
 		if [ -s "${NMAP_TMP}" ]; then
 			#cat $NMAP_TMP
 			# Information for the output is unique hosts previously found
