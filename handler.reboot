@@ -15,3 +15,5 @@ _dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 
 ${_dir}/myip.datalog
 ${_dir}/myip.startup
+
+/usr/sbin/alsactl restore
