@@ -13,10 +13,11 @@ if [ ! -d "$NMAP_DIR" ]; then
 fi
 
 NMAP_LOG=${NMAP_DIR}/nmap.log
+NMAP_OLD_LOG=${NMAP_DIR}/nmap_old.log
 
 # backup previous scan
 if [ -f "$NMAP_LOG" ]; then
-   cat "$NMAP_LOG" >> "${NMAP_LOG}_old"
+   cat "$NMAP_LOG" >> "${NMAP_OLD_LOG}"
    rm  "$NMAP_LOG"
 fi
 # start a fresh scan
