@@ -9,21 +9,22 @@ git config --global core.editor "nano"
 git pull
 
 sudo apt-get update
-sudo apt-get install aptitude curl mailutils cmake ssmtp mosquitto-clients jq python-dev \
-                     python-pip python3-pip matchbox-keyboard libnss-myhostname \
-                     autoconf libtool automake bison swig swig2.0
-sudo aptitude install nfs-kernel-server nfs-common portmap dos2unix libssl-dev libtiff4-dev \
-                     zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
+sudo apt-get install  aptitude curl mailutils cmake ssmtp
+sudo apt-get install  mosquitto-clients jq python-dev python-pip python3-pip matchbox-keyboard \
+                      libnss-myhostname autoconf libtool automake bison swig swig2.0.*
+sudo aptitude install nfs-kernel-server nfs-common portmap dos2unix libssl-dev libtiff5-dev \
+                      zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
 
 sudo update-rc.d rpcbind enable
 sudo service rpcbind start
-
-sudo cp ~/bin/etc_config/etc_mail.rc /etc/mail.rc
-
 sudo modprobe ipv6
 
-if [ ! -f "/home/pi/dead.letter" ]; then
-    touch /home/pi/dead.letter
+if [ -f "/home/pi/bin/etc/config/etc_mail.rc" ]; then
+    sudo cp /home/pi/bin/etc_config/etc_mail.rc /etc/mail.rc
+fi
+
+if [ ! -f "$HOME/dead.letter" ]; then
+    touch "$HOME/dead.letter"
 fi
 ## ----------- Configure SSH
 if [ ! -d "$HOME/.ssh" ]; then
@@ -70,7 +71,7 @@ fi
 sudo perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit'
 sudo -H pip install --upgrade ephem pytz pika python-dateutil 
 sudo python2.7 -m pip install --upgrade tendo paho-mqtt
-sudo python3.4 -m pip install --upgrade tendo paho-mqtt
+sudo python3.5 -m pip install --upgrade tendo paho-mqtt
 
 sudo apt-get clean && sudo apt-get autoremove
 

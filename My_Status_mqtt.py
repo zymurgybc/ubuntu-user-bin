@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 from tendo import singleton
@@ -25,7 +25,7 @@ LOG_FILENAME = config["mqtt_client_log"]
 logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG)
 logger = logging.getLogger('My_Status_mqtt')
 
-def on_connected(client, userdata, rc):
+def on_connected(client, userdata, flags, rc):
      logger.info(os.path.basename(__file__) + " - mqtt connected")
      publish_status(client)
 
@@ -48,7 +48,7 @@ def getIP():
     return check_output(["hostname", "--all-ip-addresses"])
 
 def publish_status(client):
-    my_status =  'connected ' + getIP() 
+    my_status =  'connected ' + str(getIP())
     logger.info(os.path.basename(__file__) + " - Sending: " + my_status)
     client.publish(MQTT_TOPIC, my_status, qos = 1, retain = 1)
 
@@ -68,7 +68,7 @@ mqttc.on_log = on_log
 while True:
     logger.info(os.path.basename(__file__) + " - Attempting connection")
     # cast the port from 'unicode' to plain 'string'
-    mqttc.connect(config["mqtt_host"], str(config["mqtt_port"]))
+    mqttc.connect(config["mqtt_host"], int(config["mqtt_port"]))
     mqttc.loop_start()
     client_loop = mqttc.loop(120)
     while client_loop == 0:
