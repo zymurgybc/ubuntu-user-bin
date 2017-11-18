@@ -1,10 +1,13 @@
 # in ~/.bashrc
-#if [ -d "$HOME/bin/bash_autocompletion" ]; then
-#   for file in "$HOME/bin/bash_autocompletion"
+#AUTOCOMPLETE="$HOME/bin/bash_autocompletion"
+#if [ -d "$AUTOCOMPLETE" ]; then
+#   FILES="$AUTOCOMPLETE/*"
+#   for file in $FILES
 #   do
 #      . "$file" >> /tmp/autocompletion.out
 #   done
 #fi
+#
 
 
 # http://unix.stackexchange.com/questions/136351/autocomplete-server-names-for-ssh-and-scp
