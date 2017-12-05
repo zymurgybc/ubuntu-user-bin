@@ -25,7 +25,7 @@ LOG_FILENAME = config["mqtt_client_log"]
 logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG)
 logger = logging.getLogger('My_Status_mqtt')
 
-def on_connected(client, userdata, rc):
+def on_connected(client, userdata, flags_dict, result):
      logger.info(os.path.basename(__file__) + " - mqtt connected")
      publish_status(client)
 
@@ -48,7 +48,7 @@ def getIP():
     return check_output(["hostname", "--all-ip-addresses"])
 
 def publish_status(client):
-    my_status =  'connected ' + getIP() 
+    my_status =  'connected ' + getIP()
     logger.info(os.path.basename(__file__) + " - Sending: " + my_status)
     client.publish(MQTT_TOPIC, my_status, qos = 1, retain = 1)
 
