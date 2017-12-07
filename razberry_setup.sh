@@ -1,7 +1,9 @@
 sudo apt-get install ssmtp mailutils build-essential ca-certificates
 sudo apt-get install golang git mercurial
 sudo apt-get install python-dev python-openssl python-pip python3-pip
-sudo apt-get install libusb-dev libasound2-dev libice-dev libftdi-dev libsm-dev libx11-dev libirman-dev libxt-dev libsm-dev libx11-dev libirman-dev libxt-dev libffi-dev
+sudo apt-get install libusb-dev libasound2-dev libice-dev libssl-dev libftdi-dev libsm-dev libx11-dev libirman-dev libxt-dev libsm-dev libx11-dev libirman-dev libxt-dev libffi-dev
+# https://raspberrypi.stackexchange.com/questions/15058/how-do-i-update-openssl-on-raspbian
+sudo apt-get -t jessie install libssl1.0.0
 sudo apt-get source lirc
 
 #wget -q -O - razberry.z-wave.me/install | sudo bash
