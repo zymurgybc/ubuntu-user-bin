@@ -53,21 +53,24 @@ do
         SUBJECT="NMAP Check Hosts - Daily from `hostname`"
         echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"  >> ${NMAP_TMP}
         echo "<html><head><title>${SUBJECT}</title>"                                                                       >> ${NMAP_TMP}
-        echo "<style type=\"text/css\">pre { font-size:10pt; }</style></head><body>"                                       >> ${NMAP_TMP}
+        echo "<style type=\"text/css\">"                                                                                   >> ${NMAP_TMP}
+        echo "pre { font-size:10pt; }"                                                                                     >> ${NMAP_TMP}
+        echo "p.heading { font-wieght: bold; color: blue; width:100%; border-bottom: 1px solid black; }"                   >> ${NMAP_TMP}
+        echo "</style></head><body>"                                                                                       >> ${NMAP_TMP}
 
-        echo "<p style='font-weight:bold'>--------- &gt; Stale log files (untouched >4hrs)</p>"                            >> ${NMAP_TMP}
+        echo "<p class='heading'>Stale log files (untouched >4hrs)</p>"                                     >> ${NMAP_TMP}
         find ${NMAP_DIR} -type f -name "nmap_*_log" -mmin +$AGE  | awk 'NF{$0="<p>" $0 "</p>"}1'                           >> ${NMAP_TMP}
         find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7                                                     >  ${NMAP_TMP}_stale
 
         if [ -s "${NMAP_TMP}" ]; then
             #cat $NMAP_TMP
             # Information for the output is unique hosts previously found
-            echo "<p style='font-weight:bold'>--------- &gt; Active network hosts</p>" >> ${NMAP_TMP}
-            sort -V ${NMAP_DIR}/nmap.log | grep Host: | uniq | awk 'NF{$0="<p>" $0 "</p>"}1'>> ${NMAP_TMP}
+            echo "<p class='heading'>Active network hosts</p>" >> ${NMAP_TMP}
+            sort -V ${NMAP_DIR}/nmap.log | grep Host: | uniq | awk 'NF{$0="<p class='\''a'\''>" $0 "</p>"}1'>> ${NMAP_TMP}
 
             if [ -s "${NMAP_TMP}_stale" ]; then
-                echo "<p style='font-weight:bold'>--------- &gt; Stale hosts (will delete)</p>" >> ${NMAP_TMP}
-                cat ${NMAP_TMP}_stale  | awk 'NF{$0="<p>" $0 "</p>"}1' >> ${NMAP_TMP}
+                echo "<p style='font-weight:bold'>Stale hosts (will delete)</p>" >> ${NMAP_TMP}
+                cat ${NMAP_TMP}_stale  | awk 'NF{$0="<p class='\''b'\''>" $0 "</p>"}1' >> ${NMAP_TMP}
                 find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7 -delete
             fi
 
@@ -79,9 +82,9 @@ do
                 # grep is excluding lines that begin with an octothorp # (after optional whitespace)
                 comm -13 <(                  /usr/bin/sort <( /bin/sed "s/^[ \t]*//" <( /bin/grep -v ^\s*# "${NMAP_LOG}"     )))  \
                          <( /usr/bin/uniq <( /usr/bin/sort <( /bin/sed "s/^[ \t]*//" <( /bin/grep -v ^\s*# "${NMAP_OLD_LOG}" )))) \
-                         | sort -V | sed "s/Status: Up/Status: Down/" | awk 'NF{$0="<p>" $0 "</p>"}1' \
+                         | sort -V | sed "s/Status: Up/Status: Down/" | awk 'NF{$0="<p class='\''c'\''>" $0 "</p>"}1' \
                                   >> ${NMAP_TMP}
-            echo "</div>"   >> ${NMAP_TMP}
+            echo "</div>"         >> ${NMAP_TMP}
             echo "</body></html>" >> ${NMAP_TMP}
             mail -s "${SUBJECT}" $MYIP_ADDRESS_TO \
                  -a "From:$MYIP_ADDRESS_FROM"  \
