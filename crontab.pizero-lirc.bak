@@ -28,7 +28,7 @@
 #6,21,36,51 * * * * /home/pi/bin/check_clock.sh
 2,17,32,47  * * * * /home/pi/bin/check_network.sh
 #0 7          * * * /sbin/hwclock 
-7,22,37,52  * * * * /home/pi/bin/My_Status_mqtt.py 2>&1 >> /var/log/mqtt_client.log
+7,22,37,52  * * * * /home/pi/bin/My_Status_mqtt.py &> /dev/null
 #0 6          * * * /home/pi/bin/backlight on
 #0 23         * * * /home/pi/bin/backlight off
 
