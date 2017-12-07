@@ -43,45 +43,58 @@ done
 while [[ $# > 0 ]]
 do
 
-	key="$1"
-	#echo key=${key}
+    key="$1"
+    #echo key=${key}
 
-	case ${key} in
-		-daily)
-		#let AGE="60*24"
-        	let AGE="60*4"
-		echo "--------- > Stale log files (untouched >4hrs)"            >> ${NMAP_TMP}
-		find ${NMAP_DIR} -type f -name "nmap_*_log" -mmin +$AGE         >> ${NMAP_TMP}
-                find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7  >  ${NMAP_TMP}_stale
-		if [ -s "${NMAP_TMP}" ]; then
-			#cat $NMAP_TMP
-			# Information for the output is unique hosts previously found
-			echo "--------- > Active network hosts" >> ${NMAP_TMP}
-			sort -V ${NMAP_DIR}/nmap.log | grep Host: | uniq >> ${NMAP_TMP}
+    case ${key} in
+        -daily)
+        #let AGE="60*24"
+        let AGE="60*4"
+        SUBJECT="NMAP Check Hosts - Daily from `hostname`"
+        echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"  >> ${NMAP_TMP}
+        echo "<html><head><title>${SUBJECT}</title>"                                                                       >> ${NMAP_TMP}
+        echo "<style type=\"text/css\">pre { font-size:10pt; }</style></head><body>"                                       >> ${NMAP_TMP}
 
-			if [ -s "${NMAP_TMP}_stale" ]; then
-				echo "--------- > Stale hosts (will delete)" >> ${NMAP_TMP}
-				cat ${NMAP_TMP}_stale >> ${NMAP_TMP}
-		                find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7 -delete
-			fi
+        echo "<p style='font-weight:bold'>--------- &gt; Stale log files (untouched >4hrs)</p>"                            >> ${NMAP_TMP}
+        find ${NMAP_DIR} -type f -name "nmap_*_log" -mmin +$AGE  | awk 'NF{$0="<p>" $0 "</p>"}1'                           >> ${NMAP_TMP}
+        find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7                                                     >  ${NMAP_TMP}_stale
 
-			# https://serverfault.com/questions/68684/how-can-i-get-diff-to-show-only-added-and-deleted-lines-if-diff-cant-do-it-wh
-			echo "--------- > Inactive network hosts (previously seen)" >> ${NMAP_TMP}
-                        # comm -23 means only show unique lines in file one (not unique to file two, or in both)
-                        # sed is removing leading white space
-                        # grep is excluding lines that begin with an octothorp # (after optional whitespace)
-                        comm -13 <(                  /usr/bin/sort <( /bin/sed "s/^[ \t]*//" <( /bin/grep -v ^\s*# "${NMAP_LOG}"     )))  \
-                                 <( /usr/bin/uniq <( /usr/bin/sort <( /bin/sed "s/^[ \t]*//" <( /bin/grep -v ^\s*# "${NMAP_OLD_LOG}" )))) \
-                                 | sort -V | sed "s/Status: Up/Status: Down/" >> ${NMAP_TMP}
+        if [ -s "${NMAP_TMP}" ]; then
+            #cat $NMAP_TMP
+            # Information for the output is unique hosts previously found
+            echo "<p style='font-weight:bold'>--------- &gt; Active network hosts</p>" >> ${NMAP_TMP}
+            sort -V ${NMAP_DIR}/nmap.log | grep Host: | uniq | awk 'NF{$0="<p>" $0 "</p>"}1'>> ${NMAP_TMP}
 
-			mail -s "NMAP Check Hosts - Daily from `hostname`" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM  < ${NMAP_TMP}
-			#rm $NMAP_TMP
-        	        mv ${NMAP_TMP} ${NMAP_DIR}/nmap-`date +"%Y-%m-%d_%H%M"`.txt
-		fi
-		;;
-	esac
-	shift # past argument or value
+            if [ -s "${NMAP_TMP}_stale" ]; then
+                echo "<p style='font-weight:bold'>--------- &gt; Stale hosts (will delete)</p>" >> ${NMAP_TMP}
+                cat ${NMAP_TMP}_stale  | awk 'NF{$0="<p>" $0 "</p>"}1' >> ${NMAP_TMP}
+                find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7 -delete
+            fi
+
+            # https://serverfault.com/questions/68684/how-can-i-get-diff-to-show-only-added-and-deleted-lines-if-diff-cant-do-it-wh
+            echo "<p style='font-weight:bold'>--------- &gt; Inactive network hosts (previously seen)</p>" >> ${NMAP_TMP}
+            echo "<div style='color:red;'>" >> ${NMAP_TMP}
+                # comm -13 means only show unique lines in file two (not unique to file one, or in both)
+                # sed is removing leading white space
+                # grep is excluding lines that begin with an octothorp # (after optional whitespace)
+                comm -13 <(                  /usr/bin/sort <( /bin/sed "s/^[ \t]*//" <( /bin/grep -v ^\s*# "${NMAP_LOG}"     )))  \
+                         <( /usr/bin/uniq <( /usr/bin/sort <( /bin/sed "s/^[ \t]*//" <( /bin/grep -v ^\s*# "${NMAP_OLD_LOG}" )))) \
+                         | sort -V | sed "s/Status: Up/Status: Down/" | awk 'NF{$0="<p>" $0 "</p>"}1' \
+                                  >> ${NMAP_TMP}
+            echo "</div>"   >> ${NMAP_TMP}
+            echo "</body></html>" >> ${NMAP_TMP}
+            mail -s "${SUBJECT}" $MYIP_ADDRESS_TO \
+                 -a "From:$MYIP_ADDRESS_FROM"  \
+                 -a "MIME-Version: 1.0" \
+                 -a "Content-Type: text/html;" < ${NMAP_TMP}
+            #rm $NMAP_TMP
+                    mv ${NMAP_TMP} ${NMAP_DIR}/nmap-`date +"%Y-%m-%d_%H%M"`.txt
+        fi
+        ;;
+    esac
+    shift # past argument or value
 done
 
 # remove logs that are >120 days old
 find /var/log/nmap/nmap* -mtime +120 -exec rm '{}' \;
+
