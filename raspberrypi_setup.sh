@@ -8,11 +8,12 @@ git config --global push.default simple
 git config --global core.editor "nano"
 git pull
 
-sudo apt-get update
-sudo apt-get install  aptitude curl mailutils cmake ssmtp
-sudo apt-get install  mosquitto-clients jq python-dev python-pip python3-pip matchbox-keyboard \
-                      libnss-myhostname autoconf libtool automake bison swig swig2.0.*
-sudo aptitude install nfs-kernel-server nfs-common portmap dos2unix libssl-dev libtiff5-dev \
+sudo apt-get -y update
+sudo apt-get -y install  aptitude curl mailutils cmake ssmtp
+sudo apt-get -y install  mosquitto-clients jq python-dev python-pip python3-pip matchbox-keyboard \
+                         libnss-myhostname autoconf libtool automake bison
+sudo apt-get -y install  swig swig2.0.*
+sudo aptitude -y install nfs-kernel-server nfs-common portmap dos2unix libssl-dev libtiff5-dev \
                       zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
 
 sudo update-rc.d rpcbind enable
@@ -69,6 +70,7 @@ fi
 sudo perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit'
 sudo -H pip install --upgrade ephem pytz pika python-dateutil
 sudo -H python2.7 -m pip install --upgrade tendo paho-mqtt
+sudo -H python3.4 -m pip install --upgrade tendo paho-mqtt
 sudo -H python3.5 -m pip install --upgrade tendo paho-mqtt
 sudo -H python3.6 -m pip install --upgrade tendo paho-mqtt
 
