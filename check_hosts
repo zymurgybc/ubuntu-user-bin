@@ -8,20 +8,20 @@ source ${_dir}/myip.cronmail.config
 NMAP_TMP=/tmp/nmap_issues
 NMAP_DIR=/var/log/nmap
 
-if [ ! -d "$NMAP_DIR" ]; then
-    mkdir "$NMAP_DIR"
+if [ ! -d "${NMAP_DIR}" ]; then
+    mkdir "${NMAP_DIR}"
 fi
 
 NMAP_LOG=${NMAP_DIR}/nmap.log
 NMAP_OLD_LOG=${NMAP_DIR}/nmap_old.log
 
 # backup previous scan
-if [ -f "$NMAP_LOG" ]; then
-   cat "$NMAP_LOG" >> "${NMAP_OLD_LOG}"
-   rm  "$NMAP_LOG"
+if [ -f "${NMAP_LOG}" ]; then
+   cat  "${NMAP_LOG}" >> "${NMAP_OLD_LOG}"
+   rm   "${NMAP_LOG}"
 fi
 # start a fresh scan
-touch "$NMAP_LOG"
+touch "${NMAP_LOG}"
 
 sudo nmap -snP -oG - 192.168.1.* \
 | tee -a "${NMAP_LOG}" \
@@ -38,8 +38,6 @@ do
   echo Seen `date +"%Y-%m-%d %T"` >> ${OUTPUT}
 
 done
-
-
 
 # http://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
 while [[ $# > 0 ]]
@@ -61,7 +59,7 @@ do
 			echo "--------- > Active network hosts" >> ${NMAP_TMP}
 			sort -V ${NMAP_DIR}/nmap.log | grep Host: | uniq >> ${NMAP_TMP}
 
-			if [ -s "${NMAP_TMP}_stale" ]; then 
+			if [ -s "${NMAP_TMP}_stale" ]; then
 				echo "--------- > Stale hosts (will delete)" >> ${NMAP_TMP}
 				cat ${NMAP_TMP}_stale >> ${NMAP_TMP}
 		                find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7 -delete
@@ -69,7 +67,12 @@ do
 
 			# https://serverfault.com/questions/68684/how-can-i-get-diff-to-show-only-added-and-deleted-lines-if-diff-cant-do-it-wh
 			echo "--------- > Inactive network hosts (previously seen)" >> ${NMAP_TMP}
-                        comm -23 <(sort "${NMAP_LOG}") <(sort "${NMAP_OLD_LOG}") >> ${NMAP_TMP}
+                        # comm -23 means only show unique lines in file one (not unique to file two, or in both)
+                        # sed is removing leading white space
+                        # grep is excluding lines that begin with an octothorp # (after optional whitespace)
+                        comm -13 <(                  /usr/bin/sort <( /bin/sed "s/^[ \t]*//" <( /bin/grep -v ^\s*# "${NMAP_LOG}"     )))  \
+                                 <( /usr/bin/uniq <( /usr/bin/sort <( /bin/sed "s/^[ \t]*//" <( /bin/grep -v ^\s*# "${NMAP_OLD_LOG}" )))) \
+                                 | sort -V | sed "s/Status: Up/Status: Down/" >> ${NMAP_TMP}
 
 			mail -s "NMAP Check Hosts - Daily from `hostname`" $MYIP_ADDRESS_TO -aFrom:$MYIP_ADDRESS_FROM  < ${NMAP_TMP}
 			#rm $NMAP_TMP
