@@ -43,9 +43,9 @@ def on_subscribe(mosq, obj, mid, granted_qos):
 def on_log(mosq, obj, level, string):
     logger.info(os.path.basename(__file__) + " - Log: " + string)
 
-
 def getIP():
-    return check_output(["hostname", "--all-ip-addresses"])
+    # in subprocess
+    return str(check_output(["hostname", "--all-ip-addresses"]))
 
 def publish_status(client):
     my_status =  'connected ' + getIP()
