@@ -54,11 +54,12 @@ do
         echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"  >> ${NMAP_TMP}
         echo "<html><head><title>${SUBJECT}</title>"                                                                       >> ${NMAP_TMP}
         echo "<style type=\"text/css\">"                                                                                   >> ${NMAP_TMP}
-        echo "pre { font-size:10pt; }"                                                                                     >> ${NMAP_TMP}
-        echo "p.heading { font-wieght: bold; color: blue; width:100%; border-bottom: 1px solid black; }"                   >> ${NMAP_TMP}
+        echo "pre { font-family: \"Courier New\", Courier, monospace; font-size: 10pt; }"                                  >> ${NMAP_TMP}
+        echo "p.heading { font-family: Arial, Helvetica, sans-serif; font-size: 12pt; font-wieght: bold;"                  >> ${NMAP_TMP}
+        echo "color: blue; width:100%; border-bottom: 1px solid black; }"                                                  >> ${NMAP_TMP}
         echo "</style></head><body>"                                                                                       >> ${NMAP_TMP}
 
-        echo "<p class='heading'>Stale log files (untouched >4hrs)</p>"                                     >> ${NMAP_TMP}
+        echo "<p class='heading'>Stale log files (untouched >4hrs)</p>"                                                    >> ${NMAP_TMP}
         find ${NMAP_DIR} -type f -name "nmap_*_log" -mmin +$AGE  | awk 'NF{$0="<p>" $0 "</p>"}1'                           >> ${NMAP_TMP}
         find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7                                                     >  ${NMAP_TMP}_stale
 
@@ -75,7 +76,7 @@ do
             fi
 
             # https://serverfault.com/questions/68684/how-can-i-get-diff-to-show-only-added-and-deleted-lines-if-diff-cant-do-it-wh
-            echo "<p style='font-weight:bold'>--------- &gt; Inactive network hosts (previously seen)</p>" >> ${NMAP_TMP}
+            echo "<p class='heading'>Inactive network hosts (previously seen)</p>" >> ${NMAP_TMP}
             echo "<div style='color:red;'>" >> ${NMAP_TMP}
                 # comm -13 means only show unique lines in file two (not unique to file one, or in both)
                 # sed is removing leading white space
