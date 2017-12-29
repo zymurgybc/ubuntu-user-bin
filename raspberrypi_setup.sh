@@ -67,6 +67,8 @@ if [ -f "${HOME}/bin/crontab.`hostname`.bak" ]; then
     sudo crontab ~/bin/crontab.`hostname`.bak
 fi
 
+sudo perl -MCPAN -e 'install YAML CPAN; reload cpan'
+sudo perl -MCPAN -e 'o conf commit'
 sudo perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit'
 sudo -H pip install --upgrade ephem pytz pika python-dateutil
 sudo -H python2.7 -m pip install --upgrade tendo paho-mqtt
