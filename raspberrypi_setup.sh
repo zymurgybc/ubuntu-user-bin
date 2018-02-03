@@ -13,7 +13,7 @@ sudo apt-get -y install  aptitude curl mailutils cmake ssmtp
 sudo apt-get -y install  mosquitto-clients build-essential jq \
                          python-dev python-pip python3-pip matchbox-keyboard \
                          libnss-myhostname autoconf libtool automake bison \
-                         libffi-dev
+                         libffi-dev ruby gem
 sudo apt-get -y install  swig swig2.0.*
 sudo aptitude -y install nfs-kernel-server nfs-common portmap dos2unix libssl-dev libtiff5-dev \
                       zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
