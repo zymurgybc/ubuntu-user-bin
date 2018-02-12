@@ -27,10 +27,13 @@ touch "${NMAP_LOG}"
 interface=(`hostname --all-ip-addresses`)
 for ip in "${interface[@]}"
 do
-    if [[ ${ip} =~ ${IP4_REGEX} ]]; then
+    if [[ "${ip}" == 10.* ]]; then
+        echo "Skipping subnet ${ip%\.[0-9]*}.*" >> "${NMAP_LOG}"
+    elif [[ ${ip} =~ ${IP4_REGEX} ]]; then
 
-        echo "Scanning  ${ip%\.[0-9]*}.*" >> "${NMAP_LOG}"
-        # replace the last segment with a star to scan the subnet of that address
+        # replace the last segment with a star to scan the subnet
+        # of that address
+        echo "Scanning subnet ${ip%\.[0-9]*}.*" >> "${NMAP_LOG}"
         nmap -sP --host-timeout 5 -oG - "${ip%\.[0-9]*}.*" \
         | tee -a "${NMAP_LOG}" \
         | grep -oE '${IP4_REGEX}' \
@@ -39,20 +42,21 @@ do
 
             OUTPUT=${NMAP_DIR}/nmap_${addr}_log
             #echo Output=${OUTPUT}
-            if [ ! -f ${OUTPUT} ]; then
-               echo `date +"%Y-%m-%d %T"` = new device ${addr} >> ${NMAP_TMP}
-               echo `date +"%Y-%m-%d %T"` = new device ${addr} >> ${OUTPUT}
+            if [ ! -f "${OUTPUT}" ]; then
+               echo `date +"%Y-%m-%d %T"` = new device ${addr} >> "${NMAP_TMP}"
+               echo `date +"%Y-%m-%d %T"` = new device ${addr} >> "${OUTPUT}"
             fi
-            echo Seen `date +"%Y-%m-%d %T"` >> ${OUTPUT}
+            echo Seen `date +"%Y-%m-%d %T"` >> "${OUTPUT}"
 
         done
+
     else
-        echo "Not scanning  ${ip}" >> "${NMAP_LOG}"
+        echo "Not scanning ${ip}" >> "${NMAP_LOG}"
     fi
 done
+
 # http://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
-while [[ $# > 0 ]]
-do
+while [[ $# > 0 ]]; do
 
     key="$1"
     #echo key=${key}
