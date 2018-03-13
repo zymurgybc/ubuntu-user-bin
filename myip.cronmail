@@ -18,8 +18,13 @@ source ${_dir}/dyndns-update.config
 
 (echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
  echo "<html><head><title>$MYIP_SUBJECT</title>"; 
- echo "<style type=\"text/css\">pre { font-size:10pt; }</style></head><body><pre>";
+ echo "<style type=\"text/css\">"
+ echo "pre { font-size:10pt; }"
+ echo "pre b { text-decoration:underline; color:blue; }"
+ echo "</style></head><body><pre>";
+ echo "<b>My IP</b>"; echo;
  tail -n6 $MYIP_LOG; echo; echo;
+ echo "<b>DNS Updates</b>"; echo;
  tail -n4 $FREEDNS_LOG; echo; echo;
  if [ -f "/var/log/mqtt_client.log" ]; then
     echo "<b>mqtt_client</b>"; echo;
