@@ -43,12 +43,12 @@ fi
 
 if [ ! -f "${HOME}/.ssh/config" ]; then
     echo Getting a copy of ~/.ssh/config
-    scp theather@wasabi:~/.ssh/config /home/pi/.ssh/
+    scp theather@wasabi:~/.ssh/config ~/.ssh/
 fi
 
 if [ ! -f "${HOME}/bin/dyndns-update.config" ]; then
     echo Getting a copy of ~/bin/dyndns-update.config
-    scp theather@wasabi:~/bin/dyndns-update.config /home/pi/bin/
+    scp theather@wasabi:~/bin/dyndns-update.config ~/bin/
 fi
 
 if [ ! -f "${HOME}/bin/myip.cronmail.config" ]; then
