@@ -155,5 +155,7 @@ while True:
 		# handle filed sends with a note in the log
 		logger.warning(os.path.basename(__file__) + " - mqtt loop failed.  Exception message: %s" % err.args)
 		sys.exit(os.path.basename(__file__) + " - mqtt loop failed.  Exception message: %s" % err.args)
+                # could be a session problem, so log back into neviweb
+		neviSession = neviwebLogin()
 
 

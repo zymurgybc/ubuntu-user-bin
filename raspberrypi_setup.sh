@@ -79,6 +79,9 @@ do
     if [ ! -z "`which ${i}`" ]; then
         echo "    Found \"`which ${i}`\""
         sudo -H sh -c "`which ${i}` -m pip install --upgrade ephem pytz pika python-dateutil tendo paho-mqtt smbus-cffi"
+# http://ouimeaux.readthedocs.io/en/latest/installation.html
+# wemo wrapper in python :-)
+# python3 -m pip install ouimeaux
     else
         echo "    ${i} does not appear to be available."
     fi
