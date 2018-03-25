@@ -1,0 +1,41 @@
+# Edit this file to introduce tasks to be run by cron.
+# 
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+# 
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').# 
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+# 
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+# 
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+# 
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+# m h  dom mon dow   command
+
+1,16,31,46 * * * * /home/udooer/bin/dyndns-update.cron
+17 6,18      * * * /home/udooer/bin/myip.datalog
+15 7         * * 1 /home/udooer/bin/myip.cronmail
+7,22,37,52 * * * * /home/udooer/bin/check_network.sh
+5 4          * * * /home/udooer/bin/letsencrypt-renew-nginx.sh
+2,17,32,47 * * * * /home/udooer/bin/My_Status_mqtt.py 2>/dev/null >> /var/log/mqtt_client.log
+#4,19,34,49 * * * * /home/udooer/bin/neviweb_mqtt.py   2>/dev/null >> /var/log/mqtt_client.log
+#* 6,18       * * * systemctl restart mqspeak
+
+6,16,26,36,46,56 * * * * /home/udooer/bin/check_hosts
+11 7,12,17         * * * /home/udooer/bin/check_hosts -daily
+#15 6       * * 1,2,3,4,5  /home/udooer/bin/livingroomlights.sh on 2>&1        >> /tmp/livingroomlights-on.log > /dev/null
+#20         * * * * redis-cli bgrewriteaof > nul
+30         * * * * /home/udooer/bin/dhsupdate.pl
+
+#@reboot  /bin/bash "/bin/sleep 2m && /home/udooer/bin/myip.datalog && /home/udooer/bin/myip.startup"
+@reboot /home/udooer/bin/handler.reboot
+

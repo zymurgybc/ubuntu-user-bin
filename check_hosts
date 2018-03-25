@@ -66,6 +66,12 @@ while [[ $# > 0 ]]; do
         #let AGE="60*24"
         let AGE="60*4"
         SUBJECT="NMAP Check Hosts - Daily from `hostname`"
+        echo ""                                                        >> ${NMAP_TMP}
+        echo "This is a MIME-encapsulated message"                     >> ${NMAP_TMP}
+        echo ""                                                        >> ${NMAP_TMP}
+        echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca"         >> ${NMAP_TMP}
+        echo "Content-Type: text/html"                                 >> ${NMAP_TMP}
+        echo ""                                                        >> ${NMAP_TMP}
         echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"  >> ${NMAP_TMP}
         echo "<html><head><title>${SUBJECT}</title>"                                                                       >> ${NMAP_TMP}
         echo "<style type=\"text/css\">"                                                                                   >> ${NMAP_TMP}
@@ -73,7 +79,6 @@ while [[ $# > 0 ]]; do
         echo "p.heading { font-family: Arial, Helvetica, sans-serif; font-size: 12pt; font-wieght: bold;"                  >> ${NMAP_TMP}
         echo "color: blue; width:100%; border-bottom: 1px solid black; }"                                                  >> ${NMAP_TMP}
         echo "</style></head><body>"                                                                                       >> ${NMAP_TMP}
-
         echo "<p class='heading'>Stale log files (untouched >4hrs)</p>"                                                    >> ${NMAP_TMP}
         find ${NMAP_DIR} -type f -name "nmap_*_log" -mmin +$AGE  | awk 'NF{$0="<p>" $0 "</p>"}1'                           >> ${NMAP_TMP}
         find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7                                                     >  ${NMAP_TMP}_stale
@@ -85,7 +90,7 @@ while [[ $# > 0 ]]; do
             sort -V ${NMAP_DIR}/nmap.log | grep Host: | uniq | awk 'NF{$0="<p class='\''a'\''>" $0 "</p>"}1'>> ${NMAP_TMP}
 
             if [ -s "${NMAP_TMP}_stale" ]; then
-                echo "<p style='font-weight:bold'>Stale hosts (will delete)</p>" >> ${NMAP_TMP}
+                echo "<p class='heading'>Stale hosts (will delete)</p>" >> ${NMAP_TMP}
                 cat ${NMAP_TMP}_stale  | awk 'NF{$0="<p class='\''b'\''>" $0 "</p>"}1' >> ${NMAP_TMP}
                 find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7 -delete
             fi
@@ -100,15 +105,18 @@ while [[ $# > 0 ]]; do
                          <( /usr/bin/uniq <( /usr/bin/sort <( /bin/sed "s/^[ \t]*//" <( /bin/grep -v ^\s*# "${NMAP_OLD_LOG}" )))) \
                          | sort -V | sed "s/Status: Up/Status: Down/" | awk 'NF{$0="<p class='\''c'\''>" $0 "</p>"}1' \
                                   >> ${NMAP_TMP}
-            echo "</div>"         >> ${NMAP_TMP}
-            echo "</body></html>" >> ${NMAP_TMP}
-            mail -s "${SUBJECT}" $MYIP_ADDRESS_TO \
-                 -a "From:$MYIP_ADDRESS_FROM"  \
-                 -a "MIME-Version: 1.0" \
-                 -a "Content-Type: text/html;" < ${NMAP_TMP}
-            #rm $NMAP_TMP
-                    mv ${NMAP_TMP} ${NMAP_DIR}/nmap-`date +"%Y-%m-%d_%H%M"`.txt
         fi
+
+        echo "</div>"         >> ${NMAP_TMP}
+        echo "</body></html>" >> ${NMAP_TMP}
+        echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca--"   >> ${NMAP_TMP}
+
+        mail -s "${SUBJECT}" $MYIP_ADDRESS_TO \
+             -a "From: $MYIP_ADDRESS_FROM"  \
+             -a "MIME-Version: 1.0" \
+             -a "Content-Type: multipart/alternative;  boundary=\"EneUrBrHYB.ABC123/`hostname`.heatherington.ca\"" < ${NMAP_TMP}
+        #rm $NMAP_TMP
+        mv ${NMAP_TMP} ${NMAP_DIR}/nmap-`date +"%Y-%m-%d_%H%M"`.txt
         ;;
     esac
     shift # past argument or value
