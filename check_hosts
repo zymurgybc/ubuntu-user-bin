@@ -16,6 +16,11 @@ fi
 NMAP_LOG=${NMAP_DIR}/nmap.log
 NMAP_OLD_LOG=${NMAP_DIR}/nmap_old.log
 
+# sudo apt-get install moreutils
+if [ -x `which sponge` ]; then
+    tail -n 2000 ${NMAP_OLD_LOG} | sponge ${NMAP_OLD_LOG}
+fi
+
 # backup previous scan
 if [ -f "${NMAP_LOG}" ]; then
    cat  "${NMAP_LOG}" >> "${NMAP_OLD_LOG}"
