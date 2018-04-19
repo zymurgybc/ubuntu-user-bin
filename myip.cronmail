@@ -35,7 +35,12 @@ source ${_dir}/dyndns-update.config
     tail -n6 /var/log/updatedhs; echo; echo;
  fi
 
+ echo "<b>Available Updates</b>"
+ apt list --upgradable | head -n 20
+ echo "<p></p>"
+ echo "<b>Storage Usage</b>"
  df -h; echo; echo;  \
+ echo "<b>System Uptime</b>"
  uptime;
  echo "</pre></body></html>"
 ) | mail \
