@@ -36,7 +36,7 @@ source ${_dir}/dyndns-update.config
  fi
 
  echo "<b>Available Updates</b>"
- apt list --upgradable | head -n 20
+ apt list --upgradable 2>/dev/null | head -n 20
  echo "<p></p>"
  echo "<b>Storage Usage</b>"
  df -h; echo; echo;  \
