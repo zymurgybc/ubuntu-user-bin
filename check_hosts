@@ -81,25 +81,28 @@ while [[ $# > 0 ]]; do
         echo "Content-Type: text/html"                                 >> ${NMAP_TMP}
         echo ""                                                        >> ${NMAP_TMP}
         echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"  >> ${NMAP_TMP}
-        echo "<html><head><title>${SUBJECT}</title>"                                                                       >> ${NMAP_TMP}
-        echo "<style type=\"text/css\">"                                                                                   >> ${NMAP_TMP}
-        echo "pre { font-family: \"Courier New\", Courier, monospace; font-size: 10pt; } "                                 >> ${NMAP_TMP}
-        echo "p.heading { font-family: Arial, Helvetica, sans-serif; font-size: 12pt;"                                      >> ${NMAP_TMP}
-        echo "color: blue; width:100%; border-bottom: 1px solid black; }"                                                  >> ${NMAP_TMP}
-        echo "div.data { margin-left:25px; }"                                                                              >> ${NMAP_TMP}
-        echo "</style></head><body>"                                                                                       >> ${NMAP_TMP}
-        #cat /var/log/freedns_penrose_newtonian_ca.`date +"%Y%m"`.log | grep -v "has not changed."       | awk 'NF{$0="<p>" $0 "</p>"}1'                           >> ${NMAP_TMP}
-        cat $FREEDNS_LOG | grep -v "has not changed." | tail -n 10  | sed -r -e 's|(([0-9]{1,3}\.){3}[0-9]{1,3})|<b class="ip">\1</b>|g'           >> ${NMAP_TMP}
+        echo "<html><head><title>${SUBJECT}</title>"                                                         >> ${NMAP_TMP}
+        echo "<style type=\"text/css\">"                                                                     >> ${NMAP_TMP}
+        echo "pre { font-family: \"Courier New\", Courier, monospace; font-size: 10pt; } "                   >> ${NMAP_TMP}
+        echo "p.heading { font-family: Arial, Helvetica, sans-serif; font-size: 12pt;"                       >> ${NMAP_TMP}
+        echo "color: blue; width:100%; border-bottom: 1px solid black; }"                                    >> ${NMAP_TMP}
+        echo "div.data { margin-left:25px; }"                                                                >> ${NMAP_TMP}
+        echo "</style></head><body>"                                                                         >> ${NMAP_TMP}
+        #cat /var/log/freedns_penrose_newtonian_ca.`date +"%Y%m"`.log | grep -v "has not changed."   \
+        #                 | awk 'NF{$0="<p>" $0 "</p>"}1'                                                     >> ${NMAP_TMP}
+        cat $FREEDNS_LOG | grep -v "has not changed." | tail -n 10  \
+                         | sed -r -e 's|(([0-9]{1,3}\.){3}[0-9]{1,3})|<b class="ip">\1</b>|g'   \
+                         | awk 'NF{$0="<p>" $0 "</p>"}1'                                                     >> ${NMAP_TMP}
 
-        echo "<p class='heading'><b>Stale log files (untouched >4hrs)</b></p>"                                                    >> ${NMAP_TMP}
-        find ${NMAP_DIR} -type f -name "nmap_*_log" -mmin +$AGE  | awk 'NF{$0="<p>" $0 "</p>"}1'                           >> ${NMAP_TMP}
-        find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7                                                     >  ${NMAP_TMP}_stale
+        echo "<p class='heading'><b>Stale log files (untouched >4hrs)</b></p>"                               >> ${NMAP_TMP}
+        find ${NMAP_DIR} -type f -name "nmap_*_log" -mmin +$AGE  | awk 'NF{$0="<p>" $0 "</p>"}1'             >> ${NMAP_TMP}
+        find ${NMAP_DIR} -type f -name "nmap_*_log" -size 0b -mtime +7                                       >  ${NMAP_TMP}_stale
 
         if [ -s "${NMAP_TMP}" ]; then
             #cat $NMAP_TMP
             # Information for the output is unique hosts previously found
-            echo "<p class='heading'><b>Active network hosts</b></p><div class='data'>" >> ${NMAP_TMP}
-            sort -V ${NMAP_DIR}/nmap.log | grep Host: | uniq | awk 'NF{$0="<p class='\''a'\''>" $0 "</p>"}1'>> ${NMAP_TMP}
+            echo "<p class='heading'><b>Active network hosts</b></p><div class='data'>"                      >> ${NMAP_TMP}
+            sort -V ${NMAP_DIR}/nmap.log | grep Host: | uniq | awk 'NF{$0="<p class='\''a'\''>" $0 "</p>"}1' >> ${NMAP_TMP}
 
             if [ -s "${NMAP_TMP}_stale" ]; then
                 echo "</div><p class='heading'><b>Stale hosts (will delete)</b></p><div class='data'>" >> ${NMAP_TMP}
