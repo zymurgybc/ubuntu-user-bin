@@ -93,6 +93,8 @@ while [[ $# > 0 ]]; do
         cat $FREEDNS_LOG | grep -v "has not changed." | tail -n 10  \
                          | sed -r -e 's|(([0-9]{1,3}\.){3}[0-9]{1,3})|<b class="ip">\1</b>|g'   \
                          | awk 'NF{$0="<p>" $0 "</p>"}1'                                                     >> ${NMAP_TMP}
+        cat $FREEDNS_LOG | tail -n 1  \
+                         | awk 'NF{$0="<p>" $0 "</p>"}1'                                                     >> ${NMAP_TMP}
 
         echo "<p class='heading'><b>Stale log files (untouched >4hrs)</b></p>"                               >> ${NMAP_TMP}
         find ${NMAP_DIR} -type f -name "nmap_*_log" -mmin +$AGE  | awk 'NF{$0="<p>" $0 "</p>"}1'             >> ${NMAP_TMP}
