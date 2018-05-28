@@ -126,9 +126,13 @@ while [[ $# > 0 ]]; do
                                   >> ${NMAP_TMP}
         fi
         echo "</div>"                                                                               >> ${NMAP_TMP}
-        echo "<p class='heading'><b>Failed Services</b></p><div class='data'>"                      >> ${NMAP_TMP}
-        systemctl list-units --state=failed | awk 'NF{$0="<p>" $0 "</p>"}1'                         >> ${NMAP_TMP}
-        echo "</div>"                                                                               >> ${NMAP_TMP}
+        if [ -x "`which systemctl`" ]; then
+            echo "<p class='heading'><b>Failed Services</b></p><div class='data'>"                      >> ${NMAP_TMP}
+            systemctl list-units --state=failed | awk 'NF{$0="<p>" $0 "</p>"}1'                         >> ${NMAP_TMP}
+            echo "</div>"
+        else
+            echo "<p class='heading'><b>systemd is not available</b></p>"                      >> ${NMAP_TMP}
+        fi                                                                          >> ${NMAP_TMP}
         echo "</body></html>" >> ${NMAP_TMP}
         echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca--"   >> ${NMAP_TMP}
 
