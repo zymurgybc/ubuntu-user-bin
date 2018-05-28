@@ -31,9 +31,14 @@ ping -c4 $ROUTER_IP 2>&1 > /dev/null
 if [ $? != 0 ]; then
   echo -------------------- RESTART               >> $TEST_LOG
   #sudo /sbin/shutdown -r now
-  #/usr/sbin/service networking restart 2>&1      >> $TEST_LOG
-  /bin/systemctl daemon-reload && /bin/systemctl restart networking  2>&1         >> $TEST_LOG
-  sleep 5s 
+  if [ -x "`which systemctl`" ]; then
+      #/usr/sbin/service networking restart 2>&1      >> $TEST_LOG
+      /bin/systemctl daemon-reload && /bin/systemctl restart networking  2>&1         >> $TEST_LOG
+  else
+      echo "-------------------- Restarting network using /etc/init.d/networking"     >> $TEST_LOG
+      /etc/init.d/networking restart 2>&1                                             >> $TEST_LOG
+  fi
+  sleep 5s
   echo `date +"%Y-%m-%d %T"`                      >> $TEST_LOG
   echo second ping result = `ping -c1 $ROUTER_IP` >> $TEST_LOG
   if [ $? != 0 ]; then

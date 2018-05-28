@@ -40,23 +40,35 @@ source ${_dir}/dyndns-update.cron
  echo "<div class='data'><pre>";
  tail -n6 $MYIP_LOG; echo; echo;
  echo Now == `date` `${_base}/bin/myip` >> $MYIP_LOG;
- tail -n12 $MYIP_DAILY; echo "</pre></div>"; echo;
+ echo "</pre></div>";
  echo "<p class='heading'><b>Storage State</b></p><div class='data'><pre>";
  df; echo; echo;
  if [ -f "/var/log/mqtt_client.log" ]; then
     echo "<p class='heading'><b>mqtt_client</b></p>"
     echo "<div class='data'><pre>";
-    tail -n6 /var/log/mqtt_client.log; echo "</pre></div>"; echo;
+    tail -n6 /var/log/mqtt_client.log;
+    echo "</pre></div>";
+ fi
+ if [ -f "$MYIP_DAILY" ]; then
+     echo "<p class='heading'><b>MYIP_Daily Dynamic DNS</b></p>"
+     echo "<div class='data'><pre>";
+     tail -n 12 $MYIP_DAILY;
+     echo "</pre></div>";
  fi
  if [ -f "/var/log/updatedhs" ]; then
-    echo "<p class='heading'><b>Updatedhs</b></p>"
+    echo "<p class='heading'><b>UpdateDHS Dynamic DNS</b></p>"
     echo "<div class='data'><pre>";
-    tail -n6 /var/log/updatedhs; echo "</pre></div>"; echo;
+    tail -n6 /var/log/updatedhs #| awk 'NF{$0="<p>" $0 "</p>"}1';
+    echo "</pre></div>"; echo;
  fi
 
-echo "<p class='heading'><b>Failed Services</b></p><div class='data'>"
-systemctl list-units --state=failed | awk 'NF{$0="<p>" $0 "</p>"}1'
-echo "</div>"
+ if [ -x "`which systemctl`" ]; then
+    echo "<p class='heading'><b>Failed Services</b></p><div class='data'>"
+    systemctl list-units --state=failed | awk 'NF{$0="<p>" $0 "</p>"}1'
+    echo "</div>"
+ else
+    echo "<p class='heading'><b>systemd is not available</b></p>"
+ fi
 
 uptime;
  echo "</body></html>"
