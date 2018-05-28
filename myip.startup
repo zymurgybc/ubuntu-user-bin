@@ -31,23 +31,34 @@ source ${_dir}/dyndns-update.cron
 
 (echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
  echo "<html><head><title>$MYIP_SUBJECT</title>";
- echo "<style type=\"text/css\">pre { font-size:10pt; }</style></head><body>"
- echo "<b>IP Addresses for this host</b><pre>";
+ echo "<style type='text/css'>"
+ echo ".heading {font-weight: bold; color: blue; }"
+ echo ".data { color: dark-grey; }"
+ echo "pre { font-size:10pt; }"
+ echo "</style></head><body>"
+ echo "<p class='heading'><b>IP Addresses for this host</b></p>"
+ echo "<div class='data'><pre>";
  tail -n6 $MYIP_LOG; echo; echo;
  echo Now == `date` `${_base}/bin/myip` >> $MYIP_LOG;
- tail -n12 $MYIP_DAILY; echo "</pre>"; echo; 
- echo "<b>Storage State</b><pre>";
+ tail -n12 $MYIP_DAILY; echo "</pre></div>"; echo;
+ echo "<p class='heading'><b>Storage State</b></p><div class='data'><pre>";
  df; echo; echo;
  if [ -f "/var/log/mqtt_client.log" ]; then
-    echo "<b>mqtt_client</b>"; echo "<pre>";
-    tail -n6 /var/log/mqtt_client.log; echo "</pre>"; echo;
+    echo "<p class='heading'><b>mqtt_client</b></p>"
+    echo "<div class='data'><pre>";
+    tail -n6 /var/log/mqtt_client.log; echo "</pre></div>"; echo;
  fi
  if [ -f "/var/log/updatedhs" ]; then
-    echo "<b>Updatedhs</b>"; echo "<pre>";
-    tail -n6 /var/log/updatedhs; echo "</pre>"; echo;
+    echo "<p class='heading'><b>Updatedhs</b></p>"
+    echo "<div class='data'><pre>";
+    tail -n6 /var/log/updatedhs; echo "</pre></div>"; echo;
  fi
 
- uptime;
+echo "<p class='heading'><b>Failed Services</b></p><div class='data'>"
+systemctl list-units --state=failed | awk 'NF{$0="<p>" $0 "</p>"}1'
+echo "</div>"
+
+uptime;
  echo "</body></html>"
 ) | mail -s "`hostname` myip [startup]" $MYIP_ADDRESS_TO \
          -aFrom:$MYIP_ADDRESS_FROM \
