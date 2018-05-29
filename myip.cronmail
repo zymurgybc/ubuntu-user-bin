@@ -17,34 +17,53 @@ source ${_dir}/myip.cronmail.config
 source ${_dir}/dyndns-update.config
 
 (echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
- echo "<html><head><title>$MYIP_SUBJECT</title>"; 
+ echo "<html><head><title>$MYIP_SUBJECT</title>";
  echo "<style type=\"text/css\">"
+ echo ".heading { text-decoration:underline; color:blue; width:95%; text-align:left;}"
+ echo ".data { color: dark-gray; }"
  echo "pre { font-size:10pt; }"
- echo "pre b { text-decoration:underline; color:blue; }"
- echo "</style></head><body><pre>";
- echo "<b>My IP</b>"; echo;
+ echo "</style></head><body>";
+ echo "<p class='heading'><b>My IP</b></p><div class='data'><pre>"; echo;
  tail -n6 $MYIP_LOG; echo; echo;
- echo "<b>DNS Updates</b>"; echo;
- tail -n4 $FREEDNS_LOG; echo; echo;
+ echo "</pre></div>"
+ echo "<p class='heading'><b>DNS Updates</b></p><div class='data'><pre>"; echo;
+ tail -n4 $FREEDNS_LOG;
+ echo "</pre></div>"
  if [ -f "/var/log/mqtt_client.log" ]; then
-    echo "<b>mqtt_client</b>"; echo;
-    tail -n6 /var/log/mqtt_client.log; echo; echo;
- fi
- if [ -f "/var/log/updatedhs" ]; then
-    echo "<b>Updatedhs</b>"; echo;
-    tail -n6 /var/log/updatedhs; echo; echo;
+    echo "<p class='heading'><b>mqtt_client</b></p><div class='data'><pre>"; echo;
+    tail -n6 /var/log/mqtt_client.log;
+    echo "</pre></div>"
  fi
 
- echo "<b>Available Updates</b>"
+ if [ -f "/var/log/updatedhs" ]; then
+    echo "<p class='heading'><b>Updatedhs</b></p>";
+    echo "<div class='data'><pre>"
+    tail -n6 /var/log/updatedhs;
+    echo "</pre></div>"
+ fi
+
+ if [ -x "`which systemctl`" ]; then
+    echo "<p class='heading'><b>Failed Services</b></p>"
+    echo "<div class='data'><pre>"
+    systemctl list-units --state=failed | awk 'NF{$0="<p>" $0 "</p>"}1'
+    echo "</pre></div>"
+ else
+    echo "<p class='heading'><b>systemd is not available</b></p>"
+ fi
+
+ echo "<p class='heading'><b>Available Updates</b></p>"
+ echo "<div class='data'><pre>"
  apt list --upgradable 2>/dev/null | head -n 20
- echo "<p></p>"
- echo "<b>Storage Usage</b>"
- df -h; echo; echo;  \
- echo "<b>System Uptime</b>"
+ echo "</pre></div>"
+ echo "<p class='heading'><b>Storage Usage</b></p>"
+ echo "<div class='data'><pre>"
+ df -h;
+ echo "</pre></div>"
+ echo "<p class='heading'><b>System Uptime</b></p>"
  uptime;
  echo "</pre></body></html>"
 ) | mail \
     -s "$MYIP_SUBJECT" $MYIP_ADDRESS_TO \
     -a "From:$MYIP_ADDRESS_FROM" \
     -a "MIME-Version: 1.0" \
-    -a "Content-Type: text/html;" 
+    -a "Content-Type: text/html;"
