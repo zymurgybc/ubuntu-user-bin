@@ -16,12 +16,18 @@ source ${_dir}/myip.cronmail.config
 # import config for dyndns-updates (gets the log)
 source ${_dir}/dyndns-update.config
 
-(echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
+(echo ""
+ echo "This is a MIME-encapsulated message"
+ echo ""
+ echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca"
+ echo "Content-Type: text/html"
+ echo ""
+ echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
  echo "<html><head><title>$MYIP_SUBJECT</title>";
  echo "<style type=\"text/css\">"
- echo ".heading { text-decoration:underline; color:blue; width:95%; text-align:left;}"
+ echo ".heading { font-family: Arial, Helvetica, sans-serif; font-size: 12pt; color:blue; width:95%; border-bottom: 1px solid black; text-align: left;}"
  echo ".data { color: dark-gray; }"
- echo "pre { font-size:10pt; }"
+ echo "pre { font-family: \"Courier New\", Courier, monospace; font-size: 10pt; }"
  echo "</style></head><body>";
  echo "<p class='heading'><b>My IP</b></p><div class='data'><pre>"; echo;
  tail -n6 $MYIP_LOG; echo; echo;
@@ -62,8 +68,10 @@ source ${_dir}/dyndns-update.config
  echo "<p class='heading'><b>System Uptime</b></p>"
  uptime;
  echo "</pre></body></html>"
+ echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca--"
+ echo
 ) | mail \
     -s "$MYIP_SUBJECT" $MYIP_ADDRESS_TO \
-    -a "From:$MYIP_ADDRESS_FROM" \
+    -a "From: $MYIP_ADDRESS_FROM" \
     -a "MIME-Version: 1.0" \
-    -a "Content-Type: text/html;"
+    -a "Content-Type: multipart/alternative;  boundary=\"EneUrBrHYB.ABC123/`hostname`.heatherington.ca\""
