@@ -16,6 +16,11 @@ source ${_dir}/myip.cronmail.config
 # import config for dyndns-updates (gets the log)
 source ${_dir}/dyndns-update.config
 
+if [ ! -f "$FREEDNS_LOG" ]; then
+    echo "`date +"%Y-%m-%d %T"` + Created file" >> "$FREEDNS_LOG"
+fi
+
+
 (echo ""
  echo "This is a MIME-encapsulated message"
  echo ""

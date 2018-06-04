@@ -5,10 +5,10 @@ _script=`readlink -f "${BASH_SOURCE[0]}"`
 #echo _script=${_script}
 
 ## Delete last component from ${_script} ##
-_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd) 
+_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 #echo _dir=${_dir}
 
-_base="$(dirname $_dir)" 
+_base="$(dirname $_dir)"
 source ${_dir}/dyndns-update.config
 
 #set
