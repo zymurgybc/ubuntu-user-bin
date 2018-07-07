@@ -1,9 +1,9 @@
-/var/log/check_network.log {
+/var/log/check_network.log { 
         weekly
-        size=5M
-        rotate 4
-        compress
-        nodelaycompress
         missingok
-        notifempty
+        rotate 6
+        compress
+        delaycompress
+        create 664 root adm
 }
+

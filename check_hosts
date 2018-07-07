@@ -116,7 +116,7 @@ while [[ $# > 0 ]]; do
 
             # https://serverfault.com/questions/68684/how-can-i-get-diff-to-show-only-added-and-deleted-lines-if-diff-cant-do-it-wh
             echo "</div><p class='heading'><b>Inactive network hosts (previously seen)</b></p>" >> ${NMAP_TMP}
-            echo "<div class='data' style='color:red;'>" >> ${NMAP_TMP}
+            echo "<div class='data' style='color:red;'>"                                        >> ${NMAP_TMP}
                 # comm -13 means only show unique lines in file two (not unique to file one, or in both)
                 # sed is removing leading white space
                 # grep is excluding lines that begin with an octothorp # (after optional whitespace)
@@ -125,16 +125,29 @@ while [[ $# > 0 ]]; do
                          | sort -V | sed "s/Status: Up/Status: Down/" | awk 'NF{$0="<p class='\''c'\''>" $0 "</p>"}1' \
                                   >> ${NMAP_TMP}
         fi
-        echo "</div>"                                                                               >> ${NMAP_TMP}
+        echo "</div>"                                                                          >> ${NMAP_TMP}
         if [ -x "`which systemctl`" ]; then
-            echo "<p class='heading'><b>Failed Services</b></p><div class='data'>"                      >> ${NMAP_TMP}
-            systemctl list-units --state=failed | awk 'NF{$0="<p>" $0 "</p>"}1'                         >> ${NMAP_TMP}
-            echo "</div>"
+            echo "<p class='heading'><b>Failed Services</b></p><div class='data'>"             >> ${NMAP_TMP}
+            systemctl list-units --state=failed | awk 'NF{$0="<p>" $0 "</p>"}1'                >> ${NMAP_TMP}
+            echo "</div>"                                                                      >> ${NMAP_TMP}
         else
             echo "<p class='heading'><b>systemd is not available</b></p>"                      >> ${NMAP_TMP}
-        fi                                                                          >> ${NMAP_TMP}
-        echo "</body></html>" >> ${NMAP_TMP}
-        echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca--"   >> ${NMAP_TMP}
+        fi
+
+        if [ -f "/var/run/motd.dynamic" ]; then
+            echo "<p class='heading'><b>MOTD</b></p>"                                          >> ${NMAP_TMP}
+            echo "<div class='data'><pre>"                                                     >> ${NMAP_TMP}
+            cat /var/run/motd.dynamic                                                          >> ${NMAP_TMP}
+            echo "</pre></div>"                                                                >> ${NMAP_TMP}
+        fi
+
+        echo "<p class='heading'><b>Uptime</b></p>"   >> ${NMAP_TMP}
+        echo "<div class='data'><pre>" >> ${NMAP_TMP}
+        uptime                         >> ${NMAP_TMP}
+        echo "</pre></div>"            >> ${NMAP_TMP}
+
+        echo "</body></html>"          >> ${NMAP_TMP}
+        echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca--" >> ${NMAP_TMP}
 
         mail -s "${SUBJECT}" $MYIP_ADDRESS_TO \
              -a "From: $MYIP_ADDRESS_FROM"  \
