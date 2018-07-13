@@ -132,7 +132,7 @@ while [[ $# > 0 ]]; do
             echo "</div>"                                                                      >> ${NMAP_TMP}
         else
             echo "<p class='heading'><b>systemd is not available</b></p>"                      >> ${NMAP_TMP}
-        fi
+        fi                                                                                     >> ${NMAP_TMP}
 
         if [ -f "/var/run/motd.dynamic" ]; then
             echo "<p class='heading'><b>MOTD</b></p>"                                          >> ${NMAP_TMP}
