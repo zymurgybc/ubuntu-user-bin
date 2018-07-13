@@ -133,6 +133,19 @@ while [[ $# > 0 ]]; do
         else
             echo "<p class='heading'><b>systemd is not available</b></p>"                      >> ${NMAP_TMP}
         fi                                                                          >> ${NMAP_TMP}
+
+        if [ -f "/var/run/motd.dynamic" ]; then
+            echo "<p class='heading'><b>MOTD</b></p>"                                          >> ${NMAP_TMP}
+            echo "<div class='data'><pre>"                                                     >> ${NMAP_TMP}
+            cat /var/run/motd.dynamic                                                          >> ${NMAP_TMP}
+            echo "</pre></div>"                                                                >> ${NMAP_TMP}
+        fi
+
+        echo "<p class='heading'><b>Uptime</b></p>"   >> ${NMAP_TMP}
+        echo "<div class='data'><pre>"                >> ${NMAP_TMP}
+        uptime                                        >> ${NMAP_TMP}
+        echo "</pre></div>"                           >> ${NMAP_TMP}
+
         echo "</body></html>" >> ${NMAP_TMP}
         echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca--"   >> ${NMAP_TMP}
 
