@@ -70,7 +70,10 @@ source ${_dir}/dyndns-update.cron
     echo "<p class='heading'><b>systemd is not available</b></p>"
  fi
 
-uptime;
+ echo "<div class='data'><pre>";
+ uptime;
+ echo "</pre></div>";
+
  echo "</body></html>"
 ) | mail -s "`hostname` myip [startup]" $MYIP_ADDRESS_TO \
          -aFrom:$MYIP_ADDRESS_FROM \
