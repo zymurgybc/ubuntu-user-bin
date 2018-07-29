@@ -70,6 +70,12 @@ fi
  echo "<div class='data'><pre>"
  df -h;
  echo "</pre></div>"
+ if [ -f "/var/run/motd.dynamic" ]; then
+     echo "<p class='heading'><b>MOTD</b></p>"
+     echo "<div class='data'><pre>"
+     cat /var/run/motd.dynamic
+     echo "</pre></div>"
+ fi
  echo "<p class='heading'><b>System Uptime</b></p>"
  uptime;
  echo "</pre></body></html>"
