@@ -21,7 +21,8 @@
 # 
 # m h  dom mon dow   command
 
-5,20,35,50 * * * * /home/pi/bin/dyndns-update.cron
+# this computer is working via the VPN so we shouldn't be bumping the address
+#5,20,35,50 * * * * /home/pi/bin/dyndns-update.cron
 20 5,17      * * * /home/pi/bin/myip.datalog
 15 7         * * 1 /home/pi/bin/myip.cronmail
 
