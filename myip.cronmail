@@ -35,7 +35,11 @@ fi
  echo "pre { font-family: \"Courier New\", Courier, monospace; font-size: 10pt; }"
  echo "</style></head><body>";
  echo "<p class='heading'><b>My IP</b></p><div class='data'><pre>"; echo;
- tail -n6 $MYIP_LOG; echo; echo;
+ if [ -f "${MYIP_LOG}" ]; then
+    tail -n6 "${MYIP_LOG}"; echo; echo;
+ else
+    tail -n6 "${MYIP_LOG}.1"; echo; echo;
+ fi
  echo "</pre></div>"
  echo "<p class='heading'><b>DNS Updates</b></p><div class='data'><pre>"; echo;
  tail -n4 $FREEDNS_LOG;
