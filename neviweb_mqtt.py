@@ -14,6 +14,7 @@ import logging
 import time
 # sudo pip install paho-mqtt
 import paho.mqtt.client as mqtt
+
 is_py2 = sys.version[0] == '2'
 if is_py2:
     import Queue as Queue
@@ -34,6 +35,9 @@ MQTT_TOPIC_SETPOINT = "home/sensor/thermostat/%s/setpoint"
 FORMAT = '%(asctime)-15s %(message)s'
 LOG_FILENAME = mqtt_config["mqtt_client_log"]
 
+def dump(obj):
+    for attr in dir(obj):
+        print("obj.%s = %r" % (attr, getattr(obj, attr)))
 
 class MqttMessage:
     def __init__(self, topic, value):
@@ -59,7 +63,6 @@ def on_subscribe(mosq, obj, mid, granted_qos):
 
 def on_log(mosq, obj, level, string):
     logger.info(os.path.basename(__file__) + " - Log: " + string)
-
 
 def mosquittoClient():
 	client = mqtt.Client(MQTT_CLIENTID, clean_session=False)
@@ -128,7 +131,6 @@ def neviwebData(sessionid, deviceid):
 def cToF(temp):
     return (str((9.0/5.0*float(temp)+32)))
 
-
 logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG)
 logger = logging.getLogger('neviweb_mqtt')
 message_queue = Queue.LifoQueue()
@@ -144,7 +146,8 @@ while True:
 
 		while _continue:
 			_continue = mosquittoPublish()  # fill the queue
-			message_queue.put(MqttMessage("home/client/" + MQTT_CLIENTID, "connected"))
+                        statusmsg = "home/client/" + MQTT_CLIENTID, "connected"
+			message_queue.put(MqttMessage(statusmsq))
 			# This will prime the loop
 			while not message_queue.empty():
 				aMessage = message_queue.get()
@@ -155,7 +158,6 @@ while True:
 		# handle filed sends with a note in the log
 		logger.warning(os.path.basename(__file__) + " - mqtt loop failed.  Exception message: %s" % err.args)
 		sys.exit(os.path.basename(__file__) + " - mqtt loop failed.  Exception message: %s" % err.args)
+                dump(err)
                 # could be a session problem, so log back into neviweb
 		neviSession = neviwebLogin()
-
-

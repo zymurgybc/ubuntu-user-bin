@@ -14,6 +14,7 @@ fi
 # Config
 ##########
 # Wifi controller information
+# You need this address in your /etc/hosts file
 ipaddress=`getent hosts EasyBulb-plus | awk '{ print $1 }'`
 portnum="8899"
 
@@ -54,7 +55,7 @@ function colour {
         ctrl="\x55"
         cmd=$1
 	# Try sending to /dev/udp, if that fails use netcat
-	echo -n -e "$cmd$ctrl" >/dev/udp/$ipaddress/$portnum || echo -n -e "$cmd$ctrl" | nc -w 1 -u $ipaddress $portnum
+	echo -n -e "$cmd$ctrl" > /dev/udp/$ipaddress/$portnum || echo -n -e "$cmd$ctrl" > /proc/net/udp/$ipaddress/$portnum || echo -n -e "$cmd$ctrl" | nc -w 1 -u $ipaddress $portnum
     }
     function sendOnCommand {        # On command is also used to select zones
         onarray=("\x42" "\x45" "\x47" "\x49" "\x4B")
