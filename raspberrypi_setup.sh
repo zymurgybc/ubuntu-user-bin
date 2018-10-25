@@ -23,7 +23,7 @@ sudo service rpcbind start
 sudo modprobe ipv6
 
 ## ------------ Ensure some basics in Ruby
-sudo gem install require json
+sudo gem install require json httpclient colorize
 sudo gem update --system
 
 if [ ! -f "${HOME}/dead.letter" ]; then
