@@ -17,3 +17,11 @@ if [ ! -d "$GOPATH" ]; then
     sudo mkdir $GOPATH
 fi
 
+
+
+/etc/profile
+---------------------------------
+if [ -f "/home/pi/bin/motd.tcl" ]; then
+   /home/pi/bin/motd.tcl
+fi
+
