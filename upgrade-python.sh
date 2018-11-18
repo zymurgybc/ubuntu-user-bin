@@ -7,6 +7,10 @@ do
     if [ -f "/usr/bin/${i}" ]; then
         echo "    Found \"/usr/bin/${i}\""
         sudo -H sh -c "/usr/bin/${i} -m pip install --upgrade pip ephem pytz pika python-dateutil tendo paho-mqtt cffi smbus-cffi"
+
+        # We'll upgrade all packages at the global level, but not for any virtual environments
+        # http://stackoverflow.com/questions/2720014/upgrading-all-packages-with-pip
+        /usr/bin/${i} -m pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 "/usr/bin/${i} -m pip install --upgrade"
     else
         echo "    \"/usr/bin/${i}\" does not appear to be available."
     fi
