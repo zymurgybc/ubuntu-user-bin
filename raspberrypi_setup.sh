@@ -76,13 +76,13 @@ fi
 sudo perl -MCPAN -e "install 'YAML'; install 'CPAN'" #; reload CPAN"
 sudo perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit'
 
-verPython=("python2.7" "python3.4" "python3.5" "python3.6" )
+verPython=("python2.7" "python3.4" "python3.5" "python3.6" "python3.7" )
 for i in "${verPython[@]}"
 do
     echo "Checking for ${i}..."
     if [ ! -z "`which ${i}`" ]; then
         echo "    Found \"`which ${i}`\""
-        sudo -H sh -c "`which ${i}` -m pip install --upgrade ephem pytz pika python-dateutil tendo paho-mqtt smbus-cffi"
+        sudo -H sh -c "`which ${i}` -m pip install --upgrade pip ephem pytz pika python-dateutil tendo paho-mqtt smbus-cffi"
 # http://ouimeaux.readthedocs.io/en/latest/installation.html
 # wemo wrapper in python :-)
 # python3 -m pip install ouimeaux
