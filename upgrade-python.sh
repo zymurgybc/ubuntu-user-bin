@@ -10,7 +10,10 @@ do
 
         # We'll upgrade all packages at the global level, but not for any virtual environments
         # http://stackoverflow.com/questions/2720014/upgrading-all-packages-with-pip
-        /usr/bin/${i} -m pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 "/usr/bin/${i} -m pip install --upgrade"
+        /usr/bin/${i} -m pip freeze --local \
+               | grep -v '^\-e'             \
+               | cut -d = -f 1              \
+               | xargs -t -n1 sudo /usr/bin/${i} -m pip install --upgrade
     else
         echo "    \"/usr/bin/${i}\" does not appear to be available."
     fi
