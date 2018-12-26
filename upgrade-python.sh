@@ -13,7 +13,7 @@ do
         /usr/bin/${i} -m pip freeze --local \
                | grep -v '^\-e'             \
                | cut -d = -f 1              \
-               | xargs -t -n1 sudo /usr/bin/${i} -m pip install --upgrade
+               | xargs -t -n1 sudo -H /usr/bin/${i} -m pip install --upgrade
     else
         echo "    \"/usr/bin/${i}\" does not appear to be available."
     fi
