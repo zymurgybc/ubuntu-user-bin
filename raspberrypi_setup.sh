@@ -9,14 +9,19 @@ git config --global core.editor "nano"
 git pull
 
 sudo apt-get -y update
-sudo apt-get -y install  aptitude curl mailutils cmake ssmtp
-sudo apt-get -y install  mosquitto-clients build-essential jq \
-                         python-dev python-pip python3-pip matchbox-keyboard \
-                         libnss-myhostname autoconf libtool automake bison \
-                         libffi-dev ruby ruby-dev gem
-sudo apt-get -y install  swig swig2.0.*
+sudo apt-get -y install aptitude curl mailutils cmake ssmtp
+sudo apt-get -y install mosquitto-clients build-essential jq \
+                        python3-pip matchbox-keyboard  libnss-myhostname  \
+                        autoconf automake bison libtool automake libffi-dev \
+                        ruby ruby-dev gem
+
+sudo apt-get -y install pkgconf gobject-introspection libgirepository1.0-dev libcairo-dev \
+                        python-dev python-pip libpython-dev libpython2.7-dev python2.7-dev \
+                        libpython-dev libpython2.7-dev python-dev python2.7-dev
+
+sudo apt-get -y install swig swig2.0.*
 sudo aptitude -y install nfs-kernel-server nfs-common portmap dos2unix libssl-dev libtiff5-dev \
-                      zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
+                         zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
 
 sudo update-rc.d rpcbind enable
 sudo service rpcbind start
@@ -83,3 +88,4 @@ fi
 sudo apt-get -y clean && \
 sudo apt-get -y autoremove && \
 sudo apt     -y autoremove
+
