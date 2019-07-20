@@ -6,6 +6,7 @@ git config --global user.email "zymurgy.bc@gmail.com"
 git config --global user.name "Ted H."
 git config --global push.default simple
 git config --global core.editor "nano"
+git config --global credential.helper cache
 git pull
 
 sudo apt-get -y update
