@@ -5,12 +5,13 @@ for i in "${verPython[@]}"
 do
     echo "Checking for ${i}..."
     if [ -f "/usr/bin/${i}" ]; then
-        echo "    Found \"/usr/bin/${i}\""
+        echo "    Found \"/usr/bin/${i}\" "
         sudo -H sh -c "/usr/bin/${i} -m pip install --upgrade pip ephem pytz pika python-dateutil tendo paho-mqtt cffi smbus-cffi"
 
-        # We'll upgrade all packages at the global level, but not for any virtual environments
-        # http://stackoverflow.com/questions/2720014/upgrading-all-packages-with-pip
-        /usr/bin/${i} -m pip freeze --local \
+        /usr/bin/${i} -m pip freeze > "~/bin/tmp/${i}_requirements_$(date +"'%Y%m%d_%H%M'")"
+       # We'll upgrade all packages at the global level, but not for any virtual environments
+       # http://stackoverflow.com/questions/2720014/upgrading-all-packages-with-pip
+       /usr/bin/${i} -m pip freeze --local \
                | grep -v '^\-e'             \
                | cut -d = -f 1              \
                | xargs -t -n1 sudo -H /usr/bin/${i} -m pip install --upgrade
