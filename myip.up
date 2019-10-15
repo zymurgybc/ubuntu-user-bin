@@ -35,8 +35,9 @@ source ${_dir}/dyndns-update.cron
  echo "<b>IP Addresses for this host</b><pre>";
  tail -n6 $MYIP_LOG; echo "</pre>"; echo;
  echo Now == `date` `${_base}/bin/myip` >> $MYIP_LOG;
- tail -n12 $MYIP_DAILY; echo; echo; 
- echo "<b>Storage State</b><pre>";
+ echo "<pre>"
+ tail -n12 $MYIP_DAILY;
+ echo "</pre>"; echo "<br /><br /><b>Storage State</b><pre>";
  df; echo; echo;
  if [ -f "/var/log/mqtt_client.log" ]; then
     echo "<b>mqtt_client</b>"; echo "<pre>";
