@@ -25,3 +25,10 @@ if [ -f "/home/pi/bin/motd.tcl" ]; then
    /home/pi/bin/motd.tcl
 fi
 
+
+---------------------------------
+/etc/ssmtp/ssmtp.conf  <-- needs setup
+/etc/ssmtp/revaliases  <-- needs more aliases
+/etc/mail.rc           <-- needs more aliases
+/etc/mailname          <-- needs domain name
+
