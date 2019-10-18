@@ -13,7 +13,11 @@ do
         /usr/bin/${i} -m pip freeze --local \
                | grep -v '^\-e'             \
                | cut -d = -f 1              \
-               | xargs -t -n1 sudo -H /usr/bin/${i} -m pip install --upgrade
+               | while IFS= read -r line
+                 do
+                    echo -e "\e[1m\e[46m\e[30msudo -H /usr/bin/${i} -m pip install --upgrade ${line}\e[0m\e[49m\e[39m"
+                    sudo -H /usr/bin/${i} -m pip install --upgrade ${line}
+                 done
     else
         echo "    \"/usr/bin/${i}\" does not appear to be available."
     fi
