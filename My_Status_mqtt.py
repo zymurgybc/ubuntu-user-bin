@@ -45,7 +45,7 @@ def on_log(mosq, obj, level, string):
 
 def getIP():
     # in subprocess
-    return str(check_output(["hostname", "--all-ip-addresses"]))
+    return check_output(["hostname", "--all-ip-addresses"]).decode("utf-8")
 
 def publish_status(client):
     my_status =  'connected ' + getIP()
