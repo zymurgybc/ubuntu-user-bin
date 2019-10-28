@@ -36,6 +36,8 @@
 20         * * * * redis-cli bgrewriteaof > nul
 30         * * * * /home/theather/bin/dhsupdate.pl
 
+45 4 1         * * /home/theather/bin/upgrade-python.sh
+
 #@reboot  /bin/bash "/bin/sleep 2m && /home/theather/bin/myip.datalog && /home/theather/bin/myip.startup"
 @reboot /home/theather/bin/handler.reboot
 

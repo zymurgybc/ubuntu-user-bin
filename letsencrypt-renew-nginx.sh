@@ -7,7 +7,9 @@ cd ${GITREPO}
 git pull
 
 # the standalone method will use its own web server, so we need to stop nginx to free the ports
-/user/sbin/service nginx stop
+/usr/sbin/service nginx stop
+
+killall nginx
 
 #./letsencrypt-auto renew -nvv --standalone > /var/log/letsencrypt/renew_$(date -d "today" +"%Y%m%d%H%M").log 2>&1
 ./letsencrypt-auto renew -nvv --standalone > /var/log/letsencrypt/renew.log 2>&1
