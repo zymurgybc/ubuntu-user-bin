@@ -5,6 +5,9 @@ copy the /etc/wpa_supplicant/wpa_supplicant.config file from another pi
   * add "auto wlan0" to /etc/network/interfaces
 
 copy the ssmtp configuration; be sure to edit the hostname listed in .conf
+    * /etc/aliases
+    * /etc/ssmpt/revaliases
+
 copy mqtt_config.json  -- edit the client id
 
 configure stuff in /etc/logrotate.d/*
