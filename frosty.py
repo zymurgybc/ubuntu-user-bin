@@ -1,21 +1,16 @@
 #First we need to import the LED & Pause class from the GPIO Zero Library
-
 from gpiozero import LED
 
 #We also need the sleep function from the time library
-
 from time import sleep
 
 #Along with pause which we will use later on
-
 from signal import pause
 
+import datetime
 
 #Next we need to create a nose object and assign it a class of an LED.
-
 #This gives us all of the functions available for the LED module in GPIO Zero.
-
- 
 
 nose = LED(25)
 whites = [ 
@@ -38,53 +33,55 @@ whites = [
     ]
 
 while True:
-    for led in whites:
-        led.on()
-        sleep(.5)
+    time = datetime.datetime.now().time()
+    if (datetime.time(6) < time < datetime.time(23)):
+        for led in whites:
+            led.on()
+            sleep(.5)
 
-    #Now we're setup we can go through some of the available commands! 
-    #Let's begin by turning the nose on!
+        #Now we're setup we can go through some of the available commands! 
+        #Let's begin by turning the nose on!
 
-    nose.on()
+        nose.on()
 
-    #And wait 1 second
+        #And wait 1 second
 
-    sleep(1)
+        sleep(1)
 
-    #And now turn the nose off,
+        #And now turn the nose off,
 
-    nose.off()
+        nose.off()
 
-    sleep(1)
+        sleep(1)
 
+        # We can also toggle the LED instead. 
+        # This means if the LED is already on it will
+        # turn it off and if it's off turn it on.
+        # Lets try that now with a sleep inbetween
 
-    #We can also toggle the LED instead. 
-    #This means if the LED is already on it will
-    #turn it off and if it's off turn it on.
-    #Lets try that now with a sleep inbetween
+        nose.toggle()
+        sleep(1)
 
-    nose.toggle()
-    sleep(1)
+        nose.toggle()
+        sleep(1)
 
-    nose.toggle()
-    sleep(1)
+        # Quite simple, we could put this into a while True: loop and have it blink forever
+        # However GPIO Zero has a neat little blink function.
 
-    #Quite simple, we could put this into a while True: loop and have it blink forever
-    #However GPIO Zero has a neat little blink function.
+        nose.blink()
 
-    nose.blink()
+        sleep(15)
 
-    sleep(15)
+        for led in reversed(whites):
+            led.off()
+            sleep(.5)
 
-    for led in reversed(whites):
-        led.off()
-        sleep(.5)
-   
-#And finally if you've got all of your LEDs blinking you can then use
-#the pause function to make it run until quit using Ctrl-C
-#pause()
+    else:
+        sleep(300)
+    #And finally if you've got all of your LEDs blinking you can then use
+    #the pause function to make it run until quit using Ctrl-C
+    #pause()
 
+    #And that's the end of this basic tutorial on blinking an LED on the SnowPi!
 
-#And that's the end of this basic tutorial on blinking an LED on the SnowPi!
-
-#The rest is up to you to decide on patterns you wish to make.
+    #The rest is up to you to decide on patterns you wish to make.
