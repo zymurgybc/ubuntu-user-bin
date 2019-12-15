@@ -1,0 +1,31 @@
+[Unit]
+# in case its not obvious, I'm using code from 
+# https://github.com/nickgrim/xmas-pi
+Description=Pi Xmas Tree service
+ConditionPathExists=/home/pi/source/github.com/nickgrim/xmas-pi/xmas-pi
+After=network.target
+ 
+[Service]
+Type=simple
+User=pi
+Group=pi
+LimitNOFILE=1024
+
+Restart=on-failure
+RestartSec=10
+startLimitIntervalSec=60
+
+WorkingDirectory=/home/pi/source/github.com/nickgrim/xmas-pi/
+ExecStart=/home/pi/source/github.com/nickgrim/xmas-pi/xmas-pi
+
+# make sure log directory exists and owned by syslog
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p /var/log/xmas-pi
+ExecStartPre=/bin/chown root:adm /var/log/xmas-pi
+ExecStartPre=/bin/chmod 755 /var/log/xmas-pi
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=xmas-pi
+ 
+[Install]
+WantedBy=multi-user.target
