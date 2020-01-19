@@ -6,8 +6,10 @@ me = singleton.SingleInstance() # will sys.exit(-1) if other instance is running
 
 import os
 from subprocess import check_output
+import ctypes
+import struct
 import time
-import datetime
+from datetime import datetime
 import logging
 import requests
 import paho.mqtt.client as mqtt # sudo pip install paho-mqtt
@@ -47,17 +49,40 @@ def getIP():
     # in subprocess
     return check_output(["hostname", "--all-ip-addresses"]).decode("utf-8")
 
+def uptime():
+    libc = ctypes.CDLL('libc.so.6')
+    buf = ctypes.create_string_buffer(4096) # generous buffer to hold
+                                            # struct sysinfo
+    if libc.sysinfo(buf) != 0:
+        print('failed')
+        return -1
+
+    uptime = struct.unpack_from('@l', buf.raw)[0]
+    return uptime
+
+def myUpdated():
+    my_updated = '{{ "DateTime": "{}", "Uptime": "{}" }}'.format(
+        time.strftime("%Y/%m/%d %H:%M:%S", time.localtime()),
+        uptime())
+    #print( my_updated )
+    return my_updated
+
 def publish_status(client):
     my_status =  'connected ' + getIP()
-    logger.info(os.path.basename(__file__) + " - Sending: " + my_status)
-    client.publish(MQTT_TOPIC, my_status, qos = 1, retain = 1)
+    #print( my_status )
+    client.publish(MQTT_STATUS_TOPIC, my_status, qos = 1, retain = 1)
+    logger.info(os.path.basename(__file__) + " - Sending status: " + my_status)
+    my_updated = myUpdated()
+    client.publish(MQTT_UPDATE_TOPIC, my_updated, qos = 1, retain = 1)
+    logger.info(os.path.basename(__file__) + " - Sending update: " + my_updated)
 
 MQTT_CLIENTID = socket.gethostname() + '_temp_pub'
-MQTT_TOPIC = 'home/client/' + socket.gethostname() + '/status'
+MQTT_STATUS_TOPIC = 'home/client/' + socket.gethostname() + '/status'
+MQTT_UPDATE_TOPIC = 'home/client/' + socket.gethostname() + '/updated'
 
 mqttc = mqtt.Client(MQTT_CLIENTID)
 mqttc.username_pw_set(config["mqtt_client"], password=config["mqtt_password"])
-mqttc.will_set(MQTT_TOPIC, payload='disconnected', qos=0, retain=True)
+mqttc.will_set(MQTT_STATUS_TOPIC, payload='disconnected', qos=0, retain=True)
 
 mqttc.on_connect = on_connected
 #mqttc.on_message = on_message
@@ -74,7 +99,7 @@ while True:
     while client_loop == 0:
         try:
             publish_status(mqttc)
-            time.sleep(60)   # sleep for 30 seconds before next call
+            time.sleep(60)   # sleep for 60 seconds before next call
             client_loop = mqttc.loop(.25) # blocks for 250ms
         except ValueError as err1:
             # we just don't publish bad readings
