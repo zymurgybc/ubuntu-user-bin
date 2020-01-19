@@ -82,7 +82,7 @@ MQTT_UPDATE_TOPIC = 'home/client/' + socket.gethostname() + '/updated'
 
 mqttc = mqtt.Client(MQTT_CLIENTID)
 mqttc.username_pw_set(config["mqtt_client"], password=config["mqtt_password"])
-mqttc.will_set(MQTT_TOPIC, payload='disconnected', qos=0, retain=True)
+mqttc.will_set(MQTT_STATUS_TOPIC, payload='disconnected', qos=0, retain=True)
 
 mqttc.on_connect = on_connected
 #mqttc.on_message = on_message
