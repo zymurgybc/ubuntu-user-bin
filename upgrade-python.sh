@@ -1,6 +1,6 @@
 #!/bin/bash
 
-verPython=("python2.7" "python3.4" "python3.5" "python3.5m" "python3.6" "python3.6m" "python3.7" )
+verPython=("python2.7" "python3.4" "python3.5" "python3.5m" "python3.6" "python3.6m" "python3.7" "python3.8" )
 for i in "${verPython[@]}"
 do
     echo "Checking for ${i}..."
