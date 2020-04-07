@@ -6,7 +6,10 @@
 && sudo apt     -y autoremove
 
 if [ -f "${HOME}/bin/upgrade-python.sh" ]; then
-    ${HOME}/bin/upgrade-python.sh
+    if [ -f "${HOME}/upgrade-python.log" ]; then
+        rm "${HOME}/upgrade-python.log"
+    fi
+    ${HOME}/bin/upgrade-python.sh | tee -a ${HOME}/upgrade-python.log
 fi
 
 #echo upgrade | sudo -H cpan
