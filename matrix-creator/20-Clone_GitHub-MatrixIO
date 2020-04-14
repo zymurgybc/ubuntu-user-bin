@@ -7,159 +7,69 @@ if [ ! -d "$MATRIX_IO_DIR" ]; then
    mkdir -p "$MATRIX_IO_DIR"
 fi
 
+
+clone_pull_repo() {
+    cd "$MATRIX_IO_DIR"
+    if [ ! -d "$1" ]; then
+       git clone $MATRIX_IO_REPO/$1.git
+    fi
+    cd $1
+    git pull
+}
+
+clone_pull_repo "face-analytics"
+clone_pull_repo "malos-eye"
+clone_pull_repo "matrix-app-config-helper"
+clone_pull_repo "matrix-cli"
+clone_pull_repo "matrix-continuity"
+clone_pull_repo "matrix-creator-android-things"
+clone_pull_repo "matrix-creator-alexa-voice-demo"
+clone_pull_repo "matrix-creator-alexa-voice-services"
+clone_pull_repo "matrix-creator-documentation"
+clone_pull_repo "matrix-creator-fpga"
+clone_pull_repo "matrix-creator-hal"
+clone_pull_repo "matrix-creator-init"
+clone_pull_repo "matrix-creator-malos"
+clone_pull_repo "matrix-creator-mcu"
+clone_pull_repo "matrix-creator-nfc-unstable-preview"
+clone_pull_repo "matrix-creator-openocd"
+clone_pull_repo "matrix-creator-quickstart"
+clone_pull_repo "matrix-creator-uv-demo"
+clone_pull_repo "matrix-cv"
+clone_pull_repo "matrix-documentation"
+clone_pull_repo "matrix-eventfilter"
+clone_pull_repo "matrix-firebase"
+clone_pull_repo "matrix-gesture-cpp-sdk"
+clone_pull_repo "matrix-gesture-node-sdk"
+clone_pull_repo "matrix-gesture-python-sdk"
+clone_pull_repo "matrix-ml"
+clone_pull_repo "matrix-node-sdk"
+clone_pull_repo "matrix-os"
+clone_pull_repo "matrix-sdk"
+clone_pull_repo "matrix-sensor-template"
+clone_pull_repo "matrix-test-altitude-sensor"
+clone_pull_repo "matrix-test-monitor-sensor"
+clone_pull_repo "matrix-test-temperature-sensor"
+clone_pull_repo "nedb"
+clone_pull_repo "node-yaml-localize"
+clone_pull_repo "protocol-buffers"
+clone_pull_repo "xc3sprog"
+clone_pull_repo "pi-wifi"
+
 cd "$MATRIX_IO_DIR"
-
-if [ ! -d "face-analytics" ]; then
-   git clone $MATRIX_IO_REPO/face-analytics.git
-fi
-
-if [ ! -d "malos-eye" ]; then
-   git clone $MATRIX_IO_REPO/malos-eye
-fi
-
-if [ ! -d "matrix-app-config-helper" ]; then
-   git clone $MATRIX_IO_REPO/matrix-app-config-helper
-fi
-
-if [ ! -d "matrix-cli" ]; then
-   git clone $MATRIX_IO_REPO/matrix-cli
-fi
-
-if [ ! -d "matrix-continuity" ]; then
-   git clone $MATRIX_IO_REPO/matrix-continuity
-fi
-
-if [ ! -d "matrix-creator-android-things" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-android-things
-fi
-
-if [ ! -d "matrix-creator-alexa-voice-demo" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-alexa-voice-demo
-fi
-
-if [ ! -d "matrix-creator-alexa-voice-services" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-alexa-voice-services
-fi
-
-if [ ! -d "matrix-creator-documentation" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-documentation
-fi
-
-if [ ! -d "matrix-creator-fpga" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-fpga
-fi
-
-if [ ! -d "matrix-creator-hal" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-hal
-fi
-
-if [ ! -d "matrix-creator-init" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-init
-fi
-
-if [ ! -d "matrix-creator-malos" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-malos
-fi
-
-if [ ! -d "matrix-creator-mcu" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-mcu
-fi
-
-if [ ! -d "matrix-creator-nfc-unstable-preview" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-nfc-unstable-preview
-fi
-
-if [ ! -d "matrix-creator-openocd" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-openocd
-fi
-
-if [ ! -d "matrix-creator-quickstart" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-quickstart
-fi
-
-if [ ! -d "matrix-creator-uv-demo" ]; then
-   git clone $MATRIX_IO_REPO/matrix-creator-uv-demo
-fi
-
-if [ ! -d "matrix-cv" ]; then
-   git clone $MATRIX_IO_REPO/matrix-cv
-fi
-
-if [ ! -d "matrix-documentation" ]; then
-   git clone $MATRIX_IO_REPO/matrix-documentation
-fi
-
-if [ ! -d "matrix-eventfilter" ]; then
-   git clone $MATRIX_IO_REPO/matrix-eventfilter
-fi
-
-if [ ! -d "matrix-firebase" ]; then
-   git clone $MATRIX_IO_REPO/matrix-firebase
-fi
-
-if [ ! -d "matrix-gesture-cpp-sdk" ]; then
-   git clone $MATRIX_IO_REPO/matrix-gesture-cpp-sdk
-fi
-
-if [ ! -d "matrix-gesture-node-sdk" ]; then
-   git clone $MATRIX_IO_REPO/matrix-gesture-node-sdk
-fi
-
-if [ ! -d "matrix-gesture-python-sdk" ]; then
-   git clone $MATRIX_IO_REPO/matrix-gesture-python-sdk
-fi
-
-if [ ! -d "matrix-ml" ]; then
-   git clone $MATRIX_IO_REPO/matrix-ml
-fi
-
-if [ ! -d "matrix-node-sdk" ]; then
-   git clone $MATRIX_IO_REPO/matrix-node-sdk
-fi
-
-if [ ! -d "matrix-os" ]; then
-   git clone $MATRIX_IO_REPO/matrix-os
-fi
-
-if [ ! -d "matrix-sdk" ]; then
-   git clone $MATRIX_IO_REPO/matrix-sdk
-fi
-
-if [ ! -d "matrix-sensor-template" ]; then
-   git clone $MATRIX_IO_REPO/matrix-sensor-template
-fi
-
-if [ ! -d "matrix-test-altitude-sensor" ]; then
-   git clone $MATRIX_IO_REPO/matrix-test-altitude-sensor
-fi
-
-if [ ! -d "matrix-test-monitor-sensor" ]; then
-   git clone $MATRIX_IO_REPO/matrix-test-monitor-sensor
-fi
-
-if [ ! -d "matrix-test-temperature-sensor" ]; then
-   git clone $MATRIX_IO_REPO/matrix-test-temperature-sensor
-fi
-
-if [ ! -d "nedb" ]; then
-   git clone $MATRIX_IO_REPO/nedb
-fi
-
-if [ ! -d "node-yaml-localize" ]; then
-   git clone $MATRIX_IO_REPO/node-yaml-localize
-fi
-
-if [ ! -d "protocol-buffers" ]; then
-   git clone $MATRIX_IO_REPO/protocol-buffers
-fi
-
-if [ ! -d "xc3sprog" ]; then
-   git clone $MATRIX_IO_REPO/xc3sprog
-fi
-
-if [ ! -d "pi-wifi" ]; then
-   git clone $MATRIX_IO_REPO/pi-wifi
-fi
+curl -s https://api.github.com/orgs/matrix-io/repos?per_page=200 | \
+    jq -c '. .clone_url | while read i; do
+        echo $1
+        #cd "$MATRIX_IO_DIR"
+        #if [ ! -d "$1" ]; then
+        #    git clone $MATRIX_IO_REPO/$1.git
+        #fi
+        #cd $1
+        #git pull
+    done
 
 #curl -s https://api.github.com/orgs/matrix-io/repos?per_page=200 | \
-#   ruby -rubygems -e 'require "json"; JSON.load(STDIN.read).each { |repo| %x[git clone #{repo["ssh_url"]} ]}'
+#   ruby -rubygems -e 'require "json"; JSON.load(STDIN.read).each { |repo| %x[git clone #{repo["clone_url"]} ]}'
+
+
+

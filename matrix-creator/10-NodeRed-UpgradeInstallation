@@ -7,13 +7,13 @@ LOGFILE=$HOME/bin/matrix-creator/10-NodeRed-UpgradeInstallation.log
 #
 # To do this you must uninstall the built-in versions and re-install. To uninstall:
 
-sudo apt-get remove nodered               2>&1 | tee -a $LOGFILE
-sudo apt-get remove nodejs nodejs-legacy  2>&1 | tee -a $LOGFILE
-sudo apt-get remove npm                   2>&1 | tee -a $LOGFILE # if you installed npm
+sudo apt-get remove -y nodered               2>&1 | tee -a $LOGFILE
+sudo apt-get remove -y nodejs nodejs-legacy  2>&1 | tee -a $LOGFILE
+sudo apt-get remove -y npm                   2>&1 | tee -a $LOGFILE # if you installed npm
 
 # Re-install Node.js
 
-curl -sL https://deb.nodesource.com/setup_4.x | sudo bash -    2>&1 | tee -a $LOGFILE
+curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -   2>&1 | tee -a $LOGFILE
 sudo apt-get install -y build-essential python-rpi.gpio nodejs 2>&1 | tee -a $LOGFILE
 
 # Install Node-RED
