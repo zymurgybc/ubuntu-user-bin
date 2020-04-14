@@ -29,10 +29,10 @@ cd $_dir
 source 10-NodeRed-UpgradeInstallation | tee -a 10-NodeRed-UpgradeInstallation.log
 
 cd $_dir
-source 20-Clone_GitHub-Google | tee -a 20-Clone_Github-Google.log
+source 20-Clone_GitHub-Google | tee -a 20-Clone_GitHub-Google.log
 
 cd $_dir
-source 20-Clone_GitHub-MatrixIO | tee -a 20-Clone_Github-MatrixIO.log
+source 20-Clone_GitHub-MatrixIO | tee -a 20-Clone_GitHub-MatrixIO.log
 
 cd $_dir
 source 30-Face-analytics | tee -a  30-Face-analytics.log
