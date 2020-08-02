@@ -1,5 +1,4 @@
 #!/bin/bash
-PYTHON_FRZ="upgrade-python.$(date +'%Y-%m-%d').freeze"
 PYTHON_LOG="upgrade-python.$(date +'%Y-%m-%d').log"
 PYTHON_ERR="upgrade-python.$(date +'%Y-%m-%d').err"
 
@@ -8,16 +7,20 @@ function upgrade_python_modules() {
   pyVersion=$2
   pyFreeze="${pyPath}${pyVersion} -m pip freeze "
 
-  eval "${pyFreeze} > ~/bin/tmp/${pyVersion}_requirements_$(date +"'%Y%m%d_%H%M'")"
-  # We'll upgrade all packages at the global level, but not for any virtual environments
-  # http://stackoverflow.com/questions/2720014/upgrading-all-packages-with-pip
+  eval "${pyFreeze} > ~/bin/tmp/${pyVersion}_$(date +"'%Y-%m-%d_%H%M'").freeze"
   eval "${pyFreeze} --local" \
       | grep -v '^\-e'             \
       | cut -d = -f 1              \
       | while IFS= read -r line
         do
-           echo -e "\e[1m\e[46m\e[30msudo -H ${pyPath}${pyVersion} -m pip install --upgrade ${line}\e[0m\e[49m\e[39m"
-           sudo -H ${pyPath}${pyVersion} -m pip install --upgrade ${line}
+           # Output the next command to the error and output logs to make tracking down problems simpler
+           echo -e "\e[1m\e[46m\e[30msudo -H ${pyPath}${pyVersion} -m pip install --upgrade ${line}\e[0m\e[49m\e[39m" \
+                 |  tee -a "${HOME}/bin/tmp/${PYTHON_LOG}" \
+                 |  tee -a "${HOME}/bin/tmp/${PYTHON_ERR}"
+           # Execute the command splitting errors into the shorter log
+           sudo -H ${pyPath}${pyVersion} -m pip install --upgrade ${line}  \
+                 2> >(tee -a "${HOME}/bin/tmp/${PYTHON_ERR}" > /dev/null ) \
+                 |  tee -a "${HOME}/bin/tmp/${PYTHON_LOG}" 
         done
 }
 
@@ -30,6 +33,8 @@ function enumerate_python_versions() {
       echo "    Found \"/usr/bin/${py}\" "
       sudo -H sh -c "/usr/bin/${py} -m pip install --upgrade pip ephem pytz pika python-dateutil tendo paho-mqtt cffi smbus-cffi"
 
+      # We'll upgrade all packages at the global level, but not for any virtual environments
+      # http://stackoverflow.com/questions/2720014/upgrading-all-packages-with-pip
       echo "upgrade_python_modules \"/usr/bin/\" \"${py}\""
       upgrade_python_modules "/usr/bin/" "${py}"
     else
@@ -54,4 +59,7 @@ function enumerate_python_versions() {
 
 }
 
+mkdir -p ~/bin/tmp
+# delete old temporary files
+find ~/bin/tmp/* -mtime +90 -exec rm {} \;
 enumerate_python_versions
