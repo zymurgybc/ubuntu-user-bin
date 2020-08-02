@@ -69,3 +69,6 @@ mkdir -p ~/bin/tmp
 # delete old temporary files
 find ~/bin/tmp/* -mtime +90 -exec rm {} \;
 enumerate_python_versions
+echo "  ========= Completed in $SECONDS" \
+                 |  tee -a "${HOME}/bin/tmp/${PYTHON_LOG}" \
+                 |  tee -a "${HOME}/bin/tmp/${PYTHON_ERR}"
