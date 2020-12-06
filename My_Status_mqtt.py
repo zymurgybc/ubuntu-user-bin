@@ -76,7 +76,7 @@ def publish_status(client):
     client.publish(MQTT_UPDATE_TOPIC, my_updated, qos = 1, retain = 1)
     logger.info(os.path.basename(__file__) + " - Sending update: " + my_updated)
 
-MQTT_CLIENTID = socket.gethostname() + '_temp_pub'
+MQTT_CLIENTID = socket.gethostname() + '_status_pub'
 MQTT_STATUS_TOPIC = 'home/client/' + socket.gethostname() + '/status'
 MQTT_UPDATE_TOPIC = 'home/client/' + socket.gethostname() + '/updated'
 
