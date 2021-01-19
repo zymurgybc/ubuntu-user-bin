@@ -35,3 +35,5 @@ fi
 /etc/mail.rc           <-- needs more aliases
 /etc/mailname          <-- needs domain name
 
+replace /etc/altrenatives/mail --> /usr/bin/mail.utils ==> /etc/alternatives/mail --> /usr/sbin/ssmtp
+by running    ==>>>   sudo ln -s /usr/sbin/ssmtp /etc/alternatives/mail

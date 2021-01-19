@@ -20,7 +20,7 @@
 	compress
 	dateext
 	notifempty
-	maxage 180
+	maxage 60
 }
 
 /var/log/nmap/nmap_*log {
@@ -33,16 +33,19 @@
 	compress
 	dateext
 	notifempty
-	maxage 180
+	maxage 60
 }
 
-/var/log/nmap/nmap_*.txt {
+/var/log/nmap/nmap-*.txt {
         weekly
         missingok
         rotate 7
 #       postrotate
 #               [ ! -f /var/run/samba/nmbd.pid ] || kill -HUP `cat /var/run/samba/nmbd.pid` endscript
+        postrotate
+            /usr/bin/find /opt/log/nmap/ -name "nmap-*.txt" -type f -mtime +60 -exec rm {} \;
+        endscript
         compress
         notifempty
-	maxage 365
+	maxage 60
 }
