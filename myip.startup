@@ -79,8 +79,9 @@ fi
  echo "</pre></div>";
 
  echo "</body></html>"
-) | mail -s "`hostname` myip [startup]" $MYIP_ADDRESS_TO \
+) | mail $MYIP_ADDRESS_TO  \
          -aFrom:$MYIP_ADDRESS_FROM \
+         -s "`hostname` myip [startup]" \
          -a "MIME-Version: 1.0" \
          -a "Content-Type: text/html;"
 

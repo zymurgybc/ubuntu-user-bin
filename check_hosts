@@ -152,8 +152,9 @@ while [[ $# > 0 ]]; do
         echo "</body></html>"          >> ${NMAP_TMP}
         echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca--" >> ${NMAP_TMP}
 
-        mail -s "${SUBJECT}" $MYIP_ADDRESS_TO \
+        mail $MYIP_ADDRESS_TO \
              -a "From: $MYIP_ADDRESS_FROM"  \
+             -s "${SUBJECT}" \
              -a "MIME-Version: 1.0" \
              -a "Content-Type: multipart/alternative;  boundary=\"EneUrBrHYB.ABC123/`hostname`.heatherington.ca\"" < ${NMAP_TMP}
         #rm $NMAP_TMP
