@@ -21,7 +21,11 @@ if [ ! -f "$FREEDNS_LOG" ]; then
 fi
 
 
-(echo ""
+(echo "From: ${MYIP_ADDRESS_FROM}"
+ echo "Subject: ${MYIP_SUBJECT}"
+ echo "MIME-Version: 1.0"
+ echo "Content-Type: multipart/alternative;  boundary=\"EneUrBrHYB.ABC123/`hostname`.heatherington.ca\""
+ echo
  echo "This is a MIME-encapsulated message"
  echo ""
  echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca"
@@ -92,8 +96,4 @@ fi
  echo "</pre></body></html>"
  echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca--"
  echo
-) | mail \
-    -s "$MYIP_SUBJECT" $MYIP_ADDRESS_TO \
-    -a "From: $MYIP_ADDRESS_FROM" \
-    -a "MIME-Version: 1.0" \
-    -a "Content-Type: multipart/alternative;  boundary=\"EneUrBrHYB.ABC123/`hostname`.heatherington.ca\""
+) | mail ${MYIP_ADDRESS_TO}
