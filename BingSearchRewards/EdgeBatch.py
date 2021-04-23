@@ -3,7 +3,7 @@
 # https://stackoverflow.com/questions/49565042/way-to-change-google-chrome-user-agent-in-selenium
 import os
 import time
-from BasicSearch import BasicSearch
+from BingSearchRewards.BasicSearch import BasicSearch
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options

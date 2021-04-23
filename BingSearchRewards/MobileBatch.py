@@ -5,7 +5,7 @@ import os
 import time
 from inspect import currentframe, getframeinfo
 
-from BasicSearch import BasicSearch
+from BingSearchRewards.BasicSearch import BasicSearch
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -18,6 +18,7 @@ class MobileBatch(BasicSearch):
     def __init__(self, driver_path, useragent="Mozilla/5.0 (Linux; Android 7.0; SM-G930V Build/NRD90M) " +
                                               "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 " +
                                               "Mobile Safari/537.36"):
+        super().__init__()
         print("Executing {0}".format(__file__))
         self.userAgent = useragent
         options = Options()

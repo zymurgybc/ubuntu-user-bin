@@ -13,9 +13,10 @@ from selenium.webdriver.common.keys import Keys
 class BasicSearch:
     def __init__(self):
         print("Executing {0}".format(__file__))
+        self.pause = 7
         pass
 
-    def click_first_elem(self, elem, pause):
+    def click_first_elem(self, elem):
         if elem is None:
             return False  # no reference value
         else:
@@ -26,7 +27,7 @@ class BasicSearch:
                     elem[0].click()
             else:
                 elem.click()
-            time.sleep(pause)
+            time.sleep(self.pause)
         return True   # something was clicked on
 
     # This simply looks for the option to "Log in" rather than "Log Out"
@@ -34,16 +35,16 @@ class BasicSearch:
     def is_logged_in(self, driver):
         try:
             driver.get("https://account.microsoft.com/rewards/")
-            time.sleep(5)
+            time.sleep(self.pause)
             elem = driver.find_elements_by_css_selector("div.mectrl_root span.mectrl_screen_reader_text")
             return len(elem) < 1 or elem[0].text != "Sign in to your account"
 
         except Exception as e:
             frame_info = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info.filename, frame_info.lineno, e))
-            time.sleep(4)
+            time.sleep(self.pause)
 
-    def get_word_list(self, count: int):
+    def get_word_list(self, count):
         random_lists_url = "https://www.randomlists.com/data/words.json"
         response = requests.get(random_lists_url)
         words_list = random.sample(json.loads(response.text)['data'], count)
@@ -65,7 +66,7 @@ class BasicSearch:
         self.log_me_out_MS(driver, "http://www.bing.com/search?q=")
         self.log_me_out_MS(driver, "https://login.live.com")
         driver.get("chrome://settings/clearBrowserData")
-        time.sleep(3)
+        time.sleep(self.pause)
         btn = driver.find_elements_by_css_selector("#clearBrowsingDataConfirm")
         self.click_first_elem(btn, 2)
 
@@ -73,7 +74,7 @@ class BasicSearch:
     def log_me_out_MS(self, driver, url):
         try:
             driver.get(url)
-            time.sleep(5)
+            time.sleep(self.pause)
 
             # when this is found, an account is already/still logged in
             # notably, it throws an exception when not found, not none
@@ -85,14 +86,14 @@ class BasicSearch:
         except Exception as e:
             frame_info = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info.filename, frame_info.lineno, e))
-            time.sleep(4)
+            time.sleep(self.pause)
 
         # The Bing Search page doesn't use the same format as most Microsoft headers
         try:
             elem = driver.find_elements_by_css_selector('#id_l')
-            if self.click_first_elem(elem, 2):
+            if self.click_first_elem(elem):
                 elem = driver.find_elements_by_css_selector('#b_idProviders > li > a > span.id_link_text')
-                self.click_first_elem(elem, 2)
+                self.click_first_elem(elem)
         except Exception as e:
             frame_info = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info.filename, frame_info.lineno, e))
@@ -110,16 +111,16 @@ class BasicSearch:
             elem.clear()
             elem.send_keys(userid)  # add your login email id
             elem.send_keys(Keys.RETURN)
-            time.sleep(5)
+            time.sleep(self.pause)
             elem1 = driver.find_element_by_name('passwd')
             elem1.clear()
             elem1.send_keys(passwd)  # add your password
             elem1.send_keys(Keys.ENTER)
-            time.sleep(7)
+            time.sleep(self.pause)
         except Exception as e:
             frame_info = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info.filename, frame_info.lineno, e))
-            time.sleep(4)
+            time.sleep(self.pause)
 
     def ensure_loggedin(self, driver, url_base):
 
@@ -134,11 +135,11 @@ class BasicSearch:
             # if elem is not None and len(elem) >0:
             # if not elem[0].is_displayed():
             #    anchor[0].click()
-            self.click_first_elem(anchor, 2)
+            self.click_first_elem(anchor)
         except Exception as e:
             frame_info = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info.filename, frame_info.lineno, e))
-            time.sleep(5)
+            time.sleep(self.pause)
 
     # This simply looks for the option to "Log in" rather than "Log Out"
     # using the rewards page since its where we need the login/out to happen
@@ -166,7 +167,7 @@ class BasicSearch:
             # Maximize current window
             driver.maximize_window()
             driver.get("https://account.microsoft.com/rewards/")
-            time.sleep(8)
+            time.sleep(self.pause)
             elements = driver.find_elements(By.XPATH, "//span[@class='x-hidden-focus']")
             if len(elements) > 0:
                 points = elements[0].text
@@ -174,7 +175,7 @@ class BasicSearch:
         except Exception as e:
             frame_info = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info.filename, frame_info.lineno, e))
-            time.sleep(4)
+            time.sleep(self.pause)
 
     def earn_rewards(self, driver):
 
@@ -192,7 +193,7 @@ class BasicSearch:
         except Exception as e:
             frame_info = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info.filename, frame_info.lineno, e))
-            time.sleep(5)
+            time.sleep(self.pause)
 
     def do_search_list(self, driver, word_count):
         words_list = self.get_word_list(count=word_count)
@@ -215,7 +216,7 @@ class BasicSearch:
         except Exception as e3:
             frame_info3 = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info3.filename, frame_info3.lineno, e3))
-            time.sleep(5)
+            time.sleep(self.pause)
 
         # Look for the "your account" anchor and see if it has an name associated
         # and click the anchor if its not there to round-trip the login info
@@ -232,7 +233,7 @@ class BasicSearch:
         except Exception as e3:
             frame_info3 = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info3.filename, frame_info3.lineno, e3))
-            time.sleep(5)
+            time.sleep(self.pause)
 
         try:
            for num, word in enumerate(words_list):
@@ -240,22 +241,22 @@ class BasicSearch:
                 try:
                     driver.get(url_base + word)
                     print('\t' + driver.find_element_by_tag_name('h2').text)
-                    time.sleep(3)
+                    time.sleep(self.pause)
                 except Exception as e1:
                     frame_info1 = getframeinfo(currentframe())
                     print("Exception in {0}:{1} -- {2}".format(frame_info1.filename, frame_info1.lineno, e1))
-                    time.sleep(5)
+                    time.sleep(self.pause)
         except Exception as e2:
             frame_info2 = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info2.filename, frame_info2.lineno, e2))
-            time.sleep(5)
+            time.sleep(self.pause)
 
     def bing_daily(self, driver, userid, passwd, search_count):
         self.login_to_live(driver, userid, passwd)
         self.check_points(driver, userid, "Starting")
         # self.earn_rewards()
         self.do_search_list(driver, search_count)
-        time.sleep(10)
+        time.sleep(self.pause)
         self.check_points(driver, userid, "Finished")
 
     def quit(self, driver):
