@@ -205,7 +205,8 @@ class BasicSearch:
         # and click the anchor if its not there to round-trip the login info
         try:
             driver.get(url_base)
-            anchor = driver.find_elements_by_css_selector("a#id_l")
+#           anchor = driver.find_elements_by_css_selector("a#id_l")
+            self.click_first_elem(anchor)
             # if this element is not found, it shows the page isn't currently logged in
             # or it may not be displayed which also means you're not logged in
             # elem = self.edge_driver.find_elements_by_css_selector("a#id_l span#id_n")
@@ -224,12 +225,15 @@ class BasicSearch:
             anchor = driver.find_elements_by_css_selector("#hb_s")
             # if this element is not found, it shows the page isn't currently logged in
             # or it may not be displayed which also means you're not logged in
-            if anchor is not None:
-                if hasattr(anchor, "__iter__"):
-                    if len(anchor) > 0:
-                        anchor[0].click()
-                else:
-                    anchor.click()
+            self.click_first_elem(anchor)
+        except Exception as e3:
+            frame_info3 = getframeinfo(currentframe())
+            print("Exception in {0}:{1} -- {2}".format(frame_info3.filename, frame_info3.lineno, e3))
+            time.sleep(self.pause)
+
+        try:
+            anchor = driver.find_elements_by_css_selector("#HBSignIn > a")
+            self.click_first_elem(anchor)
         except Exception as e3:
             frame_info3 = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info3.filename, frame_info3.lineno, e3))
