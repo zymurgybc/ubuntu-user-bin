@@ -205,7 +205,7 @@ class BasicSearch:
         # and click the anchor if its not there to round-trip the login info
         try:
             driver.get(url_base)
-#           anchor = driver.find_elements_by_css_selector("a#id_l")
+            anchor = driver.find_elements_by_css_selector("a#id_l")
             self.click_first_elem(anchor)
             # if this element is not found, it shows the page isn't currently logged in
             # or it may not be displayed which also means you're not logged in
