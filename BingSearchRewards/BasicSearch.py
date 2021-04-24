@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import requests
 import random
 import json
@@ -13,7 +14,12 @@ from selenium.webdriver.common.keys import Keys
 class BasicSearch:
     def __init__(self):
         print("Executing {0}".format(__file__))
-        self.pause = 7
+        # Accomodate using a Raspberry Pi more slowly because some of the
+        # JavaScript heavy pages render more slowly
+        if os.uname()[4][:3] == 'arm' :
+            self.pause = 10
+        else:
+            self.pause = 5
         pass
 
     def click_first_elem(self, elem):
