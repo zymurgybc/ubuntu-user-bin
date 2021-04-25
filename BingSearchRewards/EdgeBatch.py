@@ -5,7 +5,7 @@
 import os
 import time
 from BingSearchRewards.BasicSearch import BasicSearch
-
+#import .BasicSearch
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By

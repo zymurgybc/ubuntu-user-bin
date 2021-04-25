@@ -6,6 +6,7 @@ import time
 from inspect import currentframe, getframeinfo
 
 from BingSearchRewards.BasicSearch import BasicSearch
+#import .BasicSearch
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By

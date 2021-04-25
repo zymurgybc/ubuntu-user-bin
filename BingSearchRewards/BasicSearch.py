@@ -5,8 +5,10 @@ import requests
 import random
 import json
 import time
+from datetime import datetime
 from inspect import currentframe, getframeinfo
 
+#from selenium.webdriver import dimension
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -22,19 +24,25 @@ class BasicSearch:
             self.pause = 5
         pass
 
-    def click_first_elem(self, elem):
+    def get_first_elem(self, elem):
         if elem is None:
-            return False  # no reference value
+            return None  # no reference value
         else:
             if hasattr(elem, "__iter__"):
                 if len(elem) < 1:
-                    return False  # Empty collection
+                    return None  # Empty collection
                 else:
-                    elem[0].click()
+                    return elem[0]
             else:
-                elem.click()
+                return elem
+
+    def click_first_elem(self, elems):
+        elem = self.get_first_elem(elems)
+        if elem is not None:
+            elem.click()
             time.sleep(self.pause)
-        return True   # something was clicked on
+            return True   # something was clicked on
+        return False
 
     # This simply looks for the option to "Log in" rather than "Log Out"
     # using the rewards page since its where we need the login/out to happen
@@ -84,9 +92,9 @@ class BasicSearch:
             # when this is found, an account is already/still logged in
             # notably, it throws an exception when not found, not none
             elem = driver.find_elements_by_css_selector('mectrl_headerPicture')
-            if self.click_first_elem(elem, 2):
+            if self.click_first_elem(elem):
                 elem = driver.find_elements_by_css_selector('mectrl_body_signOut')
-                self.click_first_elem(elem, 2)
+                self.click_first_elem(elem)
             # Try and reload the page
         except Exception as e:
             frame_info = getframeinfo(currentframe())
@@ -152,42 +160,66 @@ class BasicSearch:
         try:
             driver.get("https://account.microsoft.com/rewards/")
             time.sleep(self.pause)
-            elem = driver.find_elements_by_css_selector("div.mectrl_root span.mectrl_screen_reader_text")
+            elems = driver.find_elements_by_css_selector("div.mectrl_root span.mectrl_screen_reader_text")
+            elem = self.get_first_elem(elems)
             if elem is not None:
-                if hasattr(elem, "__iter__"):
-                    if len(elem) > 0:
-                        return elem[0].text != "Sign in to your account"
-                else:
-                    return elem.text != "Sign in to your account"
+                return elem.text != "Sign in to your account"
 
         except Exception as e:
             frame_info = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info.filename, frame_info.lineno, e))
             time.sleep(self.pause)
 
-        return True  # default is to assume an account is still logged in
+        return False  # default is to assume an account is still logged in
+
+    def set_window_size(self, driver):
+        if hasattr(os, "uname") and os.uname()[4][:3] == 'arm':
+            # Maximize current window using anything like the Pi
+            driver.maximize_window()
+        else:
+            # set window size to a common desktop size without using the entire 4K desktop
+            driver.set_window_size(1024, 768)
 
     def check_points(self, driver, userid, tag_string):
         try:
-            # Maximize current window
-            driver.maximize_window()
             driver.get("https://account.microsoft.com/rewards/")
             time.sleep(self.pause)
-            elements = driver.find_elements(By.XPATH, "//span[@class='x-hidden-focus']")
-            if len(elements) > 0:
-                points = elements[0].text
+            elements = None
+            element = None
+            # Elements being present is highly dependent on screen sizes, so we look for several
+            # different presentation styles to try and find it.
+            try:
+                elements = driver.find_elements_by_css_selector("div#userBanner p.number span")
+                element = self.get_first_elem(elements)
+            except:  # Exception as e1:
+                pass
+
+            if element is None:
+                try:
+                    elements = driver.find_elements_by_css_selector("meeBanner > div > div > mee-persona > div:nth-child(2) > persona-body > p.description.ng-binding.ng-scope.c-caption-1.hideAll > b:nth-child(1)")
+                    element = self.get_first_elem(elements)
+                except:  # Exception as e3:
+                    pass
+
+            if element is not None:
+                points = element.text
                 print('{0} {1} points for {2}'.format(tag_string, points, userid))
+            else:
+                print('{0} Did not find points for {1}'.format(tag_string, userid))
+
         except Exception as e:
             frame_info = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info.filename, frame_info.lineno, e))
             time.sleep(self.pause)
 
+    # TODO: complete the quiz steps?
     def earn_rewards(self, driver):
 
         url_base = 'https://account.microsoft.com/rewards/'
         self.ensure_loggedin(url_base)
         try:
             elements = driver.find_element_by_css_selector("span.mee-icon-AddMedium[aria-label='plus']")
+            # element = self.get_first_elem(elements)
             if elements is not None:
                 if hasattr(elements, '__iter__'):
                     if len(elements)>0:
@@ -200,19 +232,37 @@ class BasicSearch:
             print("Exception in {0}:{1} -- {2}".format(frame_info.filename, frame_info.lineno, e))
             time.sleep(self.pause)
 
+    # common login.live header
+    def click_logmein(self, driver, selector):
+        # Look for the "your account" anchor and see if it has an name associated
+        # and click the anchor if its not there to round-trip the login info
+        # Look for the "your account" anchor and see if it has an name associated
+        # and click the anchor if its not there to round-trip the login info
+        try:
+            elem = driver.find_elements_by_css_selector(selector)
+            # if this element is not found, it shows the page isn't currently logged in
+            # or it may not be displayed which also means you're not logged in
+            return self.click_first_elem(elem)
+        except Exception as e1:
+            frame_info1 = getframeinfo(currentframe())
+            print("Exception in {0}:{1} -- {2}\n    Looking for %s".format(
+                frame_info1.filename,
+                frame_info1.lineno,
+                e1,
+                selector))
+            time.sleep(self.pause)
+            return False
+
     # the bing page shows a stupid 'We use cookies" bar that makes it hard to
     # see the top of the page of check if you're properly logged in
     def hide_the_cookies_note(self, driver):
         try:
-            div = driver.find_elements_by_css_selector("div#bnp_ttc_div")
+            elems = driver.find_elements_by_css_selector("div#bnp_ttc_div")
+            div = self.get_first_elem(elems)
             if div is not None:
-                if hasattr(div, '__iter__'):
-                    if len(div) > 0:
-                        div[0].style.display = "none"
-                    else:
-                        pass
-                else:
-                    div.style.display = "none"
+                if driver.execute_script:
+                    driver.execute_script("document.querySelector('div#bnp_ttc_div').style.display = 'none'")
+
         except Exception as e1:
             frame_info1 = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info1.filename, frame_info1.lineno, e1))
@@ -222,45 +272,15 @@ class BasicSearch:
         words_list = self.get_word_list(count=word_count)
 
         url_base = 'http://www.bing.com/search?q='
+        driver.get(url_base + datetime.today().strftime("%A"))
+        self.hide_the_cookies_note(driver)
+
         time.sleep(self.pause)
+        if self.click_logmein(driver, "#hb_s"):
+            print("Found log-in header for live.com")
+        if self.click_logmein(driver, "#HBSignIn > a"):
+            print("Found bing log-in header for live.com")
 
-        # Look for the "your account" anchor and see if it has an name associated
-        # and click the anchor if its not there to round-trip the login info
-        try:
-            driver.get(url_base)
-            anchor = driver.find_elements_by_css_selector("a#id_l")
-            self.click_first_elem(anchor)
-            # if this element is not found, it shows the page isn't currently logged in
-            # or it may not be displayed which also means you're not logged in
-            # elem = self.edge_driver.find_elements_by_css_selector("a#id_l span#id_n")
-            # if elem is not None and len(elem) >0:
-            # if not elem[0].is_displayed():
-            #    anchor[0].click()
-            # anchor[0].click()
-        except Exception as e3:
-            frame_info3 = getframeinfo(currentframe())
-            print("Exception in {0}:{1} -- {2}".format(frame_info3.filename, frame_info3.lineno, e3))
-            time.sleep(self.pause)
-
-        # Look for the "your account" anchor and see if it has an name associated
-        # and click the anchor if its not there to round-trip the login info
-        try:
-            anchor = driver.find_elements_by_css_selector("#hb_s")
-            # if this element is not found, it shows the page isn't currently logged in
-            # or it may not be displayed which also means you're not logged in
-            self.click_first_elem(anchor)
-        except Exception as e3:
-            frame_info3 = getframeinfo(currentframe())
-            print("Exception in {0}:{1} -- {2}".format(frame_info3.filename, frame_info3.lineno, e3))
-            time.sleep(self.pause)
-
-        try:
-            anchor = driver.find_elements_by_css_selector("#HBSignIn > a")
-            self.click_first_elem(anchor)
-        except Exception as e3:
-            frame_info3 = getframeinfo(currentframe())
-            print("Exception in {0}:{1} -- {2}".format(frame_info3.filename, frame_info3.lineno, e3))
-            time.sleep(self.pause)
 
         try:
             for num, word in enumerate(words_list):
@@ -270,7 +290,7 @@ class BasicSearch:
                     self.hide_the_cookies_note(driver)
                     print('\t' + driver.find_element_by_tag_name('h2').text)
                     # this is a REALLY slow page!
-                    time.sleep(self.pause * 1.5)
+                    time.sleep(self.pause * 2)
                 except Exception as e1:
                     frame_info1 = getframeinfo(currentframe())
                     print("Exception in {0}:{1} -- {2}".format(frame_info1.filename, frame_info1.lineno, e1))
@@ -281,6 +301,7 @@ class BasicSearch:
             time.sleep(self.pause)
 
     def bing_daily(self, driver, userid, passwd, search_count):
+        self.set_window_size(driver)
         self.login_to_live(driver, userid, passwd)
         self.check_points(driver, userid, "Starting")
         # self.earn_rewards()
