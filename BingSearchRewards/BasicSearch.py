@@ -14,9 +14,9 @@ from selenium.webdriver.common.keys import Keys
 class BasicSearch:
     def __init__(self):
         print("Executing {0}".format(__file__))
-        # Accomodate using a Raspberry Pi more slowly because some of the
-        # JavaScript heavy pages render more slowly
-        if os.uname()[4][:3] == 'arm' :
+        # Accommodate using a Raspberry Pi more slowly because some of the
+        # JavaScript heavy pages render more slowly. uname isn't on Windows?
+        if hasattr(os, "uname") and os.uname()[4][:3] == 'arm' :
             self.pause = 10
         else:
             self.pause = 5
@@ -75,7 +75,6 @@ class BasicSearch:
         time.sleep(self.pause)
         btn = driver.find_elements_by_css_selector("#clearBrowsingDataConfirm")
         self.click_first_elem(btn, 2)
-
 
     def log_me_out_MS(self, driver, url):
         try:
@@ -152,7 +151,7 @@ class BasicSearch:
     def is_logged_in(self, driver):
         try:
             driver.get("https://account.microsoft.com/rewards/")
-            time.sleep(5)
+            time.sleep(self.pause)
             elem = driver.find_elements_by_css_selector("div.mectrl_root span.mectrl_screen_reader_text")
             if elem is not None:
                 if hasattr(elem, "__iter__"):
@@ -164,7 +163,7 @@ class BasicSearch:
         except Exception as e:
             frame_info = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}".format(frame_info.filename, frame_info.lineno, e))
-            time.sleep(4)
+            time.sleep(self.pause)
 
         return True  # default is to assume an account is still logged in
 
@@ -201,11 +200,29 @@ class BasicSearch:
             print("Exception in {0}:{1} -- {2}".format(frame_info.filename, frame_info.lineno, e))
             time.sleep(self.pause)
 
+    # the bing page shows a stupid 'We use cookies" bar that makes it hard to
+    # see the top of the page of check if you're properly logged in
+    def hide_the_cookies_note(self, driver):
+        try:
+            div = driver.find_elements_by_css_selector("div#bnp_ttc_div")
+            if div is not None:
+                if hasattr(div, '__iter__'):
+                    if len(div) > 0:
+                        div[0].style.display = "none"
+                    else:
+                        pass
+                else:
+                    div.style.display = "none"
+        except Exception as e1:
+            frame_info1 = getframeinfo(currentframe())
+            print("Exception in {0}:{1} -- {2}".format(frame_info1.filename, frame_info1.lineno, e1))
+            time.sleep(self.pause)
+
     def do_search_list(self, driver, word_count):
         words_list = self.get_word_list(count=word_count)
 
         url_base = 'http://www.bing.com/search?q='
-        time.sleep(3)
+        time.sleep(self.pause)
 
         # Look for the "your account" anchor and see if it has an name associated
         # and click the anchor if its not there to round-trip the login info
@@ -246,12 +263,14 @@ class BasicSearch:
             time.sleep(self.pause)
 
         try:
-           for num, word in enumerate(words_list):
+            for num, word in enumerate(words_list):
                 print('{0}. URL : {1}'.format(str(num + 1), url_base + word))
                 try:
                     driver.get(url_base + word)
+                    self.hide_the_cookies_note(driver)
                     print('\t' + driver.find_element_by_tag_name('h2').text)
-                    time.sleep(self.pause)
+                    # this is a REALLY slow page!
+                    time.sleep(self.pause * 1.5)
                 except Exception as e1:
                     frame_info1 = getframeinfo(currentframe())
                     print("Exception in {0}:{1} -- {2}".format(frame_info1.filename, frame_info1.lineno, e1))

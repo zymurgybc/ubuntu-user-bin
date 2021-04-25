@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # https://medium.com/@prateekrm/earn-500-daily-microsoft-rewards-points-automatically-with-a-simple-python-program-38fe648ff2a9
 # https://stackoverflow.com/questions/49565042/way-to-change-google-chrome-user-agent-in-selenium
+
 import os
 import time
 from BingSearchRewards.BasicSearch import BasicSearch
