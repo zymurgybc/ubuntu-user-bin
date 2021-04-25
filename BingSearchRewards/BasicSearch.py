@@ -178,7 +178,8 @@ class BasicSearch:
             driver.maximize_window()
         else:
             # set window size to a common desktop size without using the entire 4K desktop
-            driver.set_window_size(1024, 768)
+            # the width of 1024 is too narrow to show the user icon that shows you logged in
+            driver.set_window_size(1080, 768)
 
     def check_points(self, driver, userid, tag_string):
         try:
@@ -243,6 +244,7 @@ class BasicSearch:
             # if this element is not found, it shows the page isn't currently logged in
             # or it may not be displayed which also means you're not logged in
             return self.click_first_elem(elem)
+
         except Exception as e1:
             frame_info1 = getframeinfo(currentframe())
             print("Exception in {0}:{1} -- {2}\n    Looking for %s".format(
@@ -256,6 +258,18 @@ class BasicSearch:
     # the bing page shows a stupid 'We use cookies" bar that makes it hard to
     # see the top of the page of check if you're properly logged in
     def hide_the_cookies_note(self, driver):
+
+        try:
+            elems = driver.find_elements_by_css_selector("div#b_notificationContainer")
+            div = self.get_first_elem(elems)
+            if div is not None:
+                if driver.execute_script:
+                    driver.execute_script("document.querySelector('div#b_notificationContainer').style.display = 'none'")
+
+        except Exception as e1:
+            frame_info1 = getframeinfo(currentframe())
+            print("Exception in {0}:{1} -- {2}".format(frame_info1.filename, frame_info1.lineno, e1))
+            time.sleep(self.pause)
         try:
             elems = driver.find_elements_by_css_selector("div#bnp_ttc_div")
             div = self.get_first_elem(elems)
