@@ -282,6 +282,20 @@ class BasicSearch:
             print("Exception in {0}:{1} -- {2}".format(frame_info1.filename, frame_info1.lineno, e1))
             time.sleep(self.pause)
 
+    # The search page may need a poke to refresh the login to Live.com
+    def verify_logged_in(self, driver):
+
+        panel = self.get_first_elem(driver.find_elements_by_css_selector(".slidein_ltr"))
+        if panel is None:
+            self.click_first_elem(driver.find_elements_by_css_selector("#mHamburger"))
+
+        if self.click_logmein(driver, "#hb_s"):
+            bFound = True
+            print("Found log-in header for live.com")
+        if self.click_logmein(driver, "#HBSignIn > a"):
+            print("Found bing log-in header for live.com")
+
+
     def do_search_list(self, driver, word_count):
         words_list = self.get_word_list(count=word_count)
 
@@ -290,11 +304,7 @@ class BasicSearch:
         self.hide_the_cookies_note(driver)
 
         time.sleep(self.pause)
-        if self.click_logmein(driver, "#hb_s"):
-            print("Found log-in header for live.com")
-        if self.click_logmein(driver, "#HBSignIn > a"):
-            print("Found bing log-in header for live.com")
-
+        self.verify_logged_in(driver)
 
         try:
             for num, word in enumerate(words_list):
