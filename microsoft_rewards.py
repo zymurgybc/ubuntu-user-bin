@@ -11,6 +11,9 @@ from selenium.webdriver.common.keys import Keys
 def wait_for(sec=2):
     time.sleep(sec)
 
+if not os.file.exists("microsoft_rewards.json"):
+    exit(-1)
+
 randomlists_url = "https://www.randomlists.com/data/words.json"
 response = requests.get(randomlists_url) words_list =random.sample(json.loads(response.text)['data'], 60)
 print('{0} words selected from {1}'.format(len(words_list), randomlists_url))
