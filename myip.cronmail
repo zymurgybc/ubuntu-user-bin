@@ -26,6 +26,7 @@ fi
  echo "MIME-Version: 1.0"
  echo "Content-Type: multipart/alternative;  boundary=\"EneUrBrHYB.ABC123/`hostname`.heatherington.ca\""
  echo
+ echo
  echo "This is a MIME-encapsulated message"
  echo ""
  echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca"
