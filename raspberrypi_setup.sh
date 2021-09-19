@@ -13,11 +13,11 @@ sudo apt-get -y update
 sudo apt-get -y install aptitude curl mailutils cmake ssmtp
 sudo apt-get -y install mosquitto-clients build-essential jq \
                         python3-pip matchbox-keyboard  libnss-myhostname  \
-                        autoconf automake bison libtool automake libffi-dev \
+                        autoconf automake bison libtool libffi-dev \
                         ruby ruby-dev gem
 
 sudo apt-get -y install pkgconf gobject-introspection libgirepository1.0-dev \
-                        libcairo2 libcairo-dev 
+                        libcairo2 libcairo-dev
 #python-dev python-pip libpython-dev \
 #libpython2.7-dev python2.7-dev libpython-dev libpython2.7-dev \
 #python-dev python2.7-dev
