@@ -20,51 +20,8 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-
-4,24,44    * * * * /home/theather/bin/dyndns-update.cron
-45 5         * * 1 /home/theather/bin/Update_GoDaddyDns.sh
-21 6,18      * * * /home/theather/bin/myip.datalog
-15 7         * * 1 /home/theather/bin/myip.cronmail
-0 6          * * 1 /usr/local/bin/certbot renew
-7,22,37,52 * * * * /home/theather/bin/check_network.sh
-2,17,32,47 * * * * /home/theather/bin/My_Status_mqtt.py 2>/dev/null >> /var/log/mqtt_client.log
-4,19,34,49 * * * * /home/theather/bin/neviweb_mqtt.py   2>/dev/null >> /var/log/mqtt_client.log
-#* 6,18       * * * systemctl restart mqspeak
-
-6,16,26,36,46,56 * * * * /home/theather/bin/check_hosts
-11 7,12,17         * * * /home/theather/bin/check_hosts -daily
-#15 6       * * 1,2,3,4,5  /home/pi/bin/livingroomlights.sh on 2>&1        >> /tmp/livingroomlights-on.log > /dev/null
-20         * * * * redis-cli bgrewriteaof > nul
-30         * * * * /home/theather/bin/dhsupdate.pl
-
-45 4 1         * * /home/theather/bin/upgrade-python.sh
-5 5 1 * *  find /var/log/nmap/nmap-*.txt -type f -mtime +30 -exec rm -f {} \;
-
-#@reboot  /bin/bash "/bin/sleep 2m && /home/theather/bin/myip.datalog && /home/theather/bin/myip.startup"
-@reboot /home/theather/bin/handler.reboot
-
-# Edit this file to introduce tasks to be run by cron.
-# 
-# Each task to run has to be defined through a single line
-# indicating with different fields when the task will be run
-# and what command to run for the task
-# 
-# To define the time you can provide concrete values for
-# minute (m), hour (h), day of month (dom), month (mon),
-# and day of week (dow) or use '*' in these fields (for 'any').# 
-# Notice that tasks will be started based on the cron's system
-# daemon's notion of time and timezones.
-# 
-# Output of the crontab jobs (including errors) is sent through
-# email to the user the crontab file belongs to (unless redirected).
-# 
-# For example, you can run a backup of all your user accounts
-# at 5 a.m every week with:
-# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
-# 
-# For more information see the manual pages of crontab(5) and cron(8)
-# 
-# m h  dom mon dow   command
+MAILFROM='root-wasabi <zymurgy.bc@gmail.com>'
+MAILTO=zymurgy.bc@gmail.com
 
 4,24,44    * * * * /home/theather/bin/dyndns-update.cron
 45 5         * * 1 /home/theather/bin/Update_GoDaddyDns.sh
@@ -86,4 +43,5 @@
 
 #@reboot  /bin/bash "/bin/sleep 2m && /home/theather/bin/myip.datalog && /home/theather/bin/myip.startup"
 @reboot /home/theather/bin/handler.reboot
+
 
