@@ -13,7 +13,7 @@ sudo apt-get -y update
 sudo apt-get -y install aptitude curl mailutils cmake ssmtp
 sudo apt-get -y install mosquitto-clients build-essential jq \
                         python3-pip matchbox-keyboard  libnss-myhostname  \
-                        autoconf automake bison libtool automake libffi-dev \
+                        autoconf automake bison libtool libffi-dev \
                         ruby ruby-dev gem
 
 sudo apt-get -y install pkgconf gobject-introspection libgirepository1.0-dev \
@@ -81,8 +81,10 @@ if [ -f "${HOME}/bin/crontab.`hostname`.bak" ]; then
     sudo crontab ~/bin/crontab.`hostname`.bak
 fi
 
-sudo perl -MCPAN -e "install 'YAML'; install 'CPAN'" #; reload CPAN"
+sudo perl -MCPAN -e "install 'CPAN::DistnameInfo'; install 'YAML'; install 'CPAN'" #; reload CPAN"
 sudo perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit'
+@ Updates to run dhsupdate.pl
+sudo perl -MCPAN -e "install 'LWP:UserAgent'; "
 
 if [ -f "${HOME}/bin/upgrade-python.sh" ]; then
     ${HOME}/bin/upgrade-python.sh
