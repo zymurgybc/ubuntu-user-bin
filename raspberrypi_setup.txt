@@ -35,5 +35,4 @@ fi
 /etc/mail.rc           <-- needs more aliases
 /etc/mailname          <-- needs domain name
 
-replace /etc/altrenatives/mail --> /usr/bin/mail.utils ==> /etc/alternatives/mail --> /usr/sbin/ssmtp
-by running    ==>>>   sudo ln -s /usr/sbin/ssmtp /etc/alternatives/mail
+replace sendmail with a link to ssmtp (see my_build.sh)
