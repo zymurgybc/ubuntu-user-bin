@@ -45,7 +45,7 @@ do
 	# -sP            -> not to do a port scan after host discovery
 	# --host-timeout -> Maximum time before giving up on a whole host
 	# -oG            -> Save results in a format for grep
-        nmap -sP -n --max-parallelism 100 --host-timeout 5 -oG - "${ip%\.[0-9]*}.*" 2>&1 \
+        nmap -sPE -n --max-parallelism 100 --host-timeout 5 -oG - "${ip%\.[0-9]*}.*" 2>&1 \
         | tee -a "${NMAP_LOG}" \
         | grep -oE '${IP4_REGEX}' \
         | while read addr

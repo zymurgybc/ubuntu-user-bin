@@ -1,9 +1,12 @@
 /var/log/freedns_penrose_newtonian_ca.*.log {
-        monthly
-        size=10M
-        rotate 4
-        compress
-        nodelaycompress
-        missingok
-        notifempty
+    monthly
+    size=10M
+    rotate 4
+    compress
+    nodelaycompress
+    missingok
+    notifempty
+    postrotate
+        find /var/log/ -name "freedns_penrose.newtonian.ca.*.log.gz" -mtime +120 -delete
+    endscript
 }
