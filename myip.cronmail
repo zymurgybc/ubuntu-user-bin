@@ -97,5 +97,4 @@ fi
  echo "</pre></body></html>"
  echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca--"
  echo
-) | awk '{$1=$1;print}' | mail ${MYIP_ADDRESS_TO}
-# Passing through awk like this removes leading and trailing whitespace
+) | sendmail ${MYIP_ADDRESS_TO}
