@@ -7,3 +7,13 @@
         missingok
         notifempty
 }
+
+/var/log/mqtt_client.error.log {
+        weekly
+        size=10M
+        rotate 4
+        compress
+        nodelaycompress
+        missingok
+        notifempty
+}
