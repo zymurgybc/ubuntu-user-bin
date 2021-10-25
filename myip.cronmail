@@ -97,4 +97,4 @@ fi
  echo "</pre></body></html>"
  echo "--EneUrBrHYB.ABC123/`hostname`.heatherington.ca--"
  echo
-) | sendmail ${MYIP_ADDRESS_TO}
+) | /usr/sbin/sendmail ${MYIP_ADDRESS_TO}
