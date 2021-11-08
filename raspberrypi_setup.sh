@@ -24,7 +24,8 @@ sudo apt-get -y install pkgconf gobject-introspection libgirepository1.0-dev \
 
 sudo apt-get -y install swig swig2.0.*
 sudo aptitude -y install nfs-kernel-server nfs-common portmap dos2unix libssl-dev libtiff5-dev \
-                         zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
+                         zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev \
+                         tcl tcl8.6 tcl8.6-dev tk8.6-dev python-tk
 
 sudo update-rc.d rpcbind enable
 sudo service rpcbind start
