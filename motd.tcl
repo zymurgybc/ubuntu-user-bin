@@ -2,10 +2,6 @@
 # MOTD script original? / mod mewbies.com
 # https://www.raspberrypi.org/forums/viewtopic.php?t=23440
 
-proc lexists name {
-    expr {![catch {file lstat $name finfo}]}
-}
-
 # * Variables
 set var(user) $env(USER)
 set var(path) $env(PWD)
@@ -70,6 +66,7 @@ set head {          .~ .~~~..~.                      _                          
 set head2 {
           .~~.   .~~.
          '. \ ' ' / .'}
+
 # * display kernel version
 set uname [exec -- /bin/uname -snrvm]
 set unameoutput0 [lindex $uname 0]
@@ -78,31 +75,33 @@ set unameoutput2 [lindex $uname 2]
 set unameoutput3 [lindex $uname 3]
 set unameoutput4 [lindex $uname 4]
 
-if {[ file exists /opt/vc/bin/vcgencmd ]&&[file executable /opt/vc/vcgencmd]} {
-  # * display temperature
-  set temp [exec -- /opt/vc/bin/vcgencmd measure_temp | cut -c "6-9"]
-  set tempoutput [lindex $temp 0]
-
-  # * display GPU version
-  set gpu [exec -- /opt/vc/bin/vcgencmd version]
-  set gpuoutput [lindex $gpu 0]
-  set gpuoutput1 [lindex $gpu 1]
-  set gpuoutput2 [lindex $gpu 2]
-  set gpuoutput3 [lindex $gpu 8]
-  set gpuoutput4 [lindex $gpu 9]
+# * This command can be missing in arm64 builds
+set vcgencmd /opt/vc/bin/vcgencmd
+set fexist [file exist $vcgencmd]
+if { $fexist } {
+    # * display temperature
+    set temp [exec -- $vcgencmd measure_temp | cut -c "6-9"]
+    set tempoutput [lindex $temp 0]
+    # * display GPU version
+    set gpu [exec -- $vcgencmd version]
+    set gpuoutput [lindex $gpu 0]
+    set gpuoutput1 [lindex $gpu 1]
+    set gpuoutput2 [lindex $gpu 2]
+    set gpuoutput3 [lindex $gpu 8]
+    set gpuoutput4 [lindex $gpu 9]
 }
 
 # * Print Results
 puts "\033\[01;32m$head2\033\[0m"
 puts "\033\[02;31m$head\033\[0m"
-puts "   System........: $unameoutput0 $unameoutput $unameoutput2 $unameoutput3 $unameoutput4"
-if {[ file exists /opt/vc/bin/vcgencmd ]&&[file executable /opt/vc/vcgencmd]} {
-  puts "   GPU Version...: $gpuoutput $gpuoutput1 $gpuoutput2, $gpuoutput3 $gpuoutput4"
+if { $fexist } {
+    puts "   System........: $unameoutput0 $unameoutput $unameoutput2 $unameoutput3 $unameoutput4"
+    puts "   GPU Version...: $gpuoutput $gpuoutput1 $gpuoutput2, $gpuoutput3 $gpuoutput4"
 }
 puts "   Last Login....: $ll(1) $ll(2) $ll(3) $ll(4) from $ll(5)"
 puts "   Uptime........: $up(days)days $up(hours)hours $up(mins)minutes $up(secs)seconds"
-if {[ file exists /opt/vc/bin/vcgencmd ]&&[file executable /opt/vc/vcgencmd]} {
-  puts "   Temperature...: $tempoutput°C"
+if { $fexist } {
+    puts "   Temperature...: $tempoutput°C"
 }
 puts "   Load..........: $sysload(1) (1minute) $sysload(5) (5minutes) $sysload(15) (15minutes)"
 puts "   Memory MB.....: Total: $mem(t)  Used: $mem(u)  Free: $mem(f)  Cached: $mem(c)  Swap: $mem(s)"
