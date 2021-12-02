@@ -123,7 +123,7 @@ class mqtt_updater:
 
 if __name__ == "__main__":
     for host in config["hosts"]:
-        print("Using " + host)
+        #print("Using " + host)
         updater = mqtt_updater(config["hosts"][host])
         t = threading.Thread(target=updater.run)
         t.start()
