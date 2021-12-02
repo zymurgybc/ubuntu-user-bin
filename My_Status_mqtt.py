@@ -19,6 +19,7 @@ import socket
 import traceback
 
 import json
+
 config_json = os.path.dirname(os.path.realpath(__file__)) + '/mqtt_config.json'
 with open(config_json, 'r') as f:
     config = json.load(f)
@@ -71,6 +72,7 @@ def uptime():
 class mqtt_updater:
 
     def __init__(self, config):
+        # print("Using ", type(config), " ", config)
         self.config = config
         self.mqttc = mqtt.Client(MQTT_CLIENTID)
         self.mqttc.username_pw_set(config["mqtt_client"], password=config["mqtt_password"])
@@ -78,7 +80,7 @@ class mqtt_updater:
         self.mqttc.updater = self
 
         self.mqttc.on_connect = on_connected
-        #self.mqttc.on_message = on_message
+        # self.mqttc.on_message = on_message
         self.mqttc.on_publish = on_publish
         self.mqttc.on_subscribe = on_subscribe
         self.mqttc.on_log = on_log
@@ -120,8 +122,9 @@ class mqtt_updater:
 
 
 if __name__ == "__main__":
-    for config in config["hosts"]:
-        updater = mqtt_updater(config)
+    for host in config["hosts"]:
+        print("Using " + host)
+        updater = mqtt_updater(config["hosts"][host])
         t = threading.Thread(target=updater.run)
         t.start()
         t.join()
