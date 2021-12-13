@@ -33,13 +33,15 @@ LOG_FILENAME = config["mqtt_client_log"]
 logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG)
 logger = logging.getLogger('My_Status_mqtt')
 
-def on_connected(client, userdata, flags, rc):
-     logger.info(os.path.basename(__file__) + " - mqtt connected")
-     client.updater.publish_status()
+def on_connected(mosq, userdata, flags, rc):
+    host = mosq.updater.config["mqtt_host"]
+    logger.info(os.path.basename(__file__) + " - " + host + " - mqtt connected")
+    mosq.updater.publish_status()
 
 #def on_message(mosq, obj, msg):
 #    global message
-#    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+#    host = mosq.updater.config["mqtt_host"]
+#    print(host + " --> " + msg.topic + " + " + str(msg.qos) + " --> " + str(msg.payload))
 #    message = msg.payload
 
 def on_publish(mosq, obj, mid):
