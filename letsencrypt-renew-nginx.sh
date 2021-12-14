@@ -1,18 +1,24 @@
 #!/bin/sh
-#/usr/sbin/service nginx stop  # or whatever your webserver is
 #. /opt/eff.org/certbot/venv/bin/activate
+
+sudo certbot renew --nginx #--dry-run
+exit $_
+
 
 GITREPO=/usr/local/src/github/letsencrypt/
 cd ${GITREPO}
 git pull
 
+USE_PYTHON_3=1
+export USE_PYTHON_3
+
 # the standalone method will use its own web server, so we need to stop nginx to free the ports
 /usr/sbin/service nginx stop
 
-#killall nginx
+#CERTLOG=/var/log/letsencrypt/renew_$(date -d "today" +"%Y%m%d%H%M").log
+CERTLOG=/var/log/letsencrypt/renew.log
 
-#./letsencrypt-auto renew -nvv --standalone > /var/log/letsencrypt/renew_$(date -d "today" +"%Y%m%d%H%M").log 2>&1
-./letsencrypt-auto renew -nvv --standalone > /var/log/letsencrypt/renew.log 2>&1
+./letsencrypt-auto renew -nvv --standalone | tee -a ${CERTLOG} 2>&1
 
 LE_STATUS=$?
 /usr/sbin/service nginx start # or whatever your webserver is
@@ -25,4 +31,5 @@ if [ "$LE_STATUS" != 0 ]; then
     fi
     exit 1
 fi
+
 
