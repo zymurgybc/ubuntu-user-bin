@@ -30,7 +30,10 @@ MAILTO=zymurgy.bc@gmail.com
 
 # both minutes and an hour OR it runs every minute for an hour!
 45 4 * * * cd $HOME/gdrive && $HOME/bin/drive pull -hidden || while [ $? -ne 0 ]; do $HOME/bin/drive pull -hidden -fix-clashes; echo "task exited $?"; sleep 10; done
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 45 0 * * * rsync -ravs -e ssh  /home/theather/  archiver@192.168.1.200:/mnt/DiskArray/Computers/wasabi/home/theather/ --exclude-from .rsync-exclude
 #05 5 * * * cd /home/theather/zap2xml/ && /home/theather/bin/zap2xml.pl -u ted_604@yahoo.com -p not2quiet && scp /home/theather/zap2xml/xmltv.xml freenas.loc:/mnt/DiskArray/jails/emby_1/media/zap2xml/
 #55 6  * * 2,3,4,5,6 cd /home/theather/source/github.com/thorsten-gehrig/alexa_remote_control.sh -d "Ted's Echo" -r knkx
