@@ -14,7 +14,7 @@ if [ -f "${HOME}/bin/upgrade-python.sh" ]; then
     ${HOME}/bin/upgrade-python.sh | tee -a ${HOME}/tmp/upgrade-python.log
 fi
 
-if [ -f "${HOME}/bin/upgrade.${HOSTNAME}.sh" ] then
+if [ -f "${HOME}/bin/upgrade.${HOSTNAME}.sh" ]; then
     if [ -f "${HOME}/tmp/upgrade.${HOSTNAME}.log" ]; then
         rm "${HOME}/tmp/upgrade.${HOSTNAME}.log"
     fi
