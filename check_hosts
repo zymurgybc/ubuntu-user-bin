@@ -118,7 +118,7 @@ while [[ $# > 0 ]]; do
         fi
 
         echo "<p class='heading'>Stale log files (untouched >4hrs)</p>"                                       >> ${NMAP_TMP}
-        find ${NMAP_DIR} -type f -name "nmap_*\.log" -mmin +$AGE  | awk 'NF{$0="<p>" $0 "</p>"}1'             >> ${NMAP_TMP}
+        find ${NMAP_DIR} -type f -name "nmap_*\.log" -mmin +$AGE | sort  -t . -k 3,3n -k 4,4n | awk 'NF{$0="<p>" $0 "</p>"}1'             >> ${NMAP_TMP}
         find ${NMAP_DIR} -type f -name "nmap_*\.log" -size 0b -mtime +7                                       >  ${NMAP_TMP}_stale
 
         if [ -s "${NMAP_TMP}" ]; then
