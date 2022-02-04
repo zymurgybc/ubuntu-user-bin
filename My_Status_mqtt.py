@@ -14,6 +14,7 @@ from datetime import datetime
 import logging
 import requests
 import paho.mqtt.client as mqtt # sudo pip install paho-mqtt
+import re
 import sys
 import socket
 import traceback
@@ -52,9 +53,9 @@ def on_subscribe(mosq, obj, mid, granted_qos):
     host = mosq.updater.config["mqtt_host"]
     logger.info(os.path.basename(__file__) + " - " + host + " Subscribed: " + str(mid) + " " + str(granted_qos))
 
-def on_log(mosq, obj, level, string):
+def on_log(mosq, obj, level, message):
     host = mosq.updater.config["mqtt_host"]
-    logger.info(os.path.basename(__file__) + " - " + host + " Log: " + string)
+    logger.info(os.path.basename(__file__) + " - " + host + " Log: " + message)
 
 def getIP():
     # in subprocess
@@ -101,7 +102,7 @@ class mqtt_updater:
                     self.client_loop = self.mqttc.loop(.25) # blocks for 250ms
                 except ValueError as err1:
                     # we just don't publish bad readings
-                    logger.warning(os.path.basename(__file__) + " - [2] %s " % err.args)
+                    logger.warning(os.path.basename(__file__) + " - run() %s " % err1.args)
                     time.sleep(5)
 
             logger.info(os.path.basename(__file__) + " - exiting with %s" % str(self.client_loop))
@@ -116,11 +117,28 @@ class mqtt_updater:
         logger.info(os.path.basename(__file__) + " - " + self.config["mqtt_host"] + " Sending update: " + my_updated)
 
     def myUpdated(self):
-        my_updated = '{{ "DateTime": "{}", "Uptime": "{}" }}'.format(
+        my_updated = '{{ "uname": {}, "DateTime": "{}", "Uptime": "{}" }}'.format(
+            self.systemUname(),
             time.strftime("%Y/%m/%d %H:%M:%S", time.localtime()),
             uptime())
         #print( my_updated )
         return my_updated
+
+    def systemUname(self):
+        uname = ' {{ "Empty": "true" }}'
+        try:
+            tupleString = str(os.uname()).replace("posix.uname_result(", '{ ').replace(")", ' }')
+            #print(f'tuple {tupleString}')
+            uname = re.sub("([a-zA-Z]*)=", "\"\\1\": ", tupleString)
+            #print(f'uname {uname}')
+
+        except Exception as err1:
+             logger.warning(os.path.basename(__file__) + " - systemUname() %s " % err1.args)
+             raise err1
+
+        return uname
+
+
 
 
 if __name__ == "__main__":
