@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# handle filed sends with a note in the log
 # -*- coding: utf-8 -*-
 # Adapted from https://gist.github.com/mdrovdahl/0af14b84da43fb1801fe212ffc5ff30c
 
@@ -44,8 +45,12 @@ class MqttMessage:
         self.topic = topic
         self.value = value
 
-def on_connected(client, userdata, rc):
-    logger.info(os.path.basename(__file__) + " - mqtt connected %s" % client)
+def on_connected(client, userdata, flags, rc):
+    try:
+        logger.info(os.path.basename(__file__) + " - mqtt connected %s" % client)
+    except Exception as err:
+        # handle filed sends with a note in the log
+        logger.warning(os.path.basename(__file__) + " - on_connected failed.  Exception message: %s" % dump(err))
 
 def on_message(mosq, obj, msg):
     global message
@@ -59,7 +64,11 @@ def on_publish(mosq, obj, mid):
         mosq.publish(aMessage.topic, aMessage.value, qos = 1, retain = 1)
 
 def on_subscribe(mosq, obj, mid, granted_qos):
-    logger.info(os.path.basename(__file__) + " - subscribed: " + str(mid) + " " + str(granted_qos))
+    try:
+        logger.info(os.path.basename(__file__) + " - subscribed: " + str(mid) + " " + str(granted_qos))
+    except Exception as err:
+        # handle filed sends with a note in the log
+        logger.warning(os.path.basename(__file__) + " - on_subscribe failed.  Exception message: %s" % dump(err))
 
 def on_log(mosq, obj, level, string):
     logger.info(os.path.basename(__file__) + " - Log: " + string)
@@ -67,14 +76,17 @@ def on_log(mosq, obj, level, string):
 def mosquittoClient():
 	client = mqtt.Client(MQTT_CLIENTID, clean_session=False)
 	# Use the JSON config to store the server reference
-	client.username_pw_set(mqtt_config["mqtt_client"], password=mqtt_config["mqtt_password"])
+	for host in mqtt_config["hosts"]:
+		client.servername = host
+		client.config = mqtt_config["hosts"][host]
+	client.username_pw_set(client.config["mqtt_client"], password=client.config["mqtt_password"])
 	client.on_connect = on_connected
 	client.on_message = on_message
 	client.on_publish = on_publish
 	client.on_subscribe = on_subscribe
 	client.on_log = on_log
 	client.will_set( topic = "home/client/" + MQTT_CLIENTID, payload = "disconnected", qos=2, retain=1)
-	logger.info(os.path.basename(__file__) + " - connecting" + " to mqtt://" + mqtt_config["mqtt_host"] + ":" + mqtt_config["mqtt_port"])
+	logger.info(os.path.basename(__file__) + " - connecting" + " to mqtt://" + client.servername + ":" + client.config["mqtt_port"])
 	return client
 
 def mosquittoPublish():
@@ -140,13 +152,13 @@ client = mosquittoClient()
 while True:
 	try:
 		# Use the JSON config to store the server reference
-		client.connect(mqtt_config["mqtt_host"], int(mqtt_config["mqtt_port"]))
+		client.connect(client.config["mqtt_host"], int(client.config["mqtt_port"]))
 		client.loop_start()
 		_continue = 1
 
 		while _continue:
 			_continue = mosquittoPublish()  # fill the queue
-                        statusmsg = "home/client/" + MQTT_CLIENTID, "connected"
+			statusmsg = "home/client/" + MQTT_CLIENTID, "connected"
 			message_queue.put(MqttMessage(statusmsq))
 			# This will prime the loop
 			while not message_queue.empty():
@@ -156,8 +168,8 @@ while True:
 			time.sleep(30)
 	except Exception as err:
 		# handle filed sends with a note in the log
-		logger.warning(os.path.basename(__file__) + " - mqtt loop failed.  Exception message: %s" % err.args)
-		sys.exit(os.path.basename(__file__) + " - mqtt loop failed.  Exception message: %s" % err.args)
-                dump(err)
+		logger.warning(os.path.basename(__file__) + " - mqtt loop failed.  Exception message: %s" % dump(err))
+		sys.exit(os.path.basename(__file__) + " - mqtt loop failed.  Exception message: %s" % dump(err))
+		dump(err)
                 # could be a session problem, so log back into neviweb
 		neviSession = neviwebLogin()

@@ -144,6 +144,14 @@ while [[ $# > 0 ]]; do
                          | sort -V | sed "s/Status: Up/Status: Down/" | awk 'NF{$0="<p class='\''c'\''>" $0 "</p>"}1' >> ${NMAP_TMP}
         fi
         echo "</div>"                                                                                        >> ${NMAP_TMP}
+
+        if [ -x "tail /var/log/rabbitmq/rabbit@wasabi.log" ]; then
+            echo "<p class='heading'>MQTT Service Log</p><div class='data'>"                                 >> ${NMAP_TMP}
+            echo "<div class="data"><pre>"                                                                   >> ${NMAP_TMP}
+            tail -n 20 tail /var/log/rabbitmq/rabbit@wasabi.log                                              >> ${NMAP_TMP}
+            echo "</pre></div>"                                                                              >> ${NMAP_TMP}
+        fi
+
         if [ -x "`which systemctl`" ]; then
             echo "<p class='heading'>Failed Services</p><div class='data'>"                                  >> ${NMAP_TMP}
             systemctl list-units --state=failed | awk 'NF{$0="<p>" $0 "</p>"}1'                              >> ${NMAP_TMP}
