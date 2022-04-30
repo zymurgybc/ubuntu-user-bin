@@ -146,7 +146,7 @@ while [[ $# > 0 ]]; do
         echo "</div>"                                                                                        >> ${NMAP_TMP}
 
         if [ -x "tail /var/log/rabbitmq/rabbit@wasabi.log" ]; then
-            echo "<p class='heading'>MQTT Service Log</p><div class='data'>"                                 >> ${NMAP_TMP}
+            echo "<p class='heading'>RabbitMQ Service Log</p><div class='data'>"                                 >> ${NMAP_TMP}
             echo "<div class="data"><pre>"                                                                   >> ${NMAP_TMP}
             tail -n 20 tail /var/log/rabbitmq/rabbit@wasabi.log                                              >> ${NMAP_TMP}
             echo "</pre></div>"                                                                              >> ${NMAP_TMP}
