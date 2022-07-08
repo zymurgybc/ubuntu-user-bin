@@ -3,7 +3,7 @@
 import re #Regular expressions
 import os
 
-class tools:
+class Windows_Tools:
     def __init__(self, logger):
         self.logger = logger
 

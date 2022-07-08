@@ -6,7 +6,7 @@ import re #Regular expressions
 import os
 from subprocess import check_output
 
-class tools:
+class Linux_Tools:
     def __init__(self, logger):
         self.logger = logger
 
