@@ -37,5 +37,8 @@ LOGNAME=theather-conductor
 # delete Rewards email log files older than 14 days (Truenas still has copies!)
 30 1   *   *   *    find /home/theather/logs/* -mtime +14 -exec rm {} \;
 #11  *   *   *   *    df | grep truenas | sed ":a;s/\\B[0-9]\\{3\\}\\>/,&/;ta" | ts "[%Y-%m-%d %H:%M:%S]" | tee -a /tmp/truenas_progress
-30 */3   *   *   *    /home/theather/bin/truenas_progress.sh
+#30 */3   *   *   *    /home/theather/bin/truenas_progress.sh
 
+0 6    *   *   * ~/go/bin/picoleaf effect select "Morning Sky" && ~/go/bin/picoleaf brightness 60
+0 7    *   *   * ~/go/bin/picoleaf effect select Lightscape && ~/go/bin/picoleaf brightness 75
+0 22   *   *   * ~/go/bin/picoleaf effect select "Morning Sky" && ~/go/bin/picoleaf brightness 40
