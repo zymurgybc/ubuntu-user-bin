@@ -85,13 +85,15 @@ fi
      cat /var/run/motd.dynamic
      echo "</pre></div>"
  fi
- if [ -d "/data/transmission-daemon/" ]; then
-   echo "<p class='heading'><b>Transmission</b></p>"
-   echo "<table class='data'><tr>"
+if [[ $(which transmission-remote) ]]; then
+   if [ -d "/data/transmission-daemon/" ]; then
+     echo "<p class='heading'><b>Transmission</b></p>"
+     echo "<table class='data'><tr>"
        #transmission-remote -n transmission:transmission -l | sed 's/$/<br>/' | sed 's/ /\&nbsp;/g'
        transmission-remote -n transmission:transmission -l | sed 's/$/<\/td><\/tr>\n<tr><td>/' | sed 's/ */<\/td><td>/g'
        echo '</tr></table>'
- fi
+   fi
+fi
  echo "<p class='heading'><b>System Uptime</b></p>"
  uptime;
  echo "</pre></body></html>"
