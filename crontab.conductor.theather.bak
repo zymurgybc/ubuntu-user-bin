@@ -32,10 +32,12 @@ LOGNAME=theather-conductor
 8 12   *   *   7    cd /home/theather/bin && git pull 2>&1
 
 40 1   *   *   *    rsync -ravs -e ssh /home/theather/ archiver@192.168.1.200:Computers/conductor/home/theather/ --exclude-from /home/theather/.rsync-exclude
-30 5,7,9   *   *   *    /home/theather/bin/Launch-BingRewards.NETCore.sh
+#30 5,7,9   *   *   *    /home/theather/bin/Launch-BingRewards.NETCore.sh
+30 5,7,9   *   *   *    /home/theather/bin/Launch-BingRewards.NETCore-Dev.sh
+
 #45 5   *   *   5,6  /home/theather/bin/Launch-ForzaRewards.NETCore.sh
 # delete Rewards email log files older than 14 days (Truenas still has copies!)
-30 1   *   *   *    find /home/theather/logs/* -mtime +14 -exec rm {} \;
+30 1   *   *   *    find /home/theather/logs -type f -mtime +14 -prune -exec rm {} \;
 #11  *   *   *   *    df | grep truenas | sed ":a;s/\\B[0-9]\\{3\\}\\>/,&/;ta" | ts "[%Y-%m-%d %H:%M:%S]" | tee -a /tmp/truenas_progress
 #30 */3   *   *   *    /home/theather/bin/truenas_progress.sh
 
