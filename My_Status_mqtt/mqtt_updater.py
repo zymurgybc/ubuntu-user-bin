@@ -79,9 +79,12 @@ class mqtt_updater:
 
     def publish_status(self):
         hostConfig = self.config['hosts'][self.hostConfig]
-        my_status =  'connected ' + self.tools.getIP()
+        my_status = {}
+        my_status['Hostname'] = socket.gethostname()
+        my_status['Status'] = 'connected'
+        my_status['IP'] = self.tools.getIP()
         #print( my_status )
-        self.mqttc.publish(self.MQTT_STATUS_TOPIC, my_status, qos = 1, retain = 1)
+        self.mqttc.publish(self.MQTT_STATUS_TOPIC, json.dumps(my_status), qos = 1, retain = 1)
         self.logger.info(os.path.basename(__file__) + " - " + hostConfig["mqtt_host"] + " Sending status: " + my_status)
         my_updated = self.myUpdated()
         self.mqttc.publish(self.MQTT_UPDATE_TOPIC, my_updated, qos = 1, retain = 1)
@@ -114,7 +117,7 @@ class mqtt_updater:
         self.logger.info(os.path.basename(__file__) + " - " + self.hostConfig + " Log: " + message)
 
 #def launchClient(config, host, logger):
-#    #print("Using " + host)    
+#    #print("Using " + host)
 #    t = threading.Thread(target=lambda task: updater = mqtt_updater(config, host, logger), updater.run())
 #    t.start()
 #    return t
