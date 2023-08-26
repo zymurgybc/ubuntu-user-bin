@@ -48,7 +48,11 @@ class mqtt_updater:
         hostConfig = self.config['hosts'][self.hostConfig]
         self.mqttc = mqtt.Client(self.MQTT_CLIENTID)
         self.mqttc.username_pw_set(hostConfig["mqtt_client"], password=hostConfig["mqtt_password"])
-        self.mqttc.will_set(self.MQTT_STATUS_TOPIC, payload='disconnected', qos=0, retain=True)
+        testament ={}
+        testament['Hostname'] = socket.gethostname()
+        testament['Status']='disconnected'
+        testament['IP']=self.tools.getIP().strip()
+        self.mqttc.will_set(self.MQTT_STATUS_TOPIC, payload=json.dumps(testament), qos=0, retain=True)
         self.mqttc.updater = lambda : self.myUpdated()
 
         self.mqttc.on_connect = lambda mosq, userdata, flags, rc : self.on_connected(mosq, userdata, flags, rc)
@@ -82,10 +86,10 @@ class mqtt_updater:
         my_status = {}
         my_status['Hostname'] = socket.gethostname()
         my_status['Status'] = 'connected'
-        my_status['IP'] = self.tools.getIP()
+        my_status['IP'] = self.tools.getIP().strip()
         #print( my_status )
         self.mqttc.publish(self.MQTT_STATUS_TOPIC, json.dumps(my_status), qos = 1, retain = 1)
-        self.logger.info(os.path.basename(__file__) + " - " + hostConfig["mqtt_host"] + " Sending status: " + my_status)
+        self.logger.info(os.path.basename(__file__) + " - " + hostConfig["mqtt_host"] + " Sending status: " + str(my_status))
         my_updated = self.myUpdated()
         self.mqttc.publish(self.MQTT_UPDATE_TOPIC, my_updated, qos = 1, retain = 1)
         self.logger.info(os.path.basename(__file__) + " - " + hostConfig["mqtt_host"] + " Sending update: " + my_updated)
