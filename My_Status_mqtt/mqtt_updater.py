@@ -46,7 +46,7 @@ class mqtt_updater:
 
     def getClient(self):
         hostConfig = self.config['hosts'][self.hostConfig]
-        self.mqttc = mqtt.Client(self.MQTT_CLIENTID)
+        self.mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, self.MQTT_CLIENTID)
         self.mqttc.username_pw_set(hostConfig["mqtt_client"], password=hostConfig["mqtt_password"])
         testament ={}
         testament['Hostname'] = socket.gethostname()
