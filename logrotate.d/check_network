@@ -1,10 +1,10 @@
 /var/log/check_network.log {
+        create 0664 root adm
         weekly
-        size=10M
-        rotate 4
-        compress
-        nodelaycompress
-        minsize=1M
         missingok
+        rotate 6
+        compress
         notifempty
+        delaycompress
 }
+

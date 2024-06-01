@@ -1,1 +1,1 @@
-echo `curl -s http://myip.dnsomatic.com` `hostname --all-ip-addresses`
+echo `curl -s http://myip.dnsomatic.com | grep -v html` `hostname --all-ip-addresses`
