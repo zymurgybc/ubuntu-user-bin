@@ -31,7 +31,7 @@ MAILTO=zymurgy.bc@gmail.com
 7,22,37,52 * * * * /home/theather/bin/check_network.sh
 
 #2,17,32,47 * * * * /home/theather/bin/My_Status_mqtt.py 2>/dev/null >> /var/log/mqtt_client.log
-2,17,32,47 * * * * cd /home/theather/bin && python3 -m My_Status_mqtt 2>/dev/null | ts '[%Y-%m-%d %H:%M:%S]' >>/var/log/mqtt_client.log
+2,17,32,47 * * * * cd /home/theather/bin && python3 -m My_Status_mqtt 2>/dev/null | ts '[\%Y-\%m-\%d \%H:\%M:\%S]' >>/var/log/mqtt_client.log
 
 3,18,33,48 * * * * /home/theather/bin/mqtt_listener.py  2>/dev/null >> /var/log/mqtt_listener.log
 4,19,34,49 * * * * /home/theather/bin/neviweb_mqtt.py   2>/dev/null >> /var/log/mqtt_neviweb.log
