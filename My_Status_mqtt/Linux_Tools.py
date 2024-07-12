@@ -17,14 +17,14 @@ class Linux_Tools:
             # in subprocess
             my_hostname = spawn.find_executable("hostname")
             if(isinstance(my_hostname, str) != True):
-                raise Exception(os.path.basename(__file__) + ".getIP() -- did not find \"hostname\" binary")
+                raise Exception(os.path.basename(__file__) + " Linux_Tools.getIP() -- did not find \"hostname\" binary")
             result =  check_output([my_hostname, "--all-ip-addresses"]).decode("utf-8")
             if(isinstance(result, str)):
                 return result.strip()
             else:
-                raise Exception(os.path.basename(__file__) + ".getIP() -- check_output() did not return a string")
+                raise Exception(os.path.basename(__file__) + " Linux_Tools.getIP() -- check_output() did not return a string")
         except Exception as err1:
-            self.logger.error(os.path.basename(__file__) + " - getIP() %s " % err1.args)
+            self.logger.error(os.path.basename(__file__) + " Linux_Tools.getIP() Exception: %s " % err1.args)
 
     def uptime(self):
         libc = ctypes.CDLL('libc.so.6')
