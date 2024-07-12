@@ -5,14 +5,26 @@ import struct
 import re #Regular expressions
 import os
 from subprocess import check_output
+from distutils import spawn
 
 class Linux_Tools:
     def __init__(self, logger):
         self.logger = logger
 
     def getIP(self):
-        # in subprocess
-        return check_output(["hostname", "--all-ip-addresses"]).decode("utf-8")
+        try:
+            # Lumicube has an issue with finding the hostname execuable
+            # in subprocess
+            my_hostname = spawn.find_executable("hostname")
+            if(isinstance(my_hostname, str) != True):
+                raise Exception(os.path.basename(__file__) +os.path.basename(__file__) + ".getIP() -- did not find \"hostname\" binary")
+            result =  check_output([my_hostname, "--all-ip-addresses"]).decode("utf-8")
+            if(isinstance(result, str)):
+                return result.strip()
+            else:
+                raise Exception(os.path.basename(__file__) +os.path.basename(__file__) + ".getIP() -- check_output() did not return a string")
+        except Exception as err1:
+            self.logger.error(os.path.basename(__file__) + " - getIP() %s " % err1.args)
 
     def uptime(self):
         libc = ctypes.CDLL('libc.so.6')

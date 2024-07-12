@@ -19,6 +19,7 @@ import json
 
 if os.name == "posix":
     from My_Status_mqtt.Linux_Tools import Linux_Tools as tools
+    #import Linux_Tools as tools
 else:
     from My_Status_mqtt.Windows_Tools import Windows_Tools as tools
 
@@ -45,13 +46,16 @@ class mqtt_updater:
 
 
     def getClient(self):
+        '''
+        Each updater object creates its own mqtt client
+        '''
         hostConfig = self.config['hosts'][self.hostConfig]
         self.mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, self.MQTT_CLIENTID)
         self.mqttc.username_pw_set(hostConfig["mqtt_client"], password=hostConfig["mqtt_password"])
         testament ={}
         testament['Hostname'] = socket.gethostname()
         testament['Status']='disconnected'
-        testament['IP']=self.tools.getIP().strip()
+        testament['IP']=self.tools.getIP()
         self.mqttc.will_set(self.MQTT_STATUS_TOPIC, payload=json.dumps(testament), qos=0, retain=True)
         self.mqttc.updater = lambda : self.myUpdated()
 
@@ -86,7 +90,7 @@ class mqtt_updater:
         my_status = {}
         my_status['Hostname'] = socket.gethostname()
         my_status['Status'] = 'connected'
-        my_status['IP'] = self.tools.getIP().strip()
+        my_status['IP'] = self.tools.getIP()
         #print( my_status )
         self.mqttc.publish(self.MQTT_STATUS_TOPIC, json.dumps(my_status), qos = 1, retain = 1)
         self.logger.info(os.path.basename(__file__) + " - " + hostConfig["mqtt_host"] + " Sending status: " + str(my_status))

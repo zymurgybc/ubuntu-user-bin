@@ -8,6 +8,7 @@ import logging
 import json
 import threading
 from My_Status_mqtt import mqtt_updater
+#import mqtt_updater
 
 
 def launchClient(config, host, logger):
