@@ -1,6 +1,8 @@
 #!/bin/bash
+# https://serverfault.com/questions/31170/how-to-find-the-gateway-ip-address-in-linux
+ROUTER_IP=${route -n | grep 'UG[ \t]' | awk '{print $2}'route -n | grep 'UG[ \t]' | awk '{print $2}'}
+
 # http://www.linuxquestions.org/questions/linux-networking-3/script-to-check-connection-and-restart-network-if-down-262281/
-ROUTER_IP=192.168.1.1
 TEST_LOG=/var/log/check_network.log
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
