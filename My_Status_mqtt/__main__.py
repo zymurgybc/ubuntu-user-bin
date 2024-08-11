@@ -8,6 +8,7 @@ import logging
 import json
 import threading
 from My_Status_mqtt import mqtt_updater
+#import mqtt_updater
 
 
 def launchClient(config, host, logger):
@@ -15,18 +16,18 @@ def launchClient(config, host, logger):
     updater.run()
 
 def launchClients():
-    config_json = os.path.dirname(os.path.realpath(__file__)) + '/../mqtt_config.json'
-    with open(config_json, 'r') as f:
-        config = json.load(f)
+    try:
+        config_json = os.path.dirname(os.path.realpath(__file__)) + '/../mqtt_config.json'
+        with open(config_json, 'r') as f:
+            config = json.load(f)
 
-    FORMAT = '%(asctime)-15s %(message)s'
-    LOG_FILENAME = config["mqtt_client_log"]
-    
-    logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG)    
-    logger = logging.getLogger('My_Status_mqtt')
+        FORMAT = '%(asctime)-15s %(message)s'
+        LOG_FILENAME = config["mqtt_client_log"]
 
-    try:        
-        threads = [] 
+        logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG)
+        logger = logging.getLogger('My_Status_mqtt')
+
+        threads = []
         for host in config["hosts"]:
             #threads.append(launchClient(config, host, logger))
             t = threading.Thread(target=launchClient, args=(config, host, logger))

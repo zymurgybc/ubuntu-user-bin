@@ -1,19 +1,10 @@
 /var/log/mqtt_client.log {
+        create 0664 root adm
         weekly
-        size=10M
-        rotate 4
-        compress
-        nodelaycompress
         missingok
+        rotate 12
+        compress
         notifempty
+        delaycompress
 }
 
-/var/log/mqtt_client.error.log {
-        weekly
-        size=10M
-        rotate 4
-        compress
-        nodelaycompress
-        missingok
-        notifempty
-}

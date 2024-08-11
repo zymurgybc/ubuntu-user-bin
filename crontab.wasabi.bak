@@ -23,13 +23,18 @@
 MAILFROM='root-wasabi <zymurgy.bc@gmail.com>'
 MAILTO=zymurgy.bc@gmail.com
 
+#min hr dom mon dow
 4,24,44    * * * * /home/theather/bin/dyndns-update.cron
 45 5         * * 1 /home/theather/bin/Update_GoDaddyDns.sh
 21 6,18      * * * /home/theather/bin/myip.datalog
 15 7         * * 1 /home/theather/bin/myip.cronmail
 7,22,37,52 * * * * /home/theather/bin/check_network.sh
-2,17,32,47 * * * * /home/theather/bin/My_Status_mqtt.py 2>/dev/null >> /var/log/mqtt_client.log
-4,19,34,49 * * * * /home/theather/bin/neviweb_mqtt.py   2>/dev/null >> /var/log/mqtt_client.log
+
+#2,17,32,47 * * * * /home/theather/bin/My_Status_mqtt.py 2>/dev/null >> /var/log/mqtt_client.log
+2,17,32,47 * * * * cd /home/theather/bin && python3 -m My_Status_mqtt 2>/dev/null | ts '[\%Y-\%m-\%d \%H:\%M:\%S]' >>/var/log/mqtt_client.log
+
+3,18,33,48 * * * * /home/theather/bin/mqtt_listener.py  2>/dev/null >> /var/log/mqtt_listener.log
+4,19,34,49 * * * * /home/theather/bin/neviweb_mqtt.py   2>/dev/null >> /var/log/mqtt_neviweb.log
 #* 6,18       * * * systemctl restart mqspeak
 
 6,16,26,36,46,56 * * * * /home/theather/bin/check_hosts
@@ -37,11 +42,10 @@ MAILTO=zymurgy.bc@gmail.com
 #15 6       * * 1,2,3,4,5  /home/pi/bin/livingroomlights.sh on 2>&1        >> /tmp/livingroomlights-on.log > /dev/null
 20         * * * * redis-cli bgrewriteaof > nul
 30         * * * * /home/theather/bin/dhsupdate.pl
+15 7 */9       * * /usr/sbin/service nginx stop; /usr/bin/certbot renew; /usr/sbin/service nginx restart
 
 45 4 1         * * /home/theather/bin/upgrade-python.sh
 5 5 1 * *  find /var/log/nmap/nmap-*.txt -type f -mtime +30 -exec rm -f {} \;
 
 #@reboot  /bin/bash "/bin/sleep 2m && /home/theather/bin/myip.datalog && /home/theather/bin/myip.startup"
 @reboot /home/theather/bin/handler.reboot
-
-
