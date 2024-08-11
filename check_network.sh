@@ -1,7 +1,7 @@
 #!/bin/bash
 # https://serverfault.com/questions/31170/how-to-find-the-gateway-ip-address-in-linux
-ROUTER_IP=${route -n | grep 'UG[ \t]' | awk '{print $2}'route -n | grep 'UG[ \t]' | awk '{print $2}'}
-#ROUTER_IP=`ip route | awk '/default/ {print $3; exit}'`
+#ROUTER_IP=$(route -n | grep 'UG[ \t]' | awk '{print $2}' route -n | grep 'UG[ \t]' | awk '{print $2}')
+ROUTER_IP=`ip route | awk '/default/ {print $3; exit}'`
 
 # http://www.linuxquestions.org/questions/linux-networking-3/script-to-check-connection-and-restart-network-if-down-262281/
 TEST_LOG=/var/log/check_network.log
@@ -49,4 +49,6 @@ if [ $? != 0 ]; then
     nohup wpa_supplicant -Dnl80211 -iwlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | tee $TEST_LOG &
   fi
   ${DIR}/myip.up
+else
+  # echo "Network is fine"
 fi
