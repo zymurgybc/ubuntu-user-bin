@@ -49,6 +49,6 @@ if [ $? != 0 ]; then
     nohup wpa_supplicant -Dnl80211 -iwlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | tee $TEST_LOG &
   fi
   ${DIR}/myip.up
-else
-  # echo "Network is fine"
+#else
+#   echo "Network is fine"
 fi
