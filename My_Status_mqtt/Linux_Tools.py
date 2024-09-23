@@ -5,7 +5,7 @@ import struct
 import re #Regular expressions
 import os
 from subprocess import check_output
-from distutils import spawn
+#from distutils import spawn
 
 class Linux_Tools:
     def __init__(self, logger):
@@ -15,16 +15,22 @@ class Linux_Tools:
         try:
             # Lumicube has an issue with finding the hostname execuable
             # in subprocess
-            my_hostname = spawn.find_executable("hostname")
-            if(isinstance(my_hostname, str) != True):
-                raise Exception(os.path.basename(__file__) + " Linux_Tools.getIP() -- did not find \"hostname\" binary")
+            #my_hostname = spawn.find_executable("hostname")
+            #my_hostname = checo_output(["/usr/bin/hostname",""])
+            #if(isinstance(my_hostname, str) != True):
+            #    raise Exception(os.path.basename(__file__) + " Linux_Tools.getIP() -- did not find \"hostname\" binary")
+            my_hostname="/usr/bin/hostname"
             result =  check_output([my_hostname, "--all-ip-addresses"]).decode("utf-8")
             if(isinstance(result, str)):
                 return result.strip()
             else:
                 raise Exception(os.path.basename(__file__) + " Linux_Tools.getIP() -- check_output() did not return a string")
         except Exception as err1:
-            self.logger.error(os.path.basename(__file__) + " Linux_Tools.getIP() Exception: %s " % err1.args)
+            message = os.path.basename(__file__) + " Linux_Tools.getIP() Exception: %s " % err1.args
+            if(self.logger is not None):
+                self.logger.error(message)
+            else:
+                print(message)
 
     def uptime(self):
         libc = ctypes.CDLL('libc.so.6')
@@ -46,8 +52,12 @@ class Linux_Tools:
             #print(f'uname {uname}')
 
         except Exception as err1:
-             self.logger.warning(os.path.basename(__file__) + " - systemUname() %s " % err1.args)
-             raise err1
+            message = os.path.basename(__file__) + " - systemUname() %s " % err1.args
+            if(self.logger is not None):
+                self.logger.warning(message)
+            else:
+                print(message)
+            raise err1
 
         return uname
 
