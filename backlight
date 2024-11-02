@@ -20,7 +20,7 @@ case $command in
 EOF
       fi
       if [ -f "/sys/class/backlight/10-0045/brightness" ]; then
-         echo "echo 0 > /sys/class/backlight/10-0045/brightness"
+         #echo "echo 0 > /sys/class/backlight/10-0045/brightness"
          echo 0 > /sys/class/backlight/10-0045/brightness
       fi
 ;;
@@ -33,14 +33,14 @@ EOF
 EOF
       fi
       if [ -f "/sys/class/backlight/10-0045/brightness" ]; then
-         echo "echo 150 > /sys/class/backlight/10-0045/brightness"
+         #echo "echo 150 > /sys/class/backlight/10-0045/brightness"
          echo 150 > /sys/class/backlight/10-0045/brightness
       fi
 ;;
    "dim"|"dim")
       echo "Found dim parameter"
       if [ -f "/sys/class/backlight/10-0045/brightness" ]; then
-         echo "echo 30 > /sys/class/backlight/10-0045/brightness"
+         #echo "echo 30 > /sys/class/backlight/10-0045/brightness"
          echo 30 > /sys/class/backlight/10-0045/brightness
       fi
 ;;
