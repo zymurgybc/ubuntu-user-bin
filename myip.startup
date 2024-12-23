@@ -2,9 +2,11 @@
 
 #sleep 2m
 # wait for an IP address
-while /sbin/ifconfig | grep "192\.168\.(2[0-2][1-9]|1[0-9]{2}|[0-9]{1,2})\.(2[0-2][1-9]|1[0-9]{2}|[0-9]{1,2})" > /dev/null; do 
-    sleep 10s
-done
+if [ -x //sbin/ifconfig ] ; tthen 
+    while /sbin/ifconfig | grep "192\.168\.(2[0-2][1-9]|1[0-9]{2}|[0-9]{1,2})\.(2[0-2][1-9]|1[0-9]{2}|[0-9]{1,2})" > /dev/null; do 
+        sleep 10s
+    done
+fi
 
 # find the real location of the current script
 #_script=`readlink -f "${BASH_SOURCE[0]}"`
