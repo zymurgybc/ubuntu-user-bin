@@ -76,11 +76,15 @@ fi
 # start a fresh scan
 touch "${NMAP_LOG}"
 
-interface=(`hostname --all-ip-addresses`)
-for ip in "${interface[@]}"
-do
-   scan_subnet "${ip}/24"
-done
+if [ -x `which nmap` ]; then
+   interface=(`hostname --all-ip-addresses`)
+   for ip in "${interface[@]}"
+   do
+      scan_subnet "${ip}/24"
+   done
+else
+   echo "nmap is not installed" >> "${NMAP_LOG}"
+fi
 
 # http://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
 while [[ $# > 0 ]]; do
