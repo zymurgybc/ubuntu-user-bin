@@ -2,8 +2,9 @@
 #. /opt/eff.org/certbot/venv/bin/activate
 
 sudo certbot renew --nginx #--dry-run
-exit $_
+exit $?
 
+#===================================================
 
 GITREPO=/usr/local/src/github/letsencrypt/
 cd ${GITREPO}
@@ -21,6 +22,8 @@ CERTLOG=/var/log/letsencrypt/renew.log
 ./letsencrypt-auto renew -nvv --standalone | tee -a ${CERTLOG} 2>&1
 
 LE_STATUS=$?
+echo "zz${LE_STATUS}"
+
 /usr/sbin/service nginx start # or whatever your webserver is
 if [ "$LE_STATUS" != 0 ]; then
     echo Automated renewal failed:
