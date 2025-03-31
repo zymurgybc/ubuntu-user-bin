@@ -29,12 +29,12 @@ def launchClients():
         with open(config_json, 'r') as f:
             config = json.load(f)
 
-        FORMAT = '%(asctime)-15s %(message)s'
+        FORMAT = '%(asctime)s %(message)s'
         LOG_FILENAME = config["mqtt_client_log"]
 
         try:
             # Debugging as a normal user will probably throw "Permission denied" on the log
-            logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG)
+            logging.basicConfig(format=FORMAT,filename=LOG_FILENAME,level=logging.DEBUG, datefmt='[%Y-%m-%d %H:%M:%S]')
             logger = logging.getLogger('My_Status_mqtt')
         except Exception as err:
             err_str = '{}'.format(*err.args)
