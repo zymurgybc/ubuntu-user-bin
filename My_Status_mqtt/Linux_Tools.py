@@ -46,10 +46,16 @@ class Linux_Tools:
     def systemUname(self):
         uname = ' {{ "Empty": "true" }}'
         try:
-            tupleString = str(os.uname()).replace("posix.uname_result(", '{ ').replace(")", ' }')
+            # uname value: posix.uname_result(sysname='Linux', nodename='Lancellot', release='5.15.133.1-microsoft-standard-WSL2', 
+            # version='#1 SMP Thu Oct 5 21:02:42 UTC 2023', machine='x86_64')
+            unameString = str(os.uname())
+            #if(self.logger is not None):
+            #    self.logger.info("uname start value: " + unameString)
+            tupleString = unameString.replace("posix.uname_result(", '{ ').replace(")", '}')
             #print(f'tuple {tupleString}')
-            uname = re.sub("([a-zA-Z]*)=", "\"\\1\": ", tupleString)
-            #print(f'uname {uname}')
+            unameString = re.sub("([a-zA-Z]*)=", "\"\\1\": ", tupleString)
+            #if(self.logger is not None):
+            #    self.logger.info("uname done value: " + unameString)
 
         except Exception as err1:
             message = os.path.basename(__file__) + " - systemUname() %s " % err1.args
@@ -59,5 +65,5 @@ class Linux_Tools:
                 print(message)
             raise err1
 
-        return uname
+        return unameString
 
