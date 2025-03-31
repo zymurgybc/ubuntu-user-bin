@@ -1,0 +1,5 @@
+# pip install -r /path/to/requirements.txt
+# pip3.11 install -r ~/bin/My_Status_mqtt/requirements.txt
+tendo>=0.3.0
+paho.mqtt>=2.1.0
+requests>=2.32.3
