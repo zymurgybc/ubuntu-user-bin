@@ -25,7 +25,7 @@ sudo apt-get -y install pkgconf gobject-introspection libgirepository1.0-dev \
 sudo apt-get -y install swig swig2.0.*
 sudo aptitude -y install nfs-kernel-server nfs-common portmap dos2unix libssl-dev libtiff5-dev \
                          zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev \
-                         tcl tcl8.6 tcl8.6-dev tk8.6-dev python-tk
+                         tcl tcl8.6 tcl8.6-dev tk8.6-dev python3-tk
 
 sudo update-rc.d rpcbind enable
 sudo service rpcbind start
@@ -85,7 +85,7 @@ fi
 sudo perl -MCPAN -e "install 'CPAN::DistnameInfo'; install 'YAML'; install 'CPAN'" #; reload CPAN"
 sudo perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit'
 @ Updates to run dhsupdate.pl
-sudo perl -MCPAN -e "install 'LWP::Protocol::https'; install 'LWP::Simple'; 'LWP:UserAgent'; "
+sudo perl -MCPAN -e "install 'Net::SSLeay'; 'IO::Socket::SSL'; 'IO::Socket::SSL::Utils'; 'LWP::Protocol::https'; install 'LWP::Simple'; 'LWP:UserAgent'; "
 
 if [ -f "${HOME}/bin/upgrade-python.sh" ]; then
     ${HOME}/bin/upgrade-python.sh
