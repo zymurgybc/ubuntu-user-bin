@@ -25,13 +25,13 @@ _base="$(dirname $_dir)"
 
 source ${_dir}/myip.cronmail.config
 #make sure the logs exists (ie. first of the month)
-if [ ! -f "$MYIP_LOG" ]; then
-    echo "startup... " >> $MYIP_LOG
+if [ ! -f "${MYIP_LOG}" ]; then
+    echo "startup... " >> "${MYIP_LOG}"
 fi
 source ${_dir}/myip.datalog
 
-if [ ! -f "$MYIP_DAILY" ]; then
-    echo "startup... " >> $MYIP_DAILY
+if [ ! -f "${MYIP_DAILY}" ]; then
+    echo "startup... " >> "${MYIP_DAILY}"
 fi
 
 # Clients on the VPN should not call this
