@@ -6,6 +6,10 @@
 
 /bin/sleep 2m
 
+#if [ -x "${HOME}/.local/python3/bin/activate" ]; then
+#    . ${HOME}/.local/python3/bin/activate
+#fi
+
 # find the real location of the current script
 #_script=`readlink -f "${BASH_SOURCE[0]}"`
 #echo _script=${_script}
@@ -26,3 +30,5 @@ if [ -f "/usr/sbin/alsactl" ]; then      # is ALSA installed?
        /usr/sbin/alsactl restore
    fi
 fi
+
+amixer -D pulse sset Master 30%
