@@ -22,7 +22,11 @@ if [ -d "${_dir}/My_Status_mqtt" ]; then
     cd ${_dir} && python3 -m My_Status_mqtt &>/var/log/mqtt_client.log
 fi
 
-${_dir}/myip.datalog
+# Does the script exist?
+if [ -e "{{_dir}/myip.datalog" ]; then
+    ${_dir}/myip.datalog
+fi
+
 ${_dir}/myip.startup
 
 if [ -f "/usr/sbin/alsactl" ]; then      # is ALSA installed?
