@@ -20,7 +20,8 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-MAILFROM='root-wasabi <zymurgy.bc@gmail.com>'
+#MAILFROM="root-wasabi <zymurgy.bc@gmail.com>"
+MAILFROM="root-wasabi"
 MAILTO=zymurgy.bc@gmail.com
 
 #min hr dom mon dow
@@ -31,7 +32,8 @@ MAILTO=zymurgy.bc@gmail.com
 7,22,37,52 * * * * /home/theather/bin/check_network.sh
 
 #2,17,32,47 * * * * /home/theather/bin/My_Status_mqtt.py 2>/dev/null >> /var/log/mqtt_client.log
-2,17,32,47 * * * * cd /home/theather/bin && python3 -m My_Status_mqtt 2>/dev/null | ts '[\%Y-\%m-\%d \%H:\%M:\%S]' >>/var/log/mqtt_client.log
+#2,17,32,47 * * * * cd /home/theather/bin && python3 -m My_Status_mqtt 2>/dev/null | ts '[\%Y-\%m-\%d \%H:\%M:\%S]' >> /var/log/mqtt_client.log
+#2,17,32,47 * * * * /home/theather/bin/My_Status_mqtt.sh 2>/dev/null | ts '[\%Y-\%m-\%d \%H:\%M:\%S]' >> /var/log/mqtt_client.log
 
 3,18,33,48 * * * * /home/theather/bin/mqtt_listener.py  2>/dev/null >> /var/log/mqtt_listener.log
 4,19,34,49 * * * * /home/theather/bin/neviweb_mqtt.py   2>/dev/null >> /var/log/mqtt_neviweb.log
@@ -40,9 +42,12 @@ MAILTO=zymurgy.bc@gmail.com
 6,16,26,36,46,56 * * * * /home/theather/bin/check_hosts
 11 7,12,17         * * * /home/theather/bin/check_hosts -daily
 #15 6       * * 1,2,3,4,5  /home/pi/bin/livingroomlights.sh on 2>&1        >> /tmp/livingroomlights-on.log > /dev/null
-20         * * * * redis-cli bgrewriteaof > nul
+20         * * * * redis-cli bgrewriteaof > /dev/null
 30         * * * * /home/theather/bin/dhsupdate.pl
+
 15 7 */9       * * /usr/sbin/service nginx stop; /usr/bin/certbot renew; /usr/sbin/service nginx restart
+30 8 */9       * * rsync -ravsL -e ssh /etc/letsencrypt/live/heatherington.ca/  archiver@optimus.local:Computers/wasabi/etc/letsencrypt/live/heatherington.ca/ 
+32 8 */9       * * rsync -ravsL -e ssh /etc/letsencrypt/live/heatherington.ca-0001/  archiver@optimus.local:Computers/wasabi/etc/letsencrypt/live/heatherington.ca-001/ 
 
 45 4 1         * * /home/theather/bin/upgrade-python.sh
 5 5 1 * *  find /var/log/nmap/nmap-*.txt -type f -mtime +30 -exec rm -f {} \;
