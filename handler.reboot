@@ -18,8 +18,8 @@
 _dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 
 # Does an MQTT config exist?
-if [ -d "${_dir}/My_Status_mqtt" ]; then
-    cd ${_dir} && python3 -m My_Status_mqtt &>/var/log/mqtt_client.log
+if [ -e "${_dir}/My_Status_mqtt.sh" ]; then
+    cd ${_dir} && ./My_Status_mqtt.sh 2>&1 | /usr/bin/ts '[%Y-%m-%d %H:%M:%S]' >> /var/log/mqtt_client.log
 fi
 
 # Does the script exist?
