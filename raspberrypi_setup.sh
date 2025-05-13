@@ -10,7 +10,8 @@ git config --global credential.helper cache
 git pull
 
 sudo apt-get -y update
-sudo apt-get -y install aptitude curl mailutils cmake ssmtp
+sudo apt-get -y install aptitude curl mailutils cmake moreutils \
+                        msmtp msmtp-mta mailutils bsd-mailx gnupg2
 sudo apt-get -y install mosquitto-clients build-essential jq \
                         python3-pip matchbox-keyboard  libnss-myhostname  \
                         autoconf automake bison libtool libffi-dev \
