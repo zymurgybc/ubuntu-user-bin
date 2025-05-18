@@ -5,4 +5,4 @@ mqtt_config.json
 neviweb.json
 nohup.out
 matrix-creator/*.log
-
+.vscode

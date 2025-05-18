@@ -3,7 +3,9 @@ USER_HOME=/home/theather
 VENV=${USER_HOME}/.local/python3
 MQTT_LOG=/var/log/mqtt_client.log
 
-if [ -x "${VENV}/bin/python3.12" ]; then
+if [ -x "${VENV}/bin/python3.13" ]; then
+   PYTHON_EXEC="${VENV}/bin/python3.13"
+elif [ -x "${VENV}/bin/python3.12" ]; then
    PYTHON_EXEC="${VENV}/bin/python3.12"
 elif [ -x "${VENV}/bin/python3.11" ]; then
    PYTHON_EXEC="${VENV}/bin/python3.11"

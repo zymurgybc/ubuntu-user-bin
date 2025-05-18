@@ -30,7 +30,7 @@ fi
 ${_dir}/myip.startup
 
 if [ -f "/usr/sbin/alsactl" ]; then      # is ALSA installed?
-   if [ -f "/proc/asound/card0" ]; then  # is there atleast one card?
+   if [ -d "/proc/asound/card0" ]; then  # is there atleast one card?
        /usr/sbin/alsactl restore
    fi
 fi
