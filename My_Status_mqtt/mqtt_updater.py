@@ -36,6 +36,7 @@ class mqtt_updater:
             self.MQTT_CLIENTID = socket.gethostname() + '_status_pub'
             self.MQTT_STATUS_TOPIC = 'home/client/' + socket.gethostname() + '/status'
             self.MQTT_UPDATE_TOPIC = 'home/client/' + socket.gethostname() + '/updated'
+            self.MQTT_SENDMAIL_TOPIC = 'home/client/' + socket.gethostname() + '/sendmail'
 
             # print("Using ", type(config), " ", config)
             self.config = config
@@ -84,7 +85,7 @@ class mqtt_updater:
         try:
             hostConfig = self.config['hosts'][self.hostConfig]
             while True:
-                log_message = os.path.basename(__file__) + " - Attempting connection to " + hostConfig["mqtt_host"] 
+                log_message = os.path.basename(__file__) + " - Attempting connection to " + hostConfig["mqtt_host"]
                 if(self.logger is not None):
                     self.logger.info(log_message)
                 else:
@@ -97,6 +98,7 @@ class mqtt_updater:
                 while self.client_loop == 0:
                     try:
                         self.publish_status()
+                        self.publish_sendmail()
                         time.sleep(60)               # sleep for 60 seconds before next call
                         self.client_loop = self.mqttc.loop(.25) # blocks for 250ms
                     except ValueError as err1:
@@ -139,6 +141,35 @@ class mqtt_updater:
             my_updated = self.myUpdated()
             self.mqttc.publish(self.MQTT_UPDATE_TOPIC, my_updated, qos = 1, retain = 1)
             log_message = os.path.basename(__file__) + " - " + hostConfig["mqtt_host"] + " Sending update: " + my_updated
+            if(self.logger is not None):
+                self.logger.info(log_message)
+            else:
+                print("Info: ", log_message)
+        except Exception as err:
+            err_str = '{}'.format(*err.args)
+            log_message = '%s - [%s] %s' % (os.path.basename(__file__), "40", err_str)
+            if(self.logger is not None):
+                self.logger.warning(log_message)
+            else:
+                print(log_message)
+
+    def publish_sendmail(self):
+        try:
+            hostConfig = self.config['hosts'][self.hostConfig]
+            my_status = {}
+            my_status['Hostname'] = socket.gethostname()
+            my_status['sendmail'] = 'not checked'
+            my_status['IP'] = self.tools.getIP()
+            #print( my_status )
+            self.mqttc.publish(self.MQTT_SENDMAIL_TOPIC, json.dumps(my_status), qos = 1, retain = 1)
+            log_message = os.path.basename(__file__) + " - " + hostConfig["mqtt_host"] + " Sending sendmail info: " + str(my_status)
+            if(self.logger is not None):
+                self.logger.info(log_message)
+            else:
+                print("Info: ", log_message)
+            my_updated = self.myUpdated()
+            self.mqttc.publish(self.MQTT_UPDATE_TOPIC, my_updated, qos = 1, retain = 1)
+            log_message = os.path.basename(__file__) + " - " + hostConfig["mqtt_host"] + " Sending sendmail info: " + my_updated
             if(self.logger is not None):
                 self.logger.info(log_message)
             else:
