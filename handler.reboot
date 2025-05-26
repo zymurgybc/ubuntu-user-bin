@@ -30,8 +30,15 @@ fi
 ${_dir}/myip.startup
 
 if [ -f "/usr/sbin/alsactl" ]; then      # is ALSA installed?
-   if [ -d "/proc/asound/card0" ]; then  # is there atleast one card?
-       /usr/sbin/alsactl restore
+   #if [ -d "/proc/asound/card0" ]; then  # is there atleast one card?
+   #    /usr/sbin/alsactl restore
+   #
+   #fi
+
+   if [ -f "/var/lib/alsa/asound.state" ]; then
+       #/usr/sbin/alsactl restore   # requires sudo?
+   else
+       /usr/sbin/alsactl init
    fi
 fi
 
