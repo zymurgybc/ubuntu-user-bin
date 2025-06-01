@@ -26,7 +26,7 @@ function upgrade_python_modules() {
 
 function enumerate_python_versions() {
 #  verPython=("python2.7" "python3.4" "python3.5" "python3.5m" "python3.6" "python3.6m" "python3.7" "python3.8" "python3.9" )
-  verPython=("python3.6" "python3.6m" "python3.7" "python3.8" "python3.9" "python3.10" "python3.11" "python3.12" "python3.13" )
+  verPython=("python3.6" "python3.6m" "python3.7" "python3.8" "python3.9" "python3.10" "python3.11" "python3.12" "python3.13" "python3.14")
   for py in "${verPython[@]}"
   do
     echo "Checking for ${py}..."
