@@ -66,6 +66,15 @@ function enumerate_python_versions() {
 
 }
 
+if [ -d "${HOME}/.profile.d" ]; then
+    ls -al "${HOME}/.profile.d"
+else
+    echo "Did not find \"${HOME}/.profile.d\""
+fi
+
+echo
+
+
 mkdir -p ~/bin/tmp
 # delete old temporary files
 find ~/bin/tmp/* -mtime +90 -exec rm {} \;
