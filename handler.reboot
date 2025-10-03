@@ -42,4 +42,6 @@ if [ -f "/usr/sbin/alsactl" ]; then      # is ALSA installed?
    fi
 fi
 
-amixer -D pulse sset Master 30%
+#amixer -D pulse sset Master 30%
+amixer sset Master 30%
+
