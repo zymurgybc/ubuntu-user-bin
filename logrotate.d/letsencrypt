@@ -1,0 +1,10 @@
+/var/log/letsencrypt/renew*.log {
+        weekly
+        size=10M
+        rotate 6
+        compress
+        nodelaycompress
+        missingok
+        notifempty
+        maxage 90
+}
