@@ -1,0 +1,14 @@
+{
+    "subscriptions": [
+        {
+            "name": "Raspbian",
+            "url":  "https://www.raspberrypi.org/downloads/raspbian/",
+            "saveto" : "/mnt/Complete/Software/RaspberryPi"
+        },
+        {
+            "name": "Noobs",
+            "url":  "https://www.raspberrypi.org/downloads/noobs",
+            "saveto" : "/mnt/Complete/Software/RaspberryPi"
+        }
+    ]
+}
