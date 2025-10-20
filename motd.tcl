@@ -14,7 +14,13 @@ if {![string match -nocase "/home*" $var(path)] && ![string match -nocase "/usr/
 }
 
 # * Calculate last login
-set lastlog [exec -- lastlog -u $var(user)]
+if {[auto_execok lastlog2] ne ""} {
+    set lastlog [exec -- lastlog2 -u $var(user)]
+} elseif {[auto_execok lastlog] ne ""} {
+    set lastlog [exec -- lastlog -u $var(user)]
+} else {
+    error "Neither lastlog2 nor lastlog command found on this system."
+}
 set ll(1)  [lindex $lastlog 7]
 set ll(2)  [lindex $lastlog 8]
 set ll(3)  [lindex $lastlog 9]
