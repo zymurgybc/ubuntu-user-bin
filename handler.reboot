@@ -42,7 +42,7 @@ if [ -f "/usr/sbin/alsactl" ]; then      # is ALSA installed?
    fi
 fi
 
-$AMIXER = `which amixer`
+AMIXER=`which amixer`
 if [ ! -z "${AMIXER}" ]; then
     #amixer -D pulse sset Master 30%
     amixer sset Master 30%
