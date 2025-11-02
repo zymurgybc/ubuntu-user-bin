@@ -45,5 +45,8 @@ fi
 AMIXER=`which amixer`
 if [ ! -z "${AMIXER}" ]; then
     #amixer -D pulse sset Master 30%
-    amixer sset Master 30%
+    AMASTER=`${AMIXER} scontrols | grep Master`
+    if [ ! -z  "${AMASTER}" ]; then
+        amixer sset Master 30%
+    fi
 fi
