@@ -14,7 +14,7 @@ import paho.mqtt.client as mqtt # sudo pip install paho-mqtt
 import re
 import socket
 import traceback
-
+import uuid;
 import json
 
 if os.name == "posix":
@@ -62,6 +62,7 @@ class mqtt_updater:
             self.mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, self.MQTT_CLIENTID)
             self.mqttc.username_pw_set(hostConfig["mqtt_client"], password=hostConfig["mqtt_password"])
             testament ={}
+            testament["messageId"] = uuid.uuid4()
             testament['Hostname'] = socket.gethostname()
             testament['Status']='disconnected'
             testament['IP']=self.tools.getIP()
@@ -128,6 +129,7 @@ class mqtt_updater:
         try:
             hostConfig = self.config['hosts'][self.hostConfig]
             my_status = {}
+            my_status["messageId"] = uuid.uuid4()
             my_status['Hostname'] = socket.gethostname()
             my_status['Status'] = 'connected'
             my_status['IP'] = self.tools.getIP()
@@ -157,6 +159,7 @@ class mqtt_updater:
         try:
             hostConfig = self.config['hosts'][self.hostConfig]
             my_status = {}
+            my_status["messageId"] = uuid.uuid4()
             my_status['Hostname'] = socket.gethostname()
             my_status['sendmail'] = 'not checked'
             my_status['IP'] = self.tools.getIP()
