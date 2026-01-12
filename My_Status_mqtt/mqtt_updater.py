@@ -133,6 +133,9 @@ class mqtt_updater:
             my_status['Hostname'] = socket.gethostname()
             my_status['Status'] = 'connected'
             my_status['IP'] = self.tools.getIP()
+            if [ -e "/sys/firmware/devicetree/base/model" ]; then
+              my_status['hardware'] = $(</sys/firmware/devicetree/base/model)
+            fi
             #print( my_status )
             self.mqttc.publish(self.MQTT_STATUS_TOPIC, json.dumps(my_status), qos = 1, retain = 1)
             log_message = os.path.basename(__file__) + " - " + hostConfig["mqtt_host"] + " Sending status: " + str(my_status)
