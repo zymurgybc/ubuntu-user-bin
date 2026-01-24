@@ -116,7 +116,7 @@ The report is built as a MIME multipart message with an HTML body and is sent wi
 
 1. **Hosts** (single table)
    - One table with columns: **Host IP**, **Host Name**, **Active**, **Inactive**.
-   - One row per known IP (from current and old `nmap.log`, plus stale 4hr and very-stale sets). Sorted by IP.
+   - One row per known IP (from current and old `nmap.log`, plus stale 4hr and very-stale sets). Sorted by IP. `*.255` (broadcast) is excluded and never reported.
    - **Host Name**: `docker` only when verified: `ip route get <ip>` shows the route via `dev docker0` or `dev br-` on this host (i.e. the IP is on a local Docker network). Other 172.x or VM addresses are not assumed to be Docker. Otherwise the name from `Host: IP (name)` in nmap `-oG` output, or blank.
    - **Active**: `Up` if the host is in the current scan; otherwise the last-seen time from `nmap_<ip>.log` (time only if today, else `YYYY-MM-DD HH:MM`), or blank if unknown.
    - **Inactive**: blank when the host is up; when not up: `down` (in red) if simply missing from the current scan; `stale` if its `nmap_<ip>.log` has not been touched in 4+ hours; `Very stale` if it has an empty 7+‑day log (pending/nearing deletion; those files are deleted after listing).
@@ -163,7 +163,7 @@ The report is built as a MIME multipart message with an HTML body and is sent wi
 
 ## Implementation notes
 
-- **Hosts table**: One row per known IP. **Host Name** is `docker` only when `_is_docker_ip(ip)` is true: `ip route get <ip>` shows routing via `dev docker0` or `dev br-` on this host (local Docker networks). 172.x or other private IPs on remote VMs are not labeled docker. **Active** is `Up` or last-seen; **Inactive** is `down` (red), `stale`, or `Very stale` when the host is not up.
+- **Hosts table**: One row per known IP. `*.255` (broadcast) is ignored in the report and in per-host logs. **Host Name** is `docker` only when `_is_docker_ip(ip)` is true: `ip route get <ip>` shows routing via `dev docker0` or `dev br-` on this host (local Docker networks). 172.x or other private IPs on remote VMs are not labeled docker. **Active** is `Up` or last-seen; **Inactive** is `down` (red), `stale`, or `Very stale` when the host is not up.
 - **Stale / Very stale**: `_get_very_stale_ips()` runs `find -delete` on empty 7+‑day logs; those IPs are still shown in the table as “Very stale” before the delete.
 - **RabbitMQ path**: Uses `socket.gethostname()`, e.g. `/var/log/rabbitmq/rabbit@<hostname>.log`.
 - **FreeDNS**: Has its own **FreeDNS** heading and `<div class='data'>` block.

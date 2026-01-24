@@ -213,7 +213,7 @@ def scan_subnet(range_spec, nmap_path="/usr/bin/nmap"):
                 continue
             log.write(line + "\n")
             for ip in IP4_RE.findall(line):
-                if ip in seen_ips:
+                if ip in seen_ips or ip.endswith(".255"):
                     continue
                 seen_ips.add(ip)
                 p = NMAP_DIR / f"nmap_{ip}.log"
@@ -274,6 +274,8 @@ def build_report(config, hostname):
     body.append("<p class='heading'>Hosts</p><div class='data'>")
     body.append("<table class='hosts'><thead><tr><th>Host IP</th><th>Host Name</th><th>Active</th><th>Inactive</th></tr></thead><tbody>")
     for ip in sorted(all_ips, key=_ip_sort_key):
+        if ip.endswith(".255"):
+            continue
         hn = "docker" if _is_docker_ip(ip) else ip_to_hostname.get(ip, "")
         if ip in active_ips:
             active = "Up"
