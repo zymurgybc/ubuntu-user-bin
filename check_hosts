@@ -129,7 +129,8 @@ while [[ $# > 0 ]]; do
             #cat $NMAP_TMP
             # Information for the output is unique hosts previously found
             echo "<p class='heading'>Active network hosts</p><div class='data'>"                             >> ${NMAP_TMP}
-            sort -V ${NMAP_DIR}/nmap.log | grep Host: | uniq | awk 'NF{$0="<p class='\''a'\''>" $0 "</p>"}1' >> ${NMAP_TMP}
+            # Dedupe by IP (one line per host) so the same IP cannot also appear in Inactive
+            grep Host: "${NMAP_LOG}" 2>/dev/null | awk 'match($0, /[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/) { ip=substr($0,RSTART,RLENGTH); print ip "|" $0 }' | sort -V | awk -F'|' '!seen[$1]++ { print $2 }' | awk 'NF{$0="<p class='\''a'\''>" $0 "</p>"}1' >> ${NMAP_TMP}
 
             if [ -s "${NMAP_TMP}_stale" ]; then
                 echo "</div><p class='heading'>Stale hosts (will delete)</p><div class='data'>"              >> ${NMAP_TMP}
@@ -137,15 +138,17 @@ while [[ $# > 0 ]]; do
                 find ${NMAP_DIR} -type f -name "nmap_*.log" -size 0b -mtime +7 -delete
             fi
 
-            # https://serverfault.com/questions/68684/how-can-i-get-diff-to-show-only-added-and-deleted-lines-if-diff-cant-do-it-wh
+            # Inactive = IPs in old log that are NOT in current log (by IP, so no overlap with Active)
+            grep Host: "${NMAP_LOG}" 2>/dev/null | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' | sort -u > "${NMAP_TMP}.active_ips"
             echo "</div><p class='heading'>Inactive network hosts (previously seen)</p>"                     >> ${NMAP_TMP}
             echo "<div class='data' style='color: red;'>"                                                    >> ${NMAP_TMP}
-                # comm -13 means only show unique lines in file two (not unique to file one, or in both)
-                # sed is removing leading white space
-                # grep is excluding lines that begin with an octothorp # (after optional whitespace)
-                comm -13 <(                  /usr/bin/sort <( /bin/sed "s/^[ \t]*//" <( /bin/grep -v ^\s*adjust_timeouts2 <( /bin/grep -v ^\s*# "${NMAP_LOG}"     ))))  \
-                         <( /usr/bin/uniq <( /usr/bin/sort <( /bin/sed "s/^[ \t]*//" <( /bin/grep -v ^\s*adjust_timeouts2 <( /bin/grep -v ^\s*# "${NMAP_OLD_LOG}" ))))) \
-                         | sort -V | sed "s/Status: Up/Status: Down/" | awk 'NF{$0="<p class='\''c'\''>" $0 "</p>"}1' >> ${NMAP_TMP}
+            grep Host: "${NMAP_OLD_LOG}" 2>/dev/null | while IFS= read -r line; do
+                ip=$(echo "$line" | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' | head -1)
+                if [ -n "$ip" ] && ! grep -qFx "$ip" "${NMAP_TMP}.active_ips" 2>/dev/null; then
+                    echo "$line" | sed 's/Status: Up/Status: Down/'
+                fi
+            done | sort -V | awk 'NF{$0="<p class='\''c'\''>" $0 "</p>"}1' >> ${NMAP_TMP}
+            rm -f "${NMAP_TMP}.active_ips"
         fi
         echo "</div>"                                                                                        >> ${NMAP_TMP}
 
