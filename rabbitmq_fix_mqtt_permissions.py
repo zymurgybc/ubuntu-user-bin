@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
-"""Fix RabbitMQ MQTT permissions in vhost /.
+"""Fix RabbitMQ MQTT permissions in vhost / for all users.
 
 Addresses "configure access to queue 'mqtt-subscription-...' refused" errors.
 The MQTT plugin creates queues named mqtt-subscription-<client_id> in vhost '/'.
 
+Reads all users from RabbitMQ and sets MQTT permissions on vhost / for each.
 Policy: 'user' and 'guest' accounts only get access to vhost /, not home.
-This script only sets permissions on vhost / (no home).
 """
 
 import argparse
+import re
 import subprocess
 import sys
-
-
-DEFAULT_MQTT_USERS = ["homeassistant", "linknlink"]
-VHOST_ONLY_SLASH = ("user", "guest")  # These accounts get / only, not home
 
 
 def run(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
@@ -33,22 +30,27 @@ def list_users() -> set[str]:
     if result.returncode != 0:
         return set()
     users = set()
-    # Format: user\t[tags]\n
+    # Output: "Listing users ..." then "user\t[tags]" lines, or table header "user  configure  write  read"
     for line in result.stdout.splitlines():
-        if line.strip():
-            users.add(line.split()[0])
+        line = line.strip()
+        if not line or line.startswith("Listing"):
+            continue
+        parts = line.split()
+        if not parts:
+            continue
+        name = parts[0]
+        if name == "Listing":
+            continue
+        # Skip permissions table header: "user    configure   write   read"
+        if len(parts) >= 2 and name == "user" and parts[1] == "configure":
+            continue
+        users.add(name)
     return users
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Fix MQTT permissions in vhost / for listed users (user/guest get / only, not home)."
-    )
-    parser.add_argument(
-        "users",
-        nargs="*",
-        default=DEFAULT_MQTT_USERS,
-        help=f"Usernames to fix (default: {DEFAULT_MQTT_USERS})",
+        description="Fix MQTT permissions in vhost / for all RabbitMQ users."
     )
     parser.add_argument(
         "-p",
@@ -60,16 +62,16 @@ def main() -> int:
     args = parser.parse_args()
 
     vhost = args.vhost
-    existing = list_users()
+    users = sorted(list_users())
+    if not users:
+        print("No RabbitMQ users found.", file=sys.stderr)
+        return 1
 
-    print(f"Setting MQTT permissions in vhost '{vhost}' for: {args.users}")
+    print(f"Setting MQTT permissions in vhost '{vhost}' for all users: {users}")
     print("  (user and guest get / only, not home)")
     print()
 
-    for user in args.users:
-        if user not in existing:
-            print(f"  SKIP: {user} (user not found)")
-            continue
+    for user in users:
         try:
             # Configure: mqtt-subscription-* and <username>-*
             run(
@@ -85,7 +87,18 @@ def main() -> int:
             )
             print(f"  OK: {user}")
         except subprocess.CalledProcessError as e:
-            print(f"  FAIL: {user} - {e.stderr or e}", file=sys.stderr)
+            stderr = (e.stderr or "").strip()
+            # Only skip when RabbitMQ explicitly says this user does not exist
+            # (e.g. "User 'user' does not exist"), not other "does not exist" errors
+            user_gone = re.search(
+                r"User\s+['\"]?" + re.escape(user) + r"['\"]?\s+does not exist",
+                stderr,
+                re.IGNORECASE,
+            )
+            if user_gone:
+                print(f"  SKIP: {user} (no longer exists)")
+                continue
+            print(f"  FAIL: {user} - {stderr or e}", file=sys.stderr)
             return e.returncode
 
     print()
