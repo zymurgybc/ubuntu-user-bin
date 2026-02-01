@@ -120,7 +120,7 @@ class mqtt_updater:
                             print("Warn: ", log_message)
                         time.sleep(5)
 
-                log_message = '%s - [%s] %s ==> %s' % os.path.basename(__file__), "39", hostConfig["mqtt_host"], " - exiting with %s" % str(self.client_loop)
+                log_message = '%s - [%s] %s ==> %s' % (os.path.basename(__file__), "39", hostConfig["mqtt_host"], " - exiting with %s" % str(self.client_loop))
                 if(self.logger is not None):
                     self.logger.info(log_message)
                 else:
