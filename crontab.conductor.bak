@@ -28,7 +28,8 @@
 #0 6          * * 1 /usr/local/bin/certbot renew
 7,22,37,52 * * * * /home/theather/bin/check_network.sh
 #2,17,32,47 * * * * /home/theather/bin/My_Status_mqtt.py 2>/dev/null >> /var/log/mqtt_client.log
-2,17,32,47 * * * *  cd /home/theather/bin && python3 -m My_Status_mqtt 2>/dev/null >> /var/log/mqtt_client.log
+#2,17,32,47 * * * * cd /home/theather/bin && python3.11 -m My_Status_mqtt 2>/dev/null | ts '[\%Y-\%m-\%d \%H:\%M:\%S]' >> /var/log/mqtt_client.log
+2,17,32,47 * * * * /home/theather/bin/My_Status_mqtt.sh 2>&1 | ts '[\%Y-\%m-\%d \%H:\%M:\%S]' >> /var/log/mqtt_client.log
 
 4,19,34,49 * * * * /home/theather/bin/neviweb_mqtt.py   2>/dev/null >> /var/log/mqtt_client.log
 #* 6,18       * * * systemctl restart mqspeak
@@ -42,6 +43,6 @@
 30 4 1         * * /home/theather/bin/upgrade-python.sh
 10 5 1 * *  find /var/log/nmap/nmap-*.txt -type f -mtime +30 -exec rm -f {} \;
 
-#@reboot  /bin/bash "/bin/sleep 2m && /home/theather/bin/myip.datalog && /home/theather/bin/myip.startup"
+#@reboot  /bin/bash "/usr/bin/sleep 2m && /home/theather/bin/myip.datalog && /home/theather/bin/myip.startup"
 @reboot /home/theather/bin/handler.reboot
 
