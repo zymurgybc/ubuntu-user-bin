@@ -17,6 +17,14 @@ import traceback
 import uuid;
 import json
 
+
+def _json_serial(obj):
+    """Convert non-JSON-serializable types (e.g. UUID) to string so json.dumps succeeds."""
+    if isinstance(obj, uuid.UUID):
+        return str(obj)
+    raise TypeError("Object of type %s is not JSON serializable" % type(obj).__name__)
+
+
 if os.name == "posix":
     from My_Status_mqtt.Linux_Tools import Linux_Tools as tools
     #import Linux_Tools as tools
@@ -66,7 +74,7 @@ class mqtt_updater:
             testament['Hostname'] = socket.gethostname()
             testament['Status']='disconnected'
             testament['IP']=self.tools.getIP()
-            self.mqttc.will_set(self.MQTT_STATUS_TOPIC, payload=json.dumps(testament), qos=0, retain=True)
+            self.mqttc.will_set(self.MQTT_STATUS_TOPIC, payload=json.dumps(testament, default=_json_serial), qos=0, retain=True)
             self.mqttc.updater = lambda : self.myUpdated()
 
             self.mqttc.on_connect = lambda mosq, userdata, flags, rc : self.on_connected(mosq, userdata, flags, rc)
@@ -137,7 +145,7 @@ class mqtt_updater:
                 with open("/sys/firmware/devicetree/base/model", "r") as f:
                     my_status['hardware'] = f.read().strip()
             #print( my_status )
-            self.mqttc.publish(self.MQTT_STATUS_TOPIC, json.dumps(my_status), qos = 1, retain = 1)
+            self.mqttc.publish(self.MQTT_STATUS_TOPIC, json.dumps(my_status, default=_json_serial), qos = 1, retain = 1)
             log_message = os.path.basename(__file__) + " - " + hostConfig["mqtt_host"] + " Sending status: " + str(my_status)
             if(self.logger is not None):
                 self.logger.info(log_message)
@@ -167,7 +175,7 @@ class mqtt_updater:
             my_status['sendmail'] = 'not checked'
             my_status['IP'] = self.tools.getIP()
             #print( my_status )
-            self.mqttc.publish(self.MQTT_SENDMAIL_TOPIC, json.dumps(my_status), qos = 1, retain = 1)
+            self.mqttc.publish(self.MQTT_SENDMAIL_TOPIC, json.dumps(my_status, default=_json_serial), qos = 1, retain = 1)
             log_message = os.path.basename(__file__) + " - " + hostConfig["mqtt_host"] + " Sending sendmail info: " + str(my_status)
             if(self.logger is not None):
                 self.logger.info(log_message)
