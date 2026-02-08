@@ -311,7 +311,23 @@ def build_report(config, hostname):
     # --- RabbitMQ ---
     rq = Path(f"/var/log/rabbitmq/rabbit@{hostname}.log")
     if rq.is_file():
-        body.append("<p class='heading'>RabbitMQ Service Log</p><div class='data'><pre>")
+        body.append("<p class='heading'>RabbitMQ Service Log</p><div class='data'>")
+        # RabbitMQ server version as a single sentence with "Version" in bold
+        try:
+            r = subprocess.run(
+                ["dpkg", "-s", "rabbitmq-server"],
+                capture_output=True, text=True, timeout=5
+            )
+            ver = ""
+            for line in (r.stdout or "").splitlines():
+                if line.startswith("Version:"):
+                    ver = line.split(":", 1)[1].strip()
+                    break
+            if ver:
+                body.append(f"<p><b>Version</b> {ver}.</p>")
+        except (FileNotFoundError, subprocess.TimeoutExpired):
+            pass
+        body.append("<pre>")
         try:
             tail = rq.read_text().strip().splitlines()[-20:]
             body.append("\n".join(tail))
