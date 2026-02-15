@@ -117,7 +117,7 @@ while [[ $# > 0 ]]; do
             cat $FREEDNS_LOG | grep -v "has not changed." | tail -n 10  \
                              | sed -r -e 's|(([0-9]{1,3}\.){3}[0-9]{1,3})|<b class="ip">\1</b>|g'   \
                              | awk 'NF{$0="<p>" $0 "</p>"}1'                                                  >> ${NMAP_TMP}
-            cat $FREEDNS_LOG | tail -n 1  \
+            cat $FREEDNS_LOG | tail -n 4 \
                              | awk 'NF{$0="<p>" $0 "</p>"}1'                                                  >> ${NMAP_TMP}
         fi
 
